@@ -235,7 +235,7 @@ img {
   color: var(--secondary-color);
 }
 .navbar .nav-img {
-  width: 100px;
+  width: 240px;
 }
 
 .navbar .navbar-toggler:focus {
