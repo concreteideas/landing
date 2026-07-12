@@ -1,6 +1,7 @@
 (() => {
   const grid = document.querySelector('[data-projects-grid]');
   if (!grid) return;
+  const { loadJson } = window.ConcreteIdeasData;
 
   const filters = document.querySelector('[data-project-filters]');
   const count = document.querySelector('[data-project-count]');
@@ -23,10 +24,8 @@
     filters?.querySelectorAll('button').forEach((button) => button.classList.toggle('is-active', button.dataset.category === activeCategory));
   }
 
-  Promise.all([fetch('../data/projects.json'), fetch('../data/products.json')])
-    .then(async ([projectsResponse, productsResponse]) => {
-      if (!projectsResponse.ok || !productsResponse.ok) throw new Error('Unable to load projects');
-      const [projectData, productData] = await Promise.all([projectsResponse.json(), productsResponse.json()]);
+  Promise.all([loadJson('../data/projects.json'), loadJson('../data/products.json')])
+    .then(([projectData, productData]) => {
       projects = projectData;
       productNames = new Map(productData.map((product) => [product.id, product.name]));
       render();

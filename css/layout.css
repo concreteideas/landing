@@ -1,0 +1,8 @@
+.site-container { margin-inline: auto; max-width: var(--container-max); padding-inline: var(--space-3); }
+.container { max-width: var(--container-max); }
+.site-section { padding-block: var(--space-7); }
+.site-section--muted { background: var(--color-warm-white); }
+.site-section--sand { background: var(--color-sand); }
+.site-page-hero { background: var(--color-warm-white); padding-block: 104px 80px; text-align: center; }
+.site-page-hero__content { margin-inline: auto; max-width: 620px; }
+@media (max-width: 767px) { .site-section { padding-block: var(--space-6); } .site-page-hero { padding-block: 72px 56px; } }

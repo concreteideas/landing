@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-root="./" data-page="home">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,6 +31,10 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/tokens.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/components.css" />
     <!-- Main CSS -->
     <link rel="stylesheet" href="./css/main.css" />
   </head>
@@ -42,101 +46,7 @@
     <div id="main-content" style="display: none"></div>
 
     <!-- Navbar -->
-    <nav
-      class="navbar navbar-expand-lg bg-body-tertiary"
-      id="navbar"
-      aria-label="Main navigation"
-    >
-      <div class="container position-relative">
-        <a class="fs-3 fw-bold text-black" href="index.html">
-          <img src="./imgs/cideas-logo.png" alt="Nav Logo" class="nav-img" />
-        </a>
-
-        <div
-          class="collapse navbar-collapse main-menu"
-          id="navbarSupportedContent"
-        >
-          <ul class="navbar-nav mx-auto mb-2 mb-lg-0" role="menubar">
-            <li class="nav-item">
-              <a
-                class="nav-link active alt-font"
-                aria-current="page"
-                role="menuitem"
-                href="#home"
-                >Home</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-capitalize alt-font"
-                role="menuitem"
-                href="./collections/landscape.html"
-                >Collections</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-capitalize alt-font"
-                role="menuitem"
-                href="./products/index.html"
-                >Products</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-capitalize alt-font"
-                role="menuitem"
-                href="./projects/index.html"
-                >Projects</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-capitalize alt-font"
-                role="menuitem"
-                href="./resources/index.html"
-                >Resources</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-capitalize alt-font"
-                role="menuitem"
-                href="#about"
-                >About</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link text-capitalize alt-font"
-                role="menuitem"
-                href="#footer"
-                >Contact</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="nav-icon d-flex gap-4" role="search">
-          <i
-            class="fa-solid fa-magnifying-glass"
-            role="button"
-            aria-label="Search"
-          ></i>
-          <i class="fa-solid fa-store" role="button" aria-label="Store"></i>
-        </div>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-    </nav>
+    <div data-site-header></div>
 
     <main>
       <!-- Home section -->
@@ -210,7 +120,7 @@
                   Where Concrete Becomes Art
                 </h2>
                 <span class="w-75"
-                  >Our studio designs and crafts exclusive concrete artifacts for those who see spaces as canvases. From sculptural outdoor elements to refined indoor décor, every piece is meticulously handcrafted, balancing raw materiality with sophisticated form. Rooted in artistry and elevated by innovation, our work redefines concrete as an expression of modern luxury.</span
+                  >Our studio designs and crafts exclusive concrete artifacts for those who see spaces as canvases. From sculptural outdoor elements to refined indoor dÃ©cor, every piece is meticulously handcrafted, balancing raw materiality with sophisticated form. Rooted in artistry and elevated by innovation, our work redefines concrete as an expression of modern luxury.</span
                 >
                 <a class="main-btn text-uppercase fw-medium" href="#index.html"
                   >our services</a
@@ -288,7 +198,7 @@
                   <span
                     class="text-white mb-3 d-inline-block fs-4 alt-font fw-bold"
                   >
-                    Indoor Décor</span
+                    Indoor DÃ©cor</span
                   >
                   <p class="fs-6">
                     Sculptural concrete pieces that bring refined materiality and quiet elegance to interior spaces.
@@ -865,120 +775,9 @@
       </section>
 
       <!-- Footer -->
-      <footer
-        class="footer section-padding pb-5"
-        role="contentinfo"
-        aria-label="Contact information"
-        id="footer"
-      >
-        <div class="container px-5">
-          <div class="row">
-            <!-- About Company -->
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-              <span class="text-white fw-semibold d-inline-block mb-4 alt-font"
-                >About company</span
-              >
-              <p class="lh-lg">
-                Lorem ipsum dolor amet consectetur adipiscing do tempor
-                incididunt labore magna ut enim minim exercitation laboris
-                nisiex ea commodo.
-              </p>
-            </div>
-
-            <!-- Links -->
-            <div class="col-lg-2 offset-lg-1 col-md-6 mb-4 mb-lg-0">
-              <span class="text-white fw-semibold d-inline-block mb-4 alt-font"
-                >Company</span
-              >
-              <ul class="ps-0">
-                <li class="mb-3"><a href="#about">About company</a></li>
-                <li class="mb-3"><a href="#specialization">Company services</a></li>
-              </ul>
-            </div>
-
-            <!-- Contact Info -->
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-              <span class="text-white fw-semibold d-inline-block mb-4 alt-font"
-                >Get in touch</span
-              >
-              <p class="mb-4">
-                Whitefield, Bangalore
-              </p>
-              <span class="mb-3">
-                <i class="fa-solid fa-phone-volume icon-very-small"></i>
-                <a href="tel:+916361091283">+91 636 109 1283</a></span
-              >
-              <span>
-                <i class="fa-solid fa-envelope-open-text icon-very-small"></i>
-                <a href="mailto:concreteideas.sales@gmail.com"
-                  >concreteideas.sales@gmail.com</a
-                ></span
-              >
-            </div>
-
-            <!-- Social Section -->
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 instagram-section">
-              <span class="text-white fw-semibold d-inline-block mb-4 alt-font"
-                >Follow us on Instagram</span
-              >
-              <ul class="d-flex gap-2">
-                <li>
-                  <img
-                    src="./imgs/footer-1.jpg"
-                    class="w-100"
-                    alt="Footer Images"
-                  />
-                </li>
-                <li>
-                  <img
-                    src="./imgs/footer-2.jpg"
-                    class="w-100"
-                    alt="Footer Images"
-                  />
-                </li>
-                <li>
-                  <img
-                    src="./imgs/footer-3.jpg"
-                    class="w-100"
-                    alt="Footer Images"
-                  />
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <hr class="mt-4" />
-
-          <!-- Footer Bottom -->
-          <div class="footer-bottom mt-5">
-            <div class="row align-items-center">
-              <div class="col-md-3 mb-4 mb-lg-0 text-center text-md-start">
-                <img
-                  class="d-inline"
-                  src="./cimgs/logo_white.png"
-                  alt="Footer Logo"
-                />
-              </div>
-              <div class="col-md-6 mb-4 mb-lg-0 text-center">
-                <p class="mb-0">
-                  &copy; 2026 | Concrete Ideas
-
-                </p>
-              </div>
-              <div class="col-md-3 text-md-end">
-                <div class="social-icons d-flex justify-content-center gap-4">
-                  <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                  <a href="#"><i class="fa-brands fa-github"></i></a>
-                  <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                  <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <div data-site-footer></div>
     </main>
-    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script><script src="./js/ui.js"></script>
     <script src="./js/main.js" defer></script>
   </body>
 </html>

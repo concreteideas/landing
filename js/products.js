@@ -1,6 +1,7 @@
 (() => {
   const grid = document.querySelector('[data-products-grid]');
   if (!grid) return;
+  const { loadJson } = window.ConcreteIdeasData;
 
   const categoryFromUrl = new URLSearchParams(window.location.search).get('category');
   const presetCategory = grid.dataset.category || categoryFromUrl || 'All';
@@ -36,11 +37,7 @@
     if (filters) filters.querySelectorAll('button').forEach((button) => button.classList.toggle('is-active', button.dataset.category === activeCategory));
   }
 
-  fetch('../data/products.json')
-    .then((response) => {
-      if (!response.ok) throw new Error('Unable to load collection');
-      return response.json();
-    })
+  loadJson('../data/products.json')
     .then((data) => { products = data; render(); })
     .catch(() => { grid.innerHTML = '<p class="products-empty">The collection is currently unavailable. Please refresh and try again.</p>'; });
 
