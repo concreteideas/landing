@@ -1,24 +1,80 @@
+# DESIGN_SYSTEM.md
+
 # Concrete Ideas Design System
 
-Version 1.0
+**Version:** 2.0
 
 ---
 
 # Design Philosophy
 
-Quiet Luxury
+Concrete Ideas follows the principles of **Architectural Minimalism**.
 
-Architectural Minimalism
+The website should communicate craftsmanship through restraint rather than decoration.
 
-Material Honesty
+The interface should never compete with the product.
 
-Timeless Design
+Every design decision should reinforce:
 
-Whitespace is part of the design.
+* Timelessness
+* Material honesty
+* Quiet luxury
+* Simplicity
+* Precision
 
-The product should always be the visual focus.
+Whitespace is considered a design element.
 
-Avoid unnecessary decoration.
+The product is always the visual hero.
+
+---
+
+# Design Principles
+
+## Less but Better
+
+Remove unnecessary UI.
+
+Every element must have a purpose.
+
+---
+
+## Product First
+
+Photography should dominate.
+
+Interface should support—not distract.
+
+---
+
+## Consistency
+
+Spacing
+
+Typography
+
+Components
+
+Interaction
+
+must behave consistently throughout the website.
+
+---
+
+## Calm Interface
+
+Avoid visual noise.
+
+Avoid clutter.
+
+Avoid excessive colors.
+
+---
+
+## Performance Matters
+
+Fast websites feel premium.
+
+Every animation should justify itself.
 
 ---
 
@@ -38,23 +94,22 @@ Georgia
 
 serif
 
-Usage
+Used for
 
-Hero headings
-
-Collection names
-
-Section headings
-
-Marketing statements
+* Hero headings
+* Collection names
+* Marketing statements
+* Large section titles
 
 Weight
 
-Medium
+500–600
 
 Letter spacing
 
 -1%
+
+Never use Canela for long paragraphs.
 
 ---
 
@@ -72,19 +127,16 @@ Arial
 
 sans-serif
 
-Usage
+Used for
 
-Navigation
+* Navigation
+* Body
+* Specifications
+* Buttons
+* Forms
+* Tables
 
-Body
-
-Buttons
-
-Specifications
-
-Forms
-
-Weight
+Weights
 
 400
 
@@ -92,77 +144,95 @@ Weight
 
 600
 
+700
+
 ---
 
-## Heading Scale
+## Typography Scale
+
+Desktop
 
 H1
 
-56–64 px
-
-Desktop
-
-40 px
-
-Tablet
-
-32 px
-
-Mobile
-
----
+64px
 
 H2
 
-40 px
-
-Desktop
-
-32 px
-
-Tablet
-
-28 px
-
-Mobile
-
----
+48px
 
 H3
 
-28 px
+32px
 
-Desktop
+H4
 
-24 px
-
-Tablet
-
-20 px
-
-Mobile
-
----
+24px
 
 Body
 
-18 px
+18px
 
-Line Height
+Caption
 
-1.7
+14px
 
 ---
 
-Small Labels
+Tablet
 
-14 px
+H1
 
-Uppercase
+48px
+
+H2
+
+36px
+
+H3
+
+28px
+
+Body
+
+17px
+
+---
+
+Mobile
+
+H1
+
+36px
+
+H2
+
+30px
+
+H3
+
+24px
+
+Body
+
+16px
+
+---
+
+## Product Titles
+
+Use ALL CAPS where appropriate.
+
+Examples
+
+BHUMI
+
+ANTARA
+
+TERRAFORM
 
 Tracking
 
-0.12em
++0.08em
 
 Weight
 
@@ -178,11 +248,11 @@ Charcoal
 
 #2B2B2B
 
-Used for headings.
+Primary text
 
-Navigation.
+Navigation
 
-Buttons.
+Buttons
 
 ---
 
@@ -190,7 +260,7 @@ Warm White
 
 #F7F5F2
 
-Primary background.
+Main background
 
 ---
 
@@ -198,11 +268,11 @@ Concrete Grey
 
 #A8A8A5
 
-Secondary text.
+Secondary text
 
-Borders.
+Dividers
 
-Dividers.
+Specifications
 
 ---
 
@@ -210,7 +280,7 @@ Soft Sand
 
 #DED6C8
 
-Section backgrounds.
+Alternate section backgrounds
 
 ---
 
@@ -220,25 +290,59 @@ Terracotta
 
 #8A4335
 
-CTA Buttons
+CTA buttons
 
 Links
 
-Hover States
+Hover states
 
 Use sparingly.
 
 ---
 
+Semantic Colors
+
 Success
 
 #4F6B4F
 
----
+Warning
+
+#C28C34
 
 Error
 
 #A83B32
+
+Info
+
+#506D85
+
+---
+
+# Layout
+
+Container Width
+
+1280px
+
+Maximum Reading Width
+
+720px
+
+Grid
+
+Desktop
+
+12 columns
+
+Tablet
+
+8 columns
+
+Mobile
+
+4 columns
 
 ---
 
@@ -246,7 +350,7 @@ Error
 
 Base Unit
 
-8 px
+8px
 
 Spacing Scale
 
@@ -266,59 +370,41 @@ Spacing Scale
 
 128
 
-Whitespace is encouraged.
+Whitespace should feel generous.
 
 Never crowd content.
 
 ---
 
-# Grid
-
-Desktop
-
-12 Columns
-
-Container
-
-1280 px
-
----
-
-Tablet
-
-8 Columns
-
----
-
-Mobile
-
-4 Columns
-
----
-
-# Border Radius
+# Corners
 
 Cards
 
-8 px
+8px
 
 Buttons
 
-6 px
+6px
 
-Inputs
+Forms
 
-6 px
+6px
+
+Images
+
+0px unless specified.
 
 ---
 
 # Shadows
 
-Minimal
+Use extremely subtle shadows only.
 
-Soft
+Preferred
 
-Never use heavy shadows.
+0 8px 24px rgba(0,0,0,.06)
+
+Avoid heavy shadows.
 
 ---
 
@@ -326,160 +412,297 @@ Never use heavy shadows.
 
 Primary
 
-Terracotta Background
+Terracotta
 
-White Text
+White text
 
-Rounded
+Medium weight
+
+6px radius
+
+Hover
+
+Slight darkening
+
+No scaling animation.
 
 ---
 
 Secondary
 
-White Background
+White
 
-Charcoal Border
+Charcoal border
+
+Charcoal text
+
+Hover
+
+Light charcoal background
 
 ---
 
 Text Button
 
-Underline on hover only.
-
----
-
-# Cards
-
-White Background
-
-Minimal Border
-
-Large Image
-
-Generous Padding
-
-No heavy decoration.
-
----
-
-# Images
-
-Natural lighting.
-
-Architectural spaces.
-
-Luxury homes.
-
-Hotels.
-
-Courtyards.
-
-Neutral backgrounds.
-
-Minimal distractions.
-
-Avoid stock-photo aesthetics.
-
----
-
-# Icons
-
-Simple
-
-Outline
-
-Consistent stroke width
-
-No colorful icons
-
----
-
-# Animations
-
-Fade
-
-Slide
-
-Scale
-
-Maximum duration
-
-300 ms
-
-Ease-in-out
-
-Subtle only.
+Underline only on hover.
 
 ---
 
 # Forms
 
-Minimal labels.
+Minimal fields.
 
 Large spacing.
 
-No unnecessary fields.
+Labels above inputs.
+
+Visible validation.
+
+Never rely only on color for errors.
+
+---
+
+# Navigation
+
+Sticky
+
+Transparent over hero
+
+Solid after scrolling
+
+Maximum height
+
+80px
+
+Desktop
+
+Horizontal navigation
+
+Mobile
+
+Hamburger menu
+
+---
+
+# Cards
+
+Cards should contain:
+
+Large image
+
+Title
+
+Short description
+
+CTA
+
+No excessive decoration.
+
+Equal height in grids.
+
+---
+
+# Product Pages
+
+Every product page includes:
+
+Hero image
+
+Product overview
+
+Specifications
+
+Gallery
+
+Related products
+
+Download catalogue
+
+Request quote
+
+Breadcrumbs
+
+---
+
+# Collection Pages
+
+Hero
+
+Introduction
+
+Product Grid
+
+Related Collections
+
+Call To Action
+
+---
+
+# Photography
+
+Natural lighting
+
+Architectural environments
+
+Luxury homes
+
+Hotels
+
+Courtyards
+
+Neutral palette
+
+Minimal distractions
+
+Avoid obvious stock photography.
+
+---
+
+# Icons
+
+Outline style
+
+Consistent stroke
+
+No colorful icons
+
+No skeuomorphic icons
+
+---
+
+# Motion
+
+Allowed
+
+Fade
+
+Slide
+
+Opacity
+
+Maximum duration
+
+300ms
+
+Avoid
+
+Bounce
+
+Elastic
+
+Parallax
+
+Continuous animations
+
+---
+
+# Responsive Rules
+
+Layouts should adapt—not shrink.
+
+Touch targets
+
+Minimum 44px
+
+Images
+
+Responsive
+
+Navigation
+
+Collapsible
+
+Typography
+
+Fluid where practical
 
 ---
 
 # Accessibility
 
-WCAG AA
+WCAG AA minimum
 
 Keyboard navigation
 
-Alt text for all images
-
 Visible focus states
 
-High contrast
+Semantic HTML
+
+Alt text for all images
+
+Proper heading hierarchy
 
 ---
 
-# Responsive Design
+# Copywriting
 
-Desktop First
+Confident
 
-Tablet Optimized
+Architectural
 
-Mobile Friendly
+Professional
 
-Touch-friendly controls
+Minimal
+
+Never overly promotional.
+
+Prefer:
+
+"Crafted for enduring spaces."
+
+Instead of:
+
+"Best pots at the lowest prices."
+
+---
+
+# Do Not Use
+
+* Heavy gradients
+* Neon colors
+* Glassmorphism
+* Large drop shadows
+* Decorative patterns
+* Rounded "bubble" UI
+* Flashy animations
+* Multiple accent colors
+* Stock-photo-style hero images
+* Dense text blocks
 
 ---
 
 # Components
 
-Navigation
+Standard reusable components:
 
-Hero
+* Header
+* Footer
+* Hero
+* Collection Card
+* Product Card
+* Product Gallery
+* Specifications Table
+* CTA Banner
+* Quote Form
+* Breadcrumb
+* Section Header
+* Image Grid
 
-Collection Card
-
-Product Card
-
-Product Gallery
-
-Specification Table
-
-Quote CTA
-
-Footer
-
-Each component should be reusable.
+Every component should be reusable and documented.
 
 ---
 
-# Brand Voice
+# Design Review Checklist
 
-Confident.
+Before shipping any UI:
 
-Sophisticated.
-
-Minimal.
-
-Never salesy.
-
-Never cluttered.
-
-Every sentence should feel intentional.
+* Typography follows hierarchy.
+* Colors follow palette.
+* Whitespace is sufficient.
+* Mobile layout works.
+* Buttons are consistent.
+* Images are optimized.
+* Accessibility passes.
+* Animations are subtle.
+* Product remains the visual focus.
+* Overall feel reflects quiet luxury.
