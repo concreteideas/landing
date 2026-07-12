@@ -20,7 +20,7 @@
         </div>`;
       const related = products.filter((item) => item.category === product.category && item.id !== product.id).slice(0, 3);
       document.querySelector('[data-related-products]').innerHTML = related.map((item) => `
-        <article class="product-card"><a class="product-card__image" href="${productUrl(item.id)}"><img src="${item.image}" alt="${item.name}" loading="lazy"></a><div class="product-card__body"><p class="product-card__category">${item.category}</p><h3><a href="${productUrl(item.id)}">${item.name}</a></h3><a class="product-card__link" href="${productUrl(item.id)}">View piece <span aria-hidden="true">â†’</span></a></div></article>`).join('');
+        <article class="product-card"><a class="product-card__image" href="${productUrl(item.id)}"><img src="${item.image}" alt="${item.name}" loading="lazy"></a><div class="product-card__body"><p class="product-card__category">${item.category}</p><h3><a href="${productUrl(item.id)}">${item.name}</a></h3><a class="product-card__link" href="${productUrl(item.id)}">View piece <span aria-hidden="true">→</span></a></div></article>`).join('');
     })
     .catch(showError);
 })();
