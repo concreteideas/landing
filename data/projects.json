@@ -1,0 +1,80 @@
+[
+  {
+    "id": "courtyard-residence",
+    "title": "Courtyard Residence",
+    "category": "Residential",
+    "location": "Bengaluru, Karnataka",
+    "description": "A planted courtyard arranged around a series of low concrete forms. Planters and a water element establish a calm transition between the living spaces and garden.",
+    "hero": "../cimgs/landscaping.jpg",
+    "gallery": ["../cimgs/landscaping.jpg", "../cimgs/ceneria.png", "../cimgs/sereno.png"],
+    "products": ["ceneria-planter", "sereno-bowl"],
+    "architect": "Private commission",
+    "year": "2025",
+    "featured": true
+  },
+  {
+    "id": "house-on-the-lake",
+    "title": "House on the Lake",
+    "category": "Residential",
+    "location": "Nandi Hills, Karnataka",
+    "description": "Outdoor furniture and sculptural vessels bring a measured material presence to a residence set against a changing landscape.",
+    "hero": "../cimgs/boat.jpg",
+    "gallery": ["../cimgs/boat.jpg", "../cimgs/furniture.jpg", "../cimgs/terraviva.png"],
+    "products": ["terraviva-planter", "rocky-cluster"],
+    "architect": "Private commission",
+    "year": "2024",
+    "featured": true
+  },
+  {
+    "id": "arrival-court",
+    "title": "Arrival Court",
+    "category": "Hospitality",
+    "location": "Goa, India",
+    "description": "A restrained arrival sequence where monolithic planting and a custom water feature give the entrance a clear sense of place.",
+    "hero": "../cimgs/hotel-entry.jpg",
+    "gallery": ["../cimgs/hotel-entry.jpg", "../cimgs/fountain.jpg", "../cimgs/bespoke2.jpg"],
+    "products": ["courtyard-fountain", "ceneria-planter"],
+    "architect": "Hospitality project",
+    "year": "2025",
+    "featured": true
+  },
+  {
+    "id": "material-library",
+    "title": "Material Library",
+    "category": "Commercial",
+    "location": "Bengaluru, Karnataka",
+    "description": "Concrete lighting and display surfaces developed for a material library, allowing the architecture and objects to share a single quiet language.",
+    "hero": "../cimgs/homedecor.jpg",
+    "gallery": ["../cimgs/homedecor.jpg", "../cimgs/canon.jpg", "../cimgs/wall-lamp1.jpg"],
+    "products": ["canon-pendant", "wall-lamp"],
+    "architect": "Studio collaboration",
+    "year": "2024",
+    "featured": false
+  },
+  {
+    "id": "garden-pavilion",
+    "title": "Garden Pavilion",
+    "category": "Landscape",
+    "location": "Chennai, Tamil Nadu",
+    "description": "A collection of robust planters and cast objects sets the rhythm of a garden pavilion designed for shade, gathering and mature planting.",
+    "hero": "../cimgs/concreteballs.jpg",
+    "gallery": ["../cimgs/concreteballs.jpg", "../cimgs/rocky-cluster.jpg", "../cimgs/terraviva.png"],
+    "products": ["rocky-cluster", "terraviva-planter"],
+    "architect": "Landscape commission",
+    "year": "2023",
+    "featured": true
+  },
+  {
+    "id": "gallery-house",
+    "title": "Gallery House",
+    "category": "Commercial",
+    "location": "Mumbai, Maharashtra",
+    "description": "Custom relief panels and lighting introduce depth and a hand-finished surface to a gallery-like retail interior.",
+    "hero": "../cimgs/wallart1.jpg",
+    "gallery": ["../cimgs/wallart1.jpg", "../cimgs/indoor3.jpg", "../cimgs/pendant-lamp1.jpg"],
+    "products": ["wall-art-panel", "pendant-lamp"],
+    "architect": "Retail collaboration",
+    "year": "2025",
+    "featured": false
+  }
+]
