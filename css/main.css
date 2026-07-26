@@ -324,6 +324,28 @@ img {
   opacity: 0;
 }
 /* Products */
+:is(#landscape, #indoor) .product-items {
+  height: 100%;
+  text-align: center;
+}
+:is(#landscape, #indoor) .product-items > a {
+  align-items: center;
+  display: flex;
+  height: 210px;
+  justify-content: center;
+  margin-bottom: 1rem;
+  width: 75%;
+}
+:is(#landscape, #indoor) .product-items > a img {
+  height: 100%;
+  margin-bottom: 0 !important;
+  max-width: 100%;
+  object-fit: contain;
+  width: 100% !important;
+}
+:is(#landscape, #indoor) .product-items > div {
+  min-height: 28px;
+}
 .product .product-items a {
   transform: translateX(20%);
   transform-origin: left center;
