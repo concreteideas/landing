@@ -2,9 +2,9 @@
   const root = document.documentElement.dataset.root || './';
   const page = document.documentElement.dataset.page || '';
   const links = [
-    ['Home', `${root}index.html`, 'home'],
-    ['About', `${root}index.html#about`, 'about'],
-    ['Collections', `${root}index.html#specialization`, 'collections'],
+    ['Home', page === 'home' ? '#home' : `${root}index.html`, 'home'],
+    ['About', page === 'home' ? '#about' : `${root}index.html#about`, 'about'],
+    ['Collections', page === 'home' ? '#collections' : `${root}index.html#collections`, 'collections'],
     ['Products', `${root}products/index.html`, 'products'],
     ['Projects', `${root}projects/index.html`, 'projects'],
     // ['Resources', `${root}resources/index.html`, 'resources'],

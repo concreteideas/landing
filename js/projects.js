@@ -14,7 +14,10 @@
   const card = (project) => `
     <article class="project-card">
       <a class="project-card__image" href="${projectUrl(project.id)}" aria-label="View ${project.title}"><img src="${project.hero}" alt="${project.title}, ${project.location}" loading="lazy"></a>
-      <div class="project-card__body"><p class="project-card__meta">${project.category}</p><h2><a href="${projectUrl(project.id)}">${project.title}</a></h2><p class="project-card__location">${project.location}</p><p class="project-card__products"><strong>Products used</strong> · ${productList(project.products)}</p></div>
+      <div class="project-card__body"><p class="project-card__meta">${project.category}</p>
+      <h2><a href="${projectUrl(project.id)}">${project.title}</a></h2>
+      <p class="project-card__location">${project.location}</p>
+      </div>
     </article>`;
 
   function render() {

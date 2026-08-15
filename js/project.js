@@ -27,7 +27,12 @@
       detail.innerHTML = `
         <div class="project-detail__hero"><img src="${project.hero}" alt="${project.title}, ${project.location}"></div>
         <div class="project-detail__content"><p class="site-eyebrow">${project.category}</p><h1>${project.title}</h1><p class="project-detail__overview">${project.description}</p>
-          <dl class="project-facts"><div><dt>Location</dt><dd>${project.location}</dd></div><div><dt>Project type</dt><dd>${project.category}</dd></div><div><dt>Architect</dt><dd>${project.architect}</dd></div><div><dt>Completed</dt><dd>${project.year}</dd></div><div><dt>Products used</dt><dd>${usedProducts.map((product) => `<a href="${productUrl(product.id)}">${product.name}</a>`).join(', ')}</dd></div></dl>
+          <dl class="project-facts"><div><dt>Location</dt><dd>${project.location}</dd></div>
+          <div><dt>Project type</dt><dd>${project.category}</dd></div>
+          <div><dt>Architect</dt><dd>${project.architect}</dd></div>
+          <div><dt>Completed</dt><dd>${project.year}</dd></div>
+        <div><dt>Products used</dt><dd>${usedProducts.map((product) => `<a href="${productUrl(product.id)}">${product.name}</a>`).join(', ')}</dd></div>
+          </dl>
         </div>`;
       gallery.innerHTML = project.gallery.map((image, index) => `<figure><img src="${image}" alt="${project.title} ${index + 1}" loading="lazy"></figure>`).join('');
       relatedProducts.innerHTML = usedProducts.map(productCard).join('');
