@@ -7,7 +7,7 @@
     ['Collections', `${root}index.html#specialization`, 'collections'],
     ['Products', `${root}products/index.html`, 'products'],
     ['Projects', `${root}projects/index.html`, 'projects'],
-    ['Resources', `${root}resources/index.html`, 'resources'],
+    // ['Resources', `${root}resources/index.html`, 'resources'],
     ['Contact', `${root}contact/index.html`, 'contact']
   ];
 
