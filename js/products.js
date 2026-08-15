@@ -13,13 +13,14 @@
   let searchTerm = '';
 
   const productUrl = (id) => `${grid.dataset.productBase || 'product.html'}?id=${encodeURIComponent(id)}`;
+  const categoriesFor = (product) => Array.isArray(product.category) ? product.category : product.category ? [product.category] : [];
   const card = (product) => `
     <article class="product-card">
       <a class="product-card__image" href="${productUrl(product.id)}" aria-label="View ${product.name}">
         <img src="${product.image}" alt="${product.name}" loading="lazy" />
       </a>
       <div class="product-card__body">
-        <p class="product-card__category">${product.category}</p>
+        <p class="product-card__category">${categoriesFor(product).join(' / ')}</p>
         <h2><a href="${productUrl(product.id)}">${product.name}</a></h2>
         <p>${product.description}</p>
         <a class="product-card__link" href="${productUrl(product.id)}">View piece <span aria-hidden="true">→</span></a>
@@ -28,8 +29,9 @@
 
   function render() {
     const visible = products.filter((product) => {
-      const matchesCategory = activeCategory === 'All' || product.category === activeCategory;
-      const searchable = `${product.name} ${product.category} ${product.description}`.toLowerCase();
+      const categories = categoriesFor(product);
+      const matchesCategory = activeCategory === 'All' || categories.includes(activeCategory);
+      const searchable = `${product.name} ${categories.join(' ')} ${product.description}`.toLowerCase();
       return matchesCategory && searchable.includes(searchTerm);
     });
     grid.innerHTML = visible.length ? visible.map(card).join('') : '<p class="products-empty">No pieces match your search. Please try another term or collection.</p>';

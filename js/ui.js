@@ -3,11 +3,11 @@
   const page = document.documentElement.dataset.page || '';
   const links = [
     ['Home', `${root}index.html`, 'home'],
-    ['Collections', `${root}collections/index.html`, 'collections'],
+    ['About', `${root}index.html#about`, 'about'],
+    ['Collections', `${root}index.html#specialization`, 'collections'],
     ['Products', `${root}products/index.html`, 'products'],
     ['Projects', `${root}projects/index.html`, 'projects'],
     ['Resources', `${root}resources/index.html`, 'resources'],
-    ['About', `${root}index.html#about`, 'about'],
     ['Contact', `${root}contact/index.html`, 'contact']
   ];
 
