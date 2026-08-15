@@ -1,17 +1,5 @@
 [
-  {
-    "id": "courtyard-residence",
-    "title": "Courtyard Residence",
-    "category": "Residential",
-    "location": "Bengaluru, Karnataka",
-    "description": "A planted courtyard arranged around a series of low concrete forms. Planters and a water element establish a calm transition between the living spaces and garden.",
-    "hero": "../cimgs/landscaping.jpg",
-    "gallery": ["../cimgs/landscaping.jpg", "../cimgs/ceneria.png", "../cimgs/sereno.png"],
-    "products": ["ceneria-planter", "sereno-bowl"],
-    "architect": "Private commission",
-    "year": "2025",
-    "featured": true
-  },
+
   {
     "id": "house-on-the-lake",
     "title": "House on the Lake",
