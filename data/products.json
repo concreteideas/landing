@@ -1,12 +1,12 @@
 [
   {
-    "id": "ceneria-planter",
+    "id": "ant_1",
     "name": "Ceneria Planter",
     "category": ["Landscape", "Indoor"],
-    "image": "../cimgs/ceneria.png",
+    "image": "../product_images/1.png",
     "description": "A softly tapered concrete planter with a quiet, architectural presence.",
-    "materials": "Cast concrete, sealed finish",
-    "dimensions": "Ø 520 × H 620 mm",
+    "materials": "Galvanized iron mesh, Polyurethane sealed finish",
+    "dimensions": "Ø 533 × H 533 mm",
     "finish": "Natural grey / custom pigment",
     "featured": true
   },
