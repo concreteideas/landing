@@ -14,10 +14,14 @@
 
   const productUrl = (id) => `${grid.dataset.productBase || 'product.html'}?id=${encodeURIComponent(id)}`;
   const categoriesFor = (product) => Array.isArray(product.category) ? product.category : product.category ? [product.category] : [];
+  const productImage = (product) => {
+    const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
+    return images[0] || product.image || '';
+  };
   const card = (product) => `
     <article class="product-card">
       <a class="product-card__image" href="${productUrl(product.id)}" aria-label="View ${product.name}">
-        <img src="${product.image}" alt="${product.name}" loading="lazy" />
+        <img src="${productImage(product)}" alt="${product.name}" loading="lazy" />
       </a>
       <div class="product-card__body">
         <p class="product-card__category">${categoriesFor(product).join(' / ')}</p>

@@ -11,9 +11,13 @@
   const productUrl = (id) => `../products/product.html?id=${encodeURIComponent(id)}`;
   const projectUrl = (id) => `project.html?id=${encodeURIComponent(id)}`;
   const showError = () => { detail.innerHTML = '<p class="projects-empty">We could not find this project. <a href="index.html">Return to projects.</a></p>'; };
+  const productImage = (product) => {
+    const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
+    return images[0] || product.image || '';
+  };
 
   const productCard = (product) => `
-    <article class="related-product"><a class="related-product__image" href="${productUrl(product.id)}"><img src="${product.image}" alt="${product.name}" loading="lazy"></a><h3><a href="${productUrl(product.id)}">${product.name}</a></h3></article>`;
+    <article class="related-product"><a class="related-product__image" href="${productUrl(product.id)}"><img src="${productImage(product)}" alt="${product.name}" loading="lazy"></a><h3><a href="${productUrl(product.id)}">${product.name}</a></h3></article>`;
   const projectCard = (project) => `
     <article class="project-card"><a class="project-card__image" href="${projectUrl(project.id)}"><img src="${project.hero}" alt="${project.title}, ${project.location}" loading="lazy"></a><div class="project-card__body"><p class="project-card__meta">${project.category}</p><h3><a href="${projectUrl(project.id)}">${project.title}</a></h3><p class="project-card__location">${project.location}</p></div></article>`;
 
