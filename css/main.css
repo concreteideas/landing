@@ -362,7 +362,7 @@ img {
   .specialization .specialization-content { aspect-ratio: auto; }
   .specialization .specialization-content img { height: auto; object-fit: initial; }
   .specialization .banner-content { padding: 18px !important; transform: translateY(calc(100% - 70px)); }
-  .specialization .banner-content span { font-size: 1.1rem !important; margin-bottom: 8px !important; }
+  .specialization .banner-content span { display: block; font-size: 1.1rem !important; line-height: 1.15; margin-bottom: 8px !important; max-width: 105px; }
   .specialization .banner-content p { font-size: 12px !important; line-height: 1.45; }
   .specialization .specialization-content a { bottom: 18px; right: 18px; }
 
@@ -510,6 +510,7 @@ img {
   transform: translateY(calc(100% - 122px));
   transition: all var(--animation-duration);
 }
+.specialization .banner-content span { display: block !important; line-height: 1.15; white-space: normal; width: 105px !important; }
 .specialization .banner-content p,
 .specialization .banner-content a {
   opacity: 0;
