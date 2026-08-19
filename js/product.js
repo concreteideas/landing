@@ -37,7 +37,7 @@
         </div>
         <div class="product-detail__content"><p class="site-eyebrow">${categories.join(' / ')}</p><h1>${product.name}</h1><p class="product-detail__intro">${product.description}</p>
           ${specifications ? `<dl class="product-specs">${specifications}</dl>` : ''}
-          <a class="main-btn" href="mailto:concreteideas.sales@gmail.com?subject=${encodeURIComponent(`Enquiry: ${product.name}`)}">Request a quote</a>
+          <a class="main-btn" href="mailto:info@concreteideas.co?subject=${encodeURIComponent(`Enquiry: ${product.name}`)}">Request a quote</a>
         </div>`;
       if (images.length > 1) {
         const mainImage = detail.querySelector('[data-product-main-image]');
