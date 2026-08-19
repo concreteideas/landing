@@ -312,6 +312,74 @@ img {
 .home .home-img:hover {
   transform: matrix(1, 0, 0, 1, -22, 3);
 }
+
+@media (max-width: 767px) {
+  .section-padding { padding: 30px 0; }
+
+  .home { padding-bottom: 0; }
+  .home > .container { padding-left: 16px !important; padding-right: 16px !important; }
+  .home > .container > .row { flex-wrap: nowrap; min-height: 280px; }
+  .home .home-content-wrapper { flex: 0 0 52%; max-width: 52%; padding: 0 8px 0 0; }
+  .home > .container > .row > .col-lg-7 { flex: 0 0 48%; max-width: 48%; padding: 0; }
+  .home .home-content-wrapper .home-content { text-align: left; }
+  .home .home-content-wrapper .text-main { font-size: 10px; letter-spacing: .08em; line-height: 1.35; }
+  .home-content h1 { font-size: clamp(1.2rem, 5.5vw, 1.75rem); overflow-wrap: anywhere; padding-bottom: 18px !important; }
+  .home .home-img { right: -8px; }
+  .home .home-link a { font-size: 10px; letter-spacing: .06em; }
+  .home .home-link i { font-size: 12px; }
+
+  .rolling-gallery { padding: 10px 0; }
+  .rolling-gallery__set { gap: 10px; padding-right: 10px; }
+  .rolling-gallery figure { flex-basis: 150px; height: 112px; }
+
+  .about__container { padding-bottom: 36px; padding-top: 36px; }
+  .about__heading { font-size: clamp(1.85rem, 8vw, 2.5rem); margin-bottom: 16px; }
+  .about__copy { font-size: 14px; line-height: 1.65; margin-bottom: 20px; }
+
+  .specialization > .container,
+  #landscape > .container,
+  #indoor > .container { padding-left: 16px !important; padding-right: 16px !important; }
+  .specialization > .container > .row:last-child {
+    flex-wrap: nowrap;
+    margin-left: 0;
+    margin-right: 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+  }
+  #landscape > .container > .row:nth-of-type(2),
+  #indoor > .container > .row:nth-of-type(2) {
+    flex-wrap: wrap;
+    margin-left: 0;
+    margin-right: 0;
+    overflow-x: visible;
+  }
+  .specialization > .container > .row:last-child > [class*="col-"] {
+    flex: 0 0 68%;
+    max-width: 68%;
+    scroll-snap-align: start;
+  }
+  .specialization .specialization-content { aspect-ratio: 1; }
+  .specialization .specialization-content img { height: 100%; object-fit: cover; }
+  .specialization .banner-content { padding: 18px !important; transform: translateY(calc(100% - 70px)); }
+  .specialization .banner-content span { font-size: 1.1rem !important; margin-bottom: 8px !important; }
+  .specialization .banner-content p { font-size: 12px !important; line-height: 1.45; }
+  .specialization .specialization-content a { bottom: 18px; right: 18px; }
+
+  :is(#landscape, #indoor) .product-items > a { height: 145px; margin-bottom: .5rem; }
+  :is(#landscape, #indoor) .product-items > div { font-size: 13px; }
+  #landscape > .container > .row:nth-of-type(2) > [class*="col-"],
+  #indoor > .container > .row:nth-of-type(2) > [class*="col-"] { flex: 0 0 50%; max-width: 50%; margin-bottom: 0 !important; }
+
+  .home-decor > .container { padding-left: 16px !important; padding-right: 16px !important; }
+  .home-decor > .container > .row { margin-left: -6px; margin-right: -6px; }
+  .home-decor .col-lg-4.col-md-6 { flex: 0 0 50%; max-width: 50%; padding: 0 6px !important; }
+  .home-decor .card { width: 100%; }
+  .home-decor .card-body { padding: 14px !important; }
+  .home-decor .card-body h5 { font-size: 13px; line-height: 1.35; margin-bottom: 7px; }
+  .home-decor .card-body p { font-size: 12px; line-height: 1.45; }
+  .home-decor .card .card-footer { padding: 10px 14px; }
+}
 /* Services */
 .services .service-icon i {
   font-size: 3rem;
@@ -329,6 +397,9 @@ img {
 .home-content h1 {
   font: 600 clamp(2.3rem, 2vw, 3.8rem) / 1.12 var(--font-display);
   letter-spacing: -0.035em;
+}
+@media (max-width: 767px) {
+  .home-content h1 { font-size: clamp(1.2rem, 5.5vw, 1.75rem); }
 }
 .home-link a,
 .main-btn,
@@ -386,6 +457,7 @@ img {
   margin: 0 0 30px;
   width: 100% !important;
 }
+.about__content .visually-hidden { width: 1px !important; }
 .about__content .main-btn {
   margin-top: 0;
 }
@@ -434,6 +506,7 @@ img {
   border-color: var(--main-color);
 }
 .specialization .banner-content {
+  background: linear-gradient(180deg, rgba(34, 30, 26, 0), rgba(34, 30, 26, 0.88));
   transform: translateY(calc(100% - 122px));
   transition: all var(--animation-duration);
 }
