@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-root="../" data-page="products">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Concrete Ideas product details and specifications." />
+    <title>Product | Concrete Ideas</title>
+    <link rel="stylesheet" href="../css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/products.css" />
+  </head>
+  <body>
+    <div data-site-header></div>
+    <main>
+      <div class="container">
+        <nav class="site-breadcrumbs" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span>/</span>
+          <a href="index.html">Products</a>
+          <span>/</span>
+          <span data-breadcrumb-name>Product</span>
+        </nav>
+        <section class="product-detail" data-product-detail aria-live="polite"></section>
+      </div>
+      <section class="related-section">
+        <div class="container">
+          <div class="related-section__heading">
+            <div>
+              <p class="site-eyebrow">Continue exploring</p>
+              <h2>Related pieces</h2>
+            </div>
+            <a class="product-card__link" href="index.html">View all products <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="products-grid" data-related-products></div>
+        </div>
+      </section>
+    </main>
+    <div data-site-footer></div>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/product.js"></script>
+  </body>
+</html>

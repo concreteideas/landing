@@ -1,0 +1,195 @@
+[
+  {
+    "id": "ant_1",
+    "name": "Ceneria Planter",
+    "category": ["Landscape", "Indoor"],
+    "image": "../product_images/1.png",
+    "images": [
+      "../product_images/7.png",
+      "../product_images/7_plant.png",
+      "../product_images/3.png"
+    ],
+    "description": "A softly tapered concrete planter with a quiet, architectural presence.",
+    "materials": "Galvanized iron mesh, Polyurethane sealed finish",
+    "dimensions": "Ø 533 × H 533 mm",
+    "finish": "Natural grey / custom pigment",
+    "featured": true
+  },
+  {
+    "id": "terraviva-planter",
+    "name": "Terraviva Planter",
+    "category": "Landscape",
+    "image": "../cimgs/terraviva.png",
+    "images": [
+      "../cimgs/terraviva.png",
+      "../product_images/4.png",
+      "../product_images/5.png"
+    ],
+    "description": "Generous proportions for planting schemes that need a strong, tactile anchor.",
+    "materials": "Cast concrete, sealed finish",
+    "dimensions": "Ø 780 × H 700 mm",
+    "weight": "Approx. 200 kg",
+    "finish": "Natural grey / custom pigment",
+    "featured": true
+  },
+  {
+    "id": "sereno-bowl",
+    "name": "Sereno Bowl",
+    "category": "Landscape",
+    "image": "../cimgs/sereno.png",
+    "images": [
+      "../cimgs/sereno.png",
+      "../product_images/6.png",
+      "../product_images/7.png"
+    ],
+    "description": "A low, contemplative bowl designed for water, planting or sculptural arrangements.",
+    "materials": "Cast concrete",
+    "dimensions": "Ø 900 × H 260 mm",
+    "finish": "Natural grey / charcoal",
+    "featured": false
+  },
+  {
+    "id": "rocky-cluster",
+    "name": "Rocky Cluster",
+    "category": "Landscape",
+    "image": "../cimgs/rocky-cluster.jpg",
+    "images": [
+      "../cimgs/rocky-cluster.jpg",
+      "../cimgs/landscape1.png",
+      "../cimgs/landscape2.png"
+    ],
+    "description": "A composition of hand-cast forms that brings rhythm and texture to exterior spaces.",
+    "materials": "GFRC concrete",
+    "dimensions": "Set of three, custom sizes",
+    "finish": "Textured mineral finish",
+    "featured": false
+  },
+  {
+    "id": "cavallo-console",
+    "name": "Cavallo Console",
+    "category": "Indoor",
+    "image": "../cimgs/cavallo.png",
+    "images": [
+      "../cimgs/cavallo.png",
+      "../cimgs/indoor1.jpg",
+      "../cimgs/indoor2.png"
+    ],
+    "description": "A slim concrete console with softened edges, made for enduring interiors.",
+    "materials": "GFRC concrete, steel support",
+    "dimensions": "W 1400 × D 400 × H 820 mm",
+    "finish": "Honed grey / custom pigment",
+    "featured": true
+  },
+  {
+    "id": "canon-pendant",
+    "name": "Canon Pendant",
+    "category": "Indoor",
+    "image": "../cimgs/canon.jpg",
+    "images": [
+      "../cimgs/canon.jpg",
+      "../cimgs/indoor3.jpg",
+      "../cimgs/homedecor.jpg"
+    ],
+    "description": "A precision-cast pendant that pools a warm, focused light over considered spaces.",
+    "materials": "Concrete shade, brass fitting",
+    "dimensions": "Ø 240 × H 280 mm",
+    "finish": "Natural grey / charcoal",
+    "featured": true
+  },
+  {
+    "id": "pendant-lamp",
+    "name": "Monolith Pendant",
+    "category": "Indoor",
+    "image": "../cimgs/pendant-lamp1.jpg",
+    "images": [
+      "../cimgs/pendant-lamp1.jpg",
+      "../cimgs/indoor1.png",
+      "../cimgs/indoor2.png"
+    ],
+    "description": "A sculptural pendant with a restrained silhouette and hand-finished surface.",
+    "materials": "Cast concrete, brass fitting",
+    "dimensions": "Ø 180 × H 360 mm",
+    "finish": "Natural grey",
+    "featured": false
+  },
+  {
+    "id": "wall-lamp",
+    "name": "Arc Wall Lamp",
+    "category": "Indoor",
+    "image": "../cimgs/wall-lamp1.jpg",
+    "images": [
+      "../cimgs/wall-lamp1.jpg",
+      "../cimgs/indoor3.jpg",
+      "../cimgs/homedecor.jpg"
+    ],
+    "description": "An atmospheric wall light pairing a durable concrete body with a diffuse glow.",
+    "materials": "Cast concrete, LED fitting",
+    "dimensions": "W 300 × D 160 × H 420 mm",
+    "finish": "Natural grey / sand",
+    "featured": false
+  },
+  {
+    "id": "maldives-cluster",
+    "name": "Maldives Cluster",
+    "category": "Landscape",
+    "image": "../cimgs/maldives-cluster1.jpg",
+    "images": [
+      "../cimgs/maldives-cluster1.jpg",
+      "../cimgs/landscaping.jpg",
+      "../cimgs/boat.jpg"
+    ],
+    "description": "A clustered lighting composition for hospitality and generous residential volumes.",
+    "materials": "Concrete shades, adjustable suspension",
+    "dimensions": "Made to project",
+    "finish": "Natural grey / custom pigment",
+    "featured": false
+  },
+  {
+    "id": "courtyard-fountain",
+    "name": "Courtyard Fountain",
+    "category": "Landscape",
+    "image": "../cimgs/fountain.jpg",
+    "images": [
+      "../cimgs/fountain.jpg",
+      "../cimgs/landscape2.png",
+      "../cimgs/bespoke.jpg"
+    ],
+    "description": "A made-to-measure water feature developed around the pace and geometry of its site.",
+    "materials": "GFRC concrete, concealed water system",
+    "dimensions": "Made to project",
+    "finish": "Specified to project",
+    "featured": true
+  },
+  {
+    "id": "hotel-entry",
+    "name": "Entry Plinths",
+    "category": "Landscape",
+    "image": "../cimgs/hotel-entry.jpg",
+    "images": [
+      "../cimgs/hotel-entry.jpg",
+      "../cimgs/about4.jpg",
+      "../cimgs/housename.jpg"
+    ],
+    "description": "Bespoke concrete objects that turn an arrival sequence into a material experience.",
+    "materials": "GFRC concrete",
+    "dimensions": "Made to project",
+    "finish": "Specified to project",
+    "featured": false
+  },
+  {
+    "id": "wall-art-panel",
+    "name": "Relief Wall Panel",
+    "category": "Indoor",
+    "image": "../cimgs/wallart1.jpg",
+    "images": [
+      "../cimgs/wallart1.jpg",
+      "../cimgs/concreteballs.jpg",
+      "../cimgs/furniture.jpg"
+    ],
+    "description": "A tactile, custom-cast relief that brings depth to an architectural interior.",
+    "materials": "GFRC concrete",
+    "dimensions": "Made to project",
+    "finish": "Specified to project",
+    "featured": false
+  }
+]

@@ -1,0 +1,12 @@
+.resources-main { color: var(--color-charcoal); }
+.resources-hero { background: var(--color-warm-white); padding: 104px 0 80px; text-align: center; }
+.resources-hero h1, .resources-intro h2, .resources-cta h2 { color: var(--color-charcoal); font: 500 clamp(2.35rem, 5vw, 4rem)/1.08 "Poppins", Georgia, serif; letter-spacing: -.02em; margin: 14px 0; }
+.resources-hero p { color: #62625e; font-size: 17px; line-height: 1.75; margin: 0 auto; max-width: 600px; }
+.resources-intro { max-width: 710px; padding: 88px 0 48px; }.resources-intro h2 { font-size: clamp(2rem, 3vw, 3rem); }.resources-intro p { color: #5f5f5b; font-size: 17px; line-height: 1.85; margin: 0; }
+.resources-grid { display: grid; gap: 24px; grid-template-columns: repeat(2, minmax(0, 1fr)); padding-bottom: 104px; }
+.resource-card { border: 1px solid #d9d6d0; display: flex; flex-direction: column; min-height: 285px; padding: 32px; }
+.resource-card__icon { align-items: center; border: 1px solid var(--color-sand); color: var(--color-terracotta); display: flex; font-size: 21px; height: 44px; justify-content: center; margin-bottom: 40px; width: 44px; }
+.resource-card h3 { font: 500 27px/1.2 "Poppins", Georgia, serif; margin: 0 0 10px; }.resource-card p { color: #5f5f5b; font-size: 15px; line-height: 1.7; margin: 0; max-width: 380px; }.resource-card__footer { align-items: center; display: flex; gap: 14px; justify-content: space-between; margin-top: auto; padding-top: 24px; }
+.resource-status { color: #6b6b66; font-size: 13px; }.resource-download { border: 1px solid #d4d0c9; border-radius: 6px; color: #8b8984; cursor: not-allowed; font: 600 12px var(--font-display); letter-spacing: .08em; padding: 11px 14px; text-transform: uppercase; }.resource-download[aria-disabled="true"] { pointer-events: none; }
+.resources-cta { background: var(--color-sand); padding: 80px 0; text-align: center; }.resources-cta h2 { font-size: clamp(2rem, 3vw, 3rem); margin-inline: auto; max-width: 650px; }.resources-cta p { color: #5f5f5b; margin: 0 auto 24px; max-width: 530px; }
+@media (max-width: 767px) { .resources-hero { padding: 72px 0 56px; }.resources-intro { padding: 64px 0 40px; }.resources-grid { grid-template-columns: 1fr; padding-bottom: 72px; }.resource-card { min-height: 250px; }.resources-cta { padding: 64px 0; } }

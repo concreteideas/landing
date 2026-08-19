@@ -1,0 +1,56 @@
+.projects-main { background: #fff; color: var(--color-charcoal); }
+.project-hero { background: var(--color-warm-white); padding: 104px 0 80px; text-align: center; }
+.project-hero h1, .project-detail__content h1, .projects-section-heading h2, .project-cta h2 { color: var(--color-charcoal); font: 500 clamp(2.35rem, 5vw, 4rem)/1.08 "Poppins", Georgia, serif; letter-spacing: -.02em; margin: 14px 0; }
+.project-hero p { color: #646461; font-size: 17px; line-height: 1.75; margin: 0 auto; max-width: 620px; }
+.project-filter-bar { align-items: center; display: flex; gap: 16px; justify-content: space-between; padding: 48px 0 28px; }
+.project-filter-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-filter-list button { background: #fff; border: 1px solid #d5d3ce; border-radius: 6px; color: var(--color-charcoal); cursor: pointer; font: 500 12px "Poppins", sans-serif; letter-spacing: .06em; min-height: 44px; padding: 0 17px; text-transform: uppercase; transition: background-color .2s ease, color .2s ease, border-color .2s ease; }
+.project-filter-list button:hover, .project-filter-list button.is-active { background: var(--color-charcoal); border-color: var(--color-charcoal); color: #fff; }
+.project-count { color: #74746f; font-size: 14px; margin: 0; white-space: nowrap; }
+.projects-grid { display: grid; gap: 56px 28px; grid-template-columns: repeat(2, minmax(0, 1fr)); padding-bottom: 112px; }
+.project-card { min-width: 0; }
+.project-card__image { aspect-ratio: 1.33 / 1; background: var(--color-sand); display: block; overflow: hidden; }
+.project-card__image img { height: 100%; object-fit: cover; transition: transform .3s ease; width: 100%; }
+.project-card:hover .project-card__image img { transform: scale(1.025); }
+.project-card__body { padding-top: 20px; }
+.project-card__meta { color: var(--color-terracotta); font: 500 12px "Poppins", sans-serif; letter-spacing: .1em; margin: 0 0 8px; text-transform: uppercase; }
+.project-card h2, .project-card h3 { font: 500 28px/1.2 "Poppins", Georgia, serif; letter-spacing: -.01em; margin: 0; }
+.project-card h3 { font-size: 23px; }
+.project-card h2 a, .project-card h3 a { color: var(--color-charcoal); text-decoration: none; }
+.project-card__location { color: #74746f; font-size: 15px; margin: 9px 0 13px; }
+.project-card__products { color: #595954; font-size: 14px; line-height: 1.55; margin: 0; }
+.project-card__products strong { color: var(--color-charcoal); font-weight: 600; }
+.projects-empty { grid-column: 1 / -1; padding: 56px 0; text-align: center; }
+.project-detail { display: grid; gap: clamp(42px, 7vw, 100px); grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); padding: 64px 0 96px; }
+.project-detail__hero { background: var(--color-sand); min-height: 510px; }
+.project-detail__hero img { height: 100%; min-height: 510px; object-fit: cover; width: 100%; }
+.project-detail__content { align-self: center; }
+.project-detail__content h1 { font-size: clamp(2.35rem, 4.5vw, 4rem); }
+.project-detail__overview { color: #5d5d58; font-size: 17px; line-height: 1.85; margin: 22px 0 32px; }
+.project-facts { border-top: 1px solid #d9d7d1; margin: 0; }
+.project-facts div { border-bottom: 1px solid #d9d7d1; display: grid; gap: 14px; grid-template-columns: 110px 1fr; padding: 15px 0; }
+.project-facts dt { color: var(--color-charcoal); font: 600 12px "Poppins", sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.project-facts dd { color: #5f5f5b; font-size: 14px; margin: 0; }
+.project-facts dd a { color: var(--color-charcoal); text-decoration: underline; text-underline-offset: 3px; }
+.project-gallery { background: var(--color-warm-white); padding: 96px 0; }
+.projects-section-heading { margin-bottom: 38px; }
+.projects-section-heading h2 { font-size: clamp(2rem, 3vw, 3rem); }
+.project-gallery__grid { display: grid; gap: 20px; grid-template-columns: 1.35fr .65fr; }
+.project-gallery__grid figure { background: var(--color-sand); margin: 0; min-height: 270px; }
+.project-gallery__grid figure:first-child { grid-row: span 2; min-height: 560px; }
+.project-gallery__grid img { height: 100%; object-fit: cover; width: 100%; }
+.related-projects, .related-products { padding: 96px 0; }
+.related-products { background: var(--color-warm-white); }
+.related-products__grid { display: grid; gap: 28px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.related-product { min-width: 0; }
+.related-product__image { aspect-ratio: 1 / 1; background: var(--color-sand); display: block; overflow: hidden; }
+.related-product__image img { height: 100%; object-fit: cover; transition: transform .3s ease; width: 100%; }
+.related-product:hover img { transform: scale(1.025); }
+.related-product h3 { font: 500 21px "Poppins", Georgia, serif; margin: 16px 0 0; }
+.related-product h3 a { color: var(--color-charcoal); text-decoration: none; }
+.project-cta { background: var(--color-sand); padding: 80px 0; text-align: center; }
+.project-cta h2 { font-size: clamp(2rem, 3.5vw, 3.2rem); margin-inline: auto; max-width: 660px; }
+.project-cta p { color: #5f5f5b; margin: 0 auto 24px; max-width: 540px; }
+.cta-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.projects-main a:focus-visible, .projects-main button:focus-visible, .project-cta a:focus-visible { outline: 3px solid var(--color-terracotta); outline-offset: 3px; }
+@media (max-width: 767px) { .project-hero { padding: 72px 0 56px; } .project-filter-bar { align-items: flex-start; flex-direction: column; padding-top: 32px; } .projects-grid { gap: 42px; grid-template-columns: 1fr; padding-bottom: 72px; } .project-detail { grid-template-columns: 1fr; padding: 40px 0 64px; } .project-detail__hero, .project-detail__hero img { min-height: 360px; } .project-gallery, .related-projects, .related-products { padding: 64px 0; } .project-gallery__grid { grid-template-columns: 1fr; } .project-gallery__grid figure:first-child { grid-row: auto; min-height: 360px; } .project-gallery__grid figure { min-height: 240px; } .related-products__grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,40 @@
+:root {
+  --color-charcoal: #2b2b2b;
+  --color-warm-white: #f7f5f2;
+  --color-concrete-grey: #a8a8a5;
+  --color-sand: #ded6c8;
+  --color-terracotta: #8a4335;
+  --color-body: #62625e;
+  --color-border: #dededb;
+  --color-white: #fff;
+
+  --font-display: "Poppins", Georgia, serif;
+  --font-ui: "Roboto", Helvetica, Arial, sans-serif;
+  --font-size-body: 1rem;
+  --font-size-caption: .8125rem;
+  --font-size-label: .75rem;
+
+  --space-1: .5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+  --space-8: 8rem;
+
+  --container-max: 1280px;
+  --radius-button: 6px;
+  --radius-card: 8px;
+  --transition-fast: 200ms ease;
+  --transition-base: 300ms ease;
+  --shadow-subtle: 0 8px 24px rgba(0, 0, 0, .06);
+
+  /* Backward-compatible aliases for the established homepage. */
+  --main-color: var(--color-terracotta);
+  --secondary-color: var(--color-charcoal);
+  --white-color: var(--color-white);
+  --body-color: var(--color-body);
+  --border-color: var(--color-border);
+  --animation-duration: var(--transition-base);
+}
