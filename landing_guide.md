@@ -125,7 +125,7 @@ Architectural Concrete Objects
 
 Designed for architecture, landscape, and contemporary living.
 
-Keep: - Bangalore, India - concreteideas.sales@gmail.com
+Keep: - Bangalore, India - info@concreteideas.co
 
 ## Navigation
 

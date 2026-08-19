@@ -359,8 +359,8 @@ img {
     max-width: 68%;
     scroll-snap-align: start;
   }
-  .specialization .specialization-content { aspect-ratio: 1; }
-  .specialization .specialization-content img { height: 100%; object-fit: cover; }
+  .specialization .specialization-content { aspect-ratio: auto; }
+  .specialization .specialization-content img { height: auto; object-fit: initial; }
   .specialization .banner-content { padding: 18px !important; transform: translateY(calc(100% - 70px)); }
   .specialization .banner-content span { font-size: 1.1rem !important; margin-bottom: 8px !important; }
   .specialization .banner-content p { font-size: 12px !important; line-height: 1.45; }
