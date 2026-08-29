@@ -27,7 +27,7 @@
         <p class="product-card__category">${categoriesFor(product).join(' / ')}</p>
         <h2><a href="${productUrl(product.id)}">${product.name}</a></h2>
         <p>${product.description}</p>
-        <div class="product-card__actions"><a class="product-card__link" href="${productUrl(product.id)}">View piece <span aria-hidden="true">→</span></a><button class="product-card__enquiry" type="button" data-add-to-enquiry data-product='${JSON.stringify(product).replace(/'/g, '&#39;')}'>Add to enquiry <span aria-hidden="true">+</span></button></div>
+        <div class="product-card__actions"><a class="product-card__link" href="${productUrl(product.id)}">View piece <span aria-hidden="true">→</span></a><a class="product-card__enquiry" href="${productUrl(product.id)}">Select size <span aria-hidden="true">→</span></a></div>
       </div>
     </article>`;
 

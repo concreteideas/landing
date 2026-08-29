@@ -2,8 +2,11 @@
   {
     "id": "ant_1",
     "name": "Ceneria Planter",
-    "category": ["Landscape", "Indoor"],
-    "image": "../product_images/7.png",
+    "category": [
+      "Landscape",
+      "Indoor"
+    ],
+    "image": "../product_images/1.png",
     "images": [
       "../product_images/7.png",
       "../product_images/7_plant.png",
@@ -13,7 +16,24 @@
     "materials": "Galvanized iron mesh, Polyurethane sealed finish",
     "dimensions": "Ø 533 × H 533 mm",
     "finish": "Natural grey / custom pigment",
-    "featured": true
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 430 × H 430 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 533 × H 533 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 640 × H 640 mm"
+      }
+    ]
   },
   {
     "id": "terraviva-planter",
@@ -30,7 +50,24 @@
     "dimensions": "Ø 780 × H 700 mm",
     "weight": "Approx. 200 kg",
     "finish": "Natural grey / custom pigment",
-    "featured": true
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 625 × H 560 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 780 × H 700 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 940 × H 840 mm"
+      }
+    ]
   },
   {
     "id": "sereno-bowl",
@@ -46,7 +83,24 @@
     "materials": "Cast concrete",
     "dimensions": "Ø 900 × H 260 mm",
     "finish": "Natural grey / charcoal",
-    "featured": false
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 720 × H 210 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 900 × H 260 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 1080 × H 310 mm"
+      }
+    ]
   },
   {
     "id": "rocky-cluster",
@@ -62,7 +116,24 @@
     "materials": "GFRC concrete",
     "dimensions": "Set of three, custom sizes",
     "finish": "Textured mineral finish",
-    "featured": false
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Set of three, up to Ø 450 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Set of three, up to Ø 600 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Set of three, up to Ø 800 mm"
+      }
+    ]
   },
   {
     "id": "cavallo-console",
@@ -78,7 +149,24 @@
     "materials": "GFRC concrete, steel support",
     "dimensions": "W 1400 × D 400 × H 820 mm",
     "finish": "Honed grey / custom pigment",
-    "featured": true
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 1120 × D 320 × H 660 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 1400 × D 400 × H 820 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 1680 × D 480 × H 980 mm"
+      }
+    ]
   },
   {
     "id": "canon-pendant",
@@ -94,7 +182,24 @@
     "materials": "Concrete shade, brass fitting",
     "dimensions": "Ø 240 × H 280 mm",
     "finish": "Natural grey / charcoal",
-    "featured": true
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 190 × H 220 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 240 × H 280 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 290 × H 340 mm"
+      }
+    ]
   },
   {
     "id": "pendant-lamp",
@@ -110,7 +215,24 @@
     "materials": "Cast concrete, brass fitting",
     "dimensions": "Ø 180 × H 360 mm",
     "finish": "Natural grey",
-    "featured": false
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 145 × H 290 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 180 × H 360 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 215 × H 430 mm"
+      }
+    ]
   },
   {
     "id": "wall-lamp",
@@ -126,7 +248,24 @@
     "materials": "Cast concrete, LED fitting",
     "dimensions": "W 300 × D 160 × H 420 mm",
     "finish": "Natural grey / sand",
-    "featured": false
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 240 × D 130 × H 335 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 300 × D 160 × H 420 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 360 × D 190 × H 505 mm"
+      }
+    ]
   },
   {
     "id": "maldives-cluster",
@@ -142,7 +281,24 @@
     "materials": "Concrete shades, adjustable suspension",
     "dimensions": "Made to project",
     "finish": "Natural grey / custom pigment",
-    "featured": false
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Approx. W 900 × H 1200 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Approx. W 1400 × H 1800 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Approx. W 2000 × H 2500 mm"
+      }
+    ]
   },
   {
     "id": "courtyard-fountain",
@@ -158,7 +314,24 @@
     "materials": "GFRC concrete, concealed water system",
     "dimensions": "Made to project",
     "finish": "Specified to project",
-    "featured": true
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 900 × D 600 × H 450 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 1200 × D 800 × H 600 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 1800 × D 1000 × H 750 mm"
+      }
+    ]
   },
   {
     "id": "hotel-entry",
@@ -174,7 +347,24 @@
     "materials": "GFRC concrete",
     "dimensions": "Made to project",
     "finish": "Specified to project",
-    "featured": false
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 450 × D 450 × H 600 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 600 × D 600 × H 900 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 900 × D 900 × H 1200 mm"
+      }
+    ]
   },
   {
     "id": "wall-art-panel",
@@ -190,6 +380,23 @@
     "materials": "GFRC concrete",
     "dimensions": "Made to project",
     "finish": "Specified to project",
-    "featured": false
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 600 × H 900 × D 40 mm"
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 900 × H 1200 × D 50 mm"
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 1200 × H 1800 × D 60 mm"
+      }
+    ]
   }
 ]

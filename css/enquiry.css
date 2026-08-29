@@ -30,3 +30,4 @@
 .enquiry-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 @media (max-width: 991px) { .site-header__enquiry { justify-content: space-between; max-width: 180px; } .enquiry-layout { grid-template-columns: 1fr; } .enquiry-summary { position: static; } }
 @media (max-width: 575px) { .enquiry-hero { padding: 64px 0 45px; } .enquiry-section { padding-top: 35px; } .enquiry-item { grid-template-columns: 82px 1fr; gap: 14px; } .enquiry-quantity { grid-column: 2; justify-self: start; } .enquiry-summary { padding: 24px; } .enquiry-empty { padding: 50px 20px; } }
+.enquiry-item__dimensions { color: #777; font-size: 12px; line-height: 1.5; margin: 5px 0 0; }

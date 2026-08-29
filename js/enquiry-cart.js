@@ -22,22 +22,34 @@
       el.textContent = count ? `Enquiry (${count})` : 'Enquiry';
     });
   };
-  const addItem = (product, quantity = 1) => {
-    const cart = getCart();
-    const existing = cart.find((item) => item.id === product.id);
+  const normalizeProduct = (product, size) => ({
+    id: product.id,
+    name: product.name,
+    image: product.image || (Array.isArray(product.images) ? product.images[0] : ''),
+    sizeId: size?.id || 'standard',
+    sizeName: size?.name || 'Standard',
+    dimensions: size?.dimensions || product.dimensions || '',
+    quantity: 1
+  });
+  const itemKey = (item) => `${item.id}::${item.sizeId || 'standard'}`;
+  const migrateLegacyItems = (cart) => cart.map((item) => item.sizeId ? item : ({ ...item, sizeId: 'standard', sizeName: 'Standard', dimensions: item.dimensions || '' }));
+  const addItem = (product, size, quantity = 1) => {
+    const cart = migrateLegacyItems(getCart());
+    const next = normalizeProduct(product, size);
+    const existing = cart.find((item) => itemKey(item) === itemKey(next));
     if (existing) existing.quantity += quantity;
-    else cart.push({ id: product.id, name: product.name, image: product.image || (Array.isArray(product.images) ? product.images[0] : ''), quantity });
+    else cart.push({ ...next, quantity });
     saveCart(cart);
-    showToast(`${product.name} added to your enquiry.`);
+    showToast(`${product.name} — ${next.sizeName} added to your enquiry.`);
   };
-  const updateQuantity = (id, quantity) => {
-    const cart = getCart();
-    const item = cart.find((entry) => entry.id === id);
+  const updateQuantity = (key, quantity) => {
+    const cart = migrateLegacyItems(getCart());
+    const item = cart.find((entry) => itemKey(entry) === key);
     if (!item) return;
     item.quantity = Math.max(1, Number(quantity) || 1);
     saveCart(cart);
   };
-  const removeItem = (id) => saveCart(getCart().filter((item) => item.id !== id));
+  const removeItem = (key) => saveCart(migrateLegacyItems(getCart()).filter((item) => itemKey(item) !== key));
   const clear = () => saveCart([]);
 
   function showToast(message) {
@@ -59,18 +71,22 @@
     const addButton = event.target.closest('[data-add-to-enquiry]');
     if (addButton) {
       event.preventDefault();
-      try { addItem(JSON.parse(addButton.dataset.product)); } catch (_) {}
+      try {
+        const product = JSON.parse(addButton.dataset.product);
+        const size = addButton.dataset.size ? JSON.parse(addButton.dataset.size) : null;
+        addItem(product, size);
+      } catch (_) {}
       return;
     }
     const action = event.target.closest('[data-enquiry-action]');
     if (!action) return;
-    const id = action.dataset.id;
-    if (action.dataset.enquiryAction === 'increase') updateQuantity(id, getCart().find((item) => item.id === id)?.quantity + 1);
-    if (action.dataset.enquiryAction === 'decrease') updateQuantity(id, (getCart().find((item) => item.id === id)?.quantity || 1) - 1);
-    if (action.dataset.enquiryAction === 'remove') removeItem(id);
+    const key = action.dataset.key;
+    if (action.dataset.enquiryAction === 'increase') updateQuantity(key, migrateLegacyItems(getCart()).find((item) => itemKey(item) === key)?.quantity + 1);
+    if (action.dataset.enquiryAction === 'decrease') updateQuantity(key, (migrateLegacyItems(getCart()).find((item) => itemKey(item) === key)?.quantity || 1) - 1);
+    if (action.dataset.enquiryAction === 'remove') removeItem(key);
     if (action.dataset.enquiryAction === 'clear') clear();
   });
 
-  window.ConcreteIdeasEnquiry = { getCart, addItem, updateQuantity, removeItem, clear, totalItems };
+  window.ConcreteIdeasEnquiry = { getCart, addItem, updateQuantity, removeItem, clear, totalItems, itemKey };
   updateCount();
 })();
