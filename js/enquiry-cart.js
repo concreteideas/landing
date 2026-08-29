@@ -29,6 +29,7 @@
     sizeId: size?.id || 'standard',
     sizeName: size?.name || 'Standard',
     dimensions: size?.dimensions || product.dimensions || '',
+    weight: size?.weight || 'To be confirmed',
     quantity: 1
   });
   const itemKey = (item) => `${item.id}::${item.sizeId || 'standard'}`;

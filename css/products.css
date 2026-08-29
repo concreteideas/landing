@@ -85,3 +85,6 @@
   .product-size__quantity-btn { height: 44px; width: 40px; }
   .product-size__view-enquiry { align-self: center; }
 }
+
+.product-size__weight { color: #777; display: block; font-size: 12px; line-height: 1.5; margin-top: 3px; }
+.product-size__dimensions strong, .product-size__weight strong { color: var(--color-charcoal); font-weight: 500; }

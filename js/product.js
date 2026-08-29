@@ -25,7 +25,6 @@
       const specifications = [
         ['Material', product.materials],
         ['Reinforcement', product.reinforcement],
-        ['Weight', product.weight],
         ['Finish', product.finish]
       ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('');
       const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : [{ id: 'standard', name: 'Standard', dimensions: product.dimensions || 'Project specific' }];
@@ -34,7 +33,7 @@
       const sizeOptions = sizes.map((size) => {
         const quantity = getVariantQuantity(size.id);
         return `<div class="product-size__option" data-size-id="${size.id}">
-          <div class="product-size__info"><span class="product-size__name">${size.name}</span><span class="product-size__dimensions">${size.dimensions}</span></div>
+          <div class="product-size__info"><span class="product-size__name">${size.name}</span><span class="product-size__dimensions"><strong>Dimension:</strong> ${size.dimensions}</span><span class="product-size__weight"><strong>Weight:</strong> ${size.weight || 'To be confirmed'}</span></div>
           <div class="product-size__quantity" aria-label="Quantity of ${size.name}">
             <button type="button" class="product-size__quantity-btn" data-product-size-decrease="${size.id}" aria-label="Decrease ${size.name} quantity">−</button>
             <span class="product-size__quantity-value" data-product-size-count="${size.id}" aria-live="polite">${quantity}</span>
