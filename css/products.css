@@ -24,6 +24,11 @@
 .product-card__link { color: var(--color-charcoal); font: 500 12px var(--font-display); letter-spacing: 1.3px; text-transform: uppercase; }
 .product-card__link span { color: var(--color-terracotta); font-size: 17px; margin-left: 4px; transition: transform .2s ease; }
 .product-card__link:hover span { transform: translateX(4px); }
+.product-card__actions { align-items: center; display: flex; flex-wrap: wrap; gap: 17px; }
+.product-card__enquiry { background: transparent; border: 0; color: var(--color-terracotta); cursor: pointer; font: 500 11px var(--font-display); letter-spacing: 1.1px; padding: 0; text-transform: uppercase; }
+.product-card__enquiry:hover { color: var(--color-charcoal); }
+.product-detail__enquiry { cursor: pointer; }
+
 .products-empty { grid-column: 1 / -1; padding: 40px 0 80px; text-align: center; }
 .product-detail { display: grid; grid-template-columns: 1.12fr .88fr; gap: clamp(35px, 7vw, 100px); padding: 60px 0 90px; }
 .product-detail__gallery { display: grid; gap: 14px; }

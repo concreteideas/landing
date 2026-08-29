@@ -37,7 +37,7 @@
         </div>
         <div class="product-detail__content"><p class="site-eyebrow">${categories.join(' / ')}</p><h1>${product.name}</h1><p class="product-detail__intro">${product.description}</p>
           ${specifications ? `<dl class="product-specs">${specifications}</dl>` : ''}
-          <a class="main-btn" href="mailto:info@concreteideas.co?subject=${encodeURIComponent(`Enquiry: ${product.name}`)}">Request a quote</a>
+          <button class="main-btn product-detail__enquiry" type="button" data-add-to-enquiry data-product='${JSON.stringify(product).replace(/'/g, '&#39;')}'>Add to enquiry <span aria-hidden="true">+</span></button>
         </div>`;
       if (images.length > 1) {
         const mainImage = detail.querySelector('[data-product-main-image]');
@@ -53,7 +53,7 @@
       }
       const related = products.filter((item) => item.id !== product.id && categoriesFor(item).some((category) => categories.includes(category))).slice(0, 3);
       document.querySelector('[data-related-products]').innerHTML = related.map((item) => `
-        <article class="product-card"><a class="product-card__image" href="${productUrl(item.id)}"><img src="${productImage(item)}" alt="${item.name}" loading="lazy"></a><div class="product-card__body"><p class="product-card__category">${categoriesFor(item).join(' / ')}</p><h3><a href="${productUrl(item.id)}">${item.name}</a></h3><a class="product-card__link" href="${productUrl(item.id)}">View piece <span aria-hidden="true">→</span></a></div></article>`).join('');
+        <article class="product-card"><a class="product-card__image" href="${productUrl(item.id)}"><img src="${productImage(item)}" alt="${item.name}" loading="lazy"></a><div class="product-card__body"><p class="product-card__category">${categoriesFor(item).join(' / ')}</p><h3><a href="${productUrl(item.id)}">${item.name}</a></h3><div class="product-card__actions"><a class="product-card__link" href="${productUrl(item.id)}">View piece <span aria-hidden="true">→</span></a><button class="product-card__enquiry" type="button" data-add-to-enquiry data-product='${JSON.stringify(item).replace(/'/g, '&#39;')}'>Add to enquiry <span aria-hidden="true">+</span></button></div></div></article>`).join('');
     })
     .catch(showError);
 })();
