@@ -30,7 +30,18 @@
       ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('');
       const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : [{ id: 'standard', name: 'Standard', dimensions: product.dimensions || 'Project specific' }];
       const defaultSize = sizes.find((size) => size.id === 'medium') || sizes[0];
-      const sizeOptions = sizes.map((size) => { const active = size.id === defaultSize.id; return `<button type="button" class="product-size__option ${active ? 'is-active' : ''}" data-product-size='${JSON.stringify(size).replace(/'/g, '&#39;')}' aria-pressed="${active}"><span class="product-size__name">${size.name}</span><span class="product-size__dimensions">${size.dimensions}</span></button>`; }).join('');
+      const getVariantQuantity = (sizeId) => window.ConcreteIdeasEnquiry?.getVariantQuantity?.(product.id, sizeId) || 0;
+      const sizeOptions = sizes.map((size) => {
+        const quantity = getVariantQuantity(size.id);
+        return `<div class="product-size__option" data-size-id="${size.id}">
+          <div class="product-size__info"><span class="product-size__name">${size.name}</span><span class="product-size__dimensions">${size.dimensions}</span></div>
+          <div class="product-size__quantity" aria-label="Quantity of ${size.name}">
+            <button type="button" class="product-size__quantity-btn" data-product-size-decrease="${size.id}" aria-label="Decrease ${size.name} quantity">−</button>
+            <span class="product-size__quantity-value" data-product-size-count="${size.id}" aria-live="polite">${quantity}</span>
+            <button type="button" class="product-size__quantity-btn" data-product-size-increase="${size.id}" aria-label="Increase ${size.name} quantity">+</button>
+          </div>
+        </div>`;
+      }).join('');
       const galleryThumbs = images.length > 1 ? images.map((image, index) => `<button type="button" class="product-detail__gallery-thumb ${index === 0 ? 'is-active' : ''}" data-product-image-index="${index}" aria-label="View image ${index + 1}"><img src="${image}" alt="${product.name} ${index + 1}" loading="lazy" /></button>`).join('') : '';
       detail.innerHTML = `
         <div class="product-detail__gallery">
@@ -39,8 +50,7 @@
         </div>
         <div class="product-detail__content"><p class="site-eyebrow">${categories.join(' / ')}</p><h1>${product.name}</h1><p class="product-detail__intro">${product.description}</p>
           ${specifications ? `<dl class="product-specs">${specifications}</dl>` : ''}
-          <div class="product-size"><div class="product-size__heading"><div><p class="site-eyebrow">Available sizes</p><h2>Select a size</h2></div><span class="product-size__selected" data-selected-size-name>${defaultSize.name}</span></div><div class="product-size__options" role="group" aria-label="Available sizes">${sizeOptions}</div></div>
-          <button class="main-btn product-detail__enquiry" type="button" data-add-to-enquiry data-product='${JSON.stringify(product).replace(/'/g, '&#39;')}' data-size='${JSON.stringify(defaultSize).replace(/'/g, '&#39;')}'>Add to enquiry <span aria-hidden="true">+</span></button>
+          <div class="product-size"><div class="product-size__heading"><div><p class="site-eyebrow">Available sizes</p><h2>Select quantities</h2></div><a class="product-size__view-enquiry" href="../enquiry/index.html">View enquiry <span aria-hidden="true">→</span></a></div><div class="product-size__options" role="group" aria-label="Available sizes">${sizeOptions}</div></div>
         </div>`;
       const addButton = detail.querySelector('[data-add-to-enquiry]');
       detail.querySelectorAll('[data-product-size]').forEach((button) => {
@@ -55,6 +65,29 @@
           addButton.dataset.size = JSON.stringify(size);
         });
       });
+      const refreshVariantCounts = () => {
+        sizes.forEach((size) => {
+          const count = getVariantQuantity(size.id);
+          const countEl = detail.querySelector(`[data-product-size-count="${size.id}"]`);
+          if (countEl) countEl.textContent = count;
+        });
+      };
+      detail.querySelectorAll('[data-product-size-increase], [data-product-size-decrease]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const sizeId = button.dataset.productSizeIncrease || button.dataset.productSizeDecrease;
+          const current = getVariantQuantity(sizeId);
+          const next = button.dataset.productSizeIncrease ? current + 1 : Math.max(0, current - 1);
+          const size = sizes.find((entry) => entry.id === sizeId);
+          if (!size) return;
+          const key = `${product.id}::${size.id}`;
+          if (next === 0) window.ConcreteIdeasEnquiry.removeItem(key);
+          else window.ConcreteIdeasEnquiry.addItem(product, size, next - current);
+          refreshVariantCounts();
+        });
+      });
+      document.addEventListener('concreteideas:cart-updated', refreshVariantCounts);
+      refreshVariantCounts();
+
       if (images.length > 1) {
         const mainImage = detail.querySelector('[data-product-main-image]');
         detail.querySelectorAll('[data-product-image-index]').forEach((button) => {

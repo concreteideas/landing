@@ -46,11 +46,20 @@
     const cart = migrateLegacyItems(getCart());
     const item = cart.find((entry) => itemKey(entry) === key);
     if (!item) return;
-    item.quantity = Math.max(1, Number(quantity) || 1);
+    const nextQuantity = Math.max(0, Number(quantity) || 0);
+    if (nextQuantity === 0) {
+      saveCart(cart.filter((entry) => itemKey(entry) !== key));
+      return;
+    }
+    item.quantity = nextQuantity;
     saveCart(cart);
   };
   const removeItem = (key) => saveCart(migrateLegacyItems(getCart()).filter((item) => itemKey(item) !== key));
   const clear = () => saveCart([]);
+  const getVariantQuantity = (productId, sizeId = 'standard') => {
+    const item = migrateLegacyItems(getCart()).find((entry) => entry.id === productId && (entry.sizeId || 'standard') === sizeId);
+    return Number(item?.quantity || 0);
+  };
 
   function showToast(message) {
     let toast = document.querySelector('[data-enquiry-toast]');
@@ -87,6 +96,6 @@
     if (action.dataset.enquiryAction === 'clear') clear();
   });
 
-  window.ConcreteIdeasEnquiry = { getCart, addItem, updateQuantity, removeItem, clear, totalItems, itemKey };
+  window.ConcreteIdeasEnquiry = { getCart, addItem, updateQuantity, removeItem, clear, totalItems, itemKey, getVariantQuantity };
   updateCount();
 })();
