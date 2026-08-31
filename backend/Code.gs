@@ -1,0 +1,1953 @@
+/************************************************************
+ * CONCRETE IDEAS — ENQUIRY + CRM + QUOTATION BACKEND
+ *
+ * Google Apps Script backend for concreteideas.co
+ *
+ * Sheets:
+ *   Enquiries
+ *   Enquiry Items
+ *   Product Pricing
+ *   Quotes
+ *   Quote Items
+ *   Follow-ups
+ *   Dashboard
+ ************************************************************/
+
+
+/* =========================================================
+   CONFIGURATION
+   ========================================================= */
+
+const CONFIG = {
+  BUSINESS_NAME: "Concrete Ideas",
+  WEBSITE: "https://concreteideas.co",
+  ENQUIRY_PREFIX: "CI",
+  QUOTE_PREFIX: "Q"
+};
+
+
+/* =========================================================
+   WEBSITE ENQUIRY SUBMISSION
+   ========================================================= */
+
+function doPost(e) {
+
+  try {
+
+    /*
+     * The website sends the complete enquiry as:
+     *
+     * e.parameter.payload
+     *
+     * Example:
+     *
+     * {
+     *   customer: {...},
+     *   items: [...]
+     * }
+     */
+
+    const data = JSON.parse(e.parameter.payload);
+
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    const enquiriesSheet =
+      ss.getSheetByName("Enquiries");
+
+    const itemsSheet =
+      ss.getSheetByName("Enquiry Items");
+
+    if (!enquiriesSheet || !itemsSheet) {
+      throw new Error(
+        "Required sheets not found. Run setupConcreteIdeasCRM()."
+      );
+    }
+
+    const customer = data.customer || {};
+    const items = Array.isArray(data.items)
+      ? data.items
+      : [];
+
+    if (!customer.name) {
+      throw new Error("Customer name is required.");
+    }
+
+    if (!customer.email) {
+      throw new Error("Customer email is required.");
+    }
+
+    if (items.length === 0) {
+      throw new Error("Enquiry contains no products.");
+    }
+
+
+    /* -----------------------------------------------------
+       Generate unique enquiry ID
+       ----------------------------------------------------- */
+
+    const enquiryId = generateEnquiryId();
+
+    const now = new Date();
+
+
+    /* -----------------------------------------------------
+       Calculate item count and base value
+       ----------------------------------------------------- */
+
+    let itemCount = 0;
+    let baseValue = 0;
+
+    const processedItems = items.map(item => {
+
+      const quantity =
+        Number(item.quantity || 0);
+
+      const basePrice =
+        getBasePrice(
+          item.productId,
+          item.size
+        );
+
+      const lineBaseValue =
+        basePrice * quantity;
+
+      itemCount += quantity;
+      baseValue += lineBaseValue;
+
+      return {
+        productId: item.productId || "",
+        product: item.product || "",
+        size: item.size || "",
+        dimension: item.dimension || "",
+        weight: item.weight || "",
+        quantity: quantity,
+        basePrice: basePrice,
+        baseValue: lineBaseValue
+      };
+
+    });
+
+
+    /* -----------------------------------------------------
+       Save main enquiry
+       ----------------------------------------------------- */
+
+    enquiriesSheet.appendRow([
+      enquiryId,
+      now,
+      "NEW",
+      customer.name || "",
+      customer.company || "",
+      customer.email || "",
+      customer.phone || "",
+      customer.project || "",
+      customer.location || "",
+      customer.message || "",
+      itemCount,
+      baseValue,
+      now,
+      ""
+    ]);
+
+
+    /* -----------------------------------------------------
+       Save enquiry items
+       ----------------------------------------------------- */
+
+    processedItems.forEach(item => {
+
+      itemsSheet.appendRow([
+        enquiryId,
+        item.productId,
+        item.product,
+        item.size,
+        item.dimension,
+        item.weight,
+        item.quantity,
+        item.basePrice,
+        item.baseValue
+      ]);
+
+    });
+
+
+    /* -----------------------------------------------------
+       Send internal notification
+       ----------------------------------------------------- */
+
+    sendBusinessNotificationEmail(
+      enquiryId,
+      customer,
+      processedItems,
+      baseValue
+    );
+
+
+    /* -----------------------------------------------------
+       Send customer confirmation
+       ----------------------------------------------------- */
+
+    sendCustomerConfirmationEmail(
+      enquiryId,
+      customer,
+      processedItems
+    );
+
+
+    /* -----------------------------------------------------
+       Return result to website
+       ----------------------------------------------------- */
+
+    return createResultPage(
+      true,
+      enquiryId
+    );
+
+
+  } catch (error) {
+
+    return createResultPage(
+      false,
+      "",
+      error.message
+    );
+
+  }
+}
+
+
+/* =========================================================
+   ENQUIRY ID GENERATION
+   ========================================================= */
+
+function generateEnquiryId() {
+
+  const lock =
+    LockService.getScriptLock();
+
+  lock.waitLock(30000);
+
+  try {
+
+    const properties =
+      PropertiesService.getScriptProperties();
+
+    const currentYear =
+      new Date().getFullYear();
+
+    const storedYear =
+      properties.getProperty(
+        "ENQUIRY_COUNTER_YEAR"
+      );
+
+    let counter =
+      Number(
+        properties.getProperty(
+          "ENQUIRY_COUNTER"
+        ) || 0
+      );
+
+
+    /*
+     * New year:
+     * restart numbering at 1.
+     */
+
+    if (storedYear !== String(currentYear)) {
+      counter = 0;
+    }
+
+    counter++;
+
+
+    properties.setProperty(
+      "ENQUIRY_COUNTER",
+      String(counter)
+    );
+
+    properties.setProperty(
+      "ENQUIRY_COUNTER_YEAR",
+      String(currentYear)
+    );
+
+
+    return (
+      CONFIG.ENQUIRY_PREFIX +
+      "-" +
+      currentYear +
+      "-" +
+      String(counter).padStart(4, "0")
+    );
+
+
+  } finally {
+
+    lock.releaseLock();
+
+  }
+}
+
+
+/* =========================================================
+   PRODUCT PRICING
+   ========================================================= */
+
+function getBasePrice(productId, size) {
+
+  const ss =
+    SpreadsheetApp.getActiveSpreadsheet();
+
+  const sheet =
+    ss.getSheetByName("Product Pricing");
+
+  if (!sheet) {
+    throw new Error(
+      "Product Pricing sheet not found."
+    );
+  }
+
+  const data =
+    sheet.getDataRange().getValues();
+
+  /*
+   * Expected columns:
+   *
+   * Product ID
+   * Product
+   * Size
+   * Base Price (₹)
+   * Active
+   */
+
+  for (let i = 1; i < data.length; i++) {
+
+    const row = data[i];
+
+    const rowProductId =
+      String(row[0]).trim();
+
+    const rowSize =
+      String(row[2]).trim();
+
+    const basePrice =
+      Number(row[3] || 0);
+
+    const active =
+      row[4] === true ||
+      String(row[4]).toUpperCase() === "TRUE";
+
+
+    if (
+      rowProductId === String(productId).trim() &&
+      rowSize.toLowerCase() ===
+        String(size).trim().toLowerCase() &&
+      active
+    ) {
+
+      return basePrice;
+
+    }
+
+  }
+
+  /*
+   * Missing price is deliberately an error.
+   *
+   * We do NOT want an enquiry to silently
+   * receive a ₹0 base price.
+   */
+
+  throw new Error(
+    "No active base price found for product '" +
+    productId +
+    "', size '" +
+    size +
+    "'."
+  );
+}
+
+
+/* =========================================================
+   BUSINESS EMAIL
+   ========================================================= */
+
+function sendBusinessNotificationEmail(
+  enquiryId,
+  customer,
+  items,
+  baseValue
+) {
+
+  const recipient =
+    Session.getEffectiveUser().getEmail();
+
+
+  let itemText = "";
+
+
+  items.forEach(item => {
+
+    itemText +=
+      item.product +
+      " — " +
+      item.size +
+      " × " +
+      item.quantity +
+      "\n" +
+
+      "  Base price: ₹" +
+      formatMoney(item.basePrice) +
+      "\n" +
+
+      "  Base value: ₹" +
+      formatMoney(item.baseValue) +
+      "\n\n";
+
+  });
+
+
+  const subject =
+    "[NEW] Concrete Ideas Enquiry " +
+    enquiryId;
+
+
+  const body =
+    "New enquiry received.\n\n" +
+
+    "ENQUIRY\n" +
+    "ID: " + enquiryId + "\n\n" +
+
+    "CUSTOMER\n" +
+    "Name: " +
+    (customer.name || "") +
+    "\n" +
+
+    "Company / Studio: " +
+    (customer.company || "") +
+    "\n" +
+
+    "Email: " +
+    (customer.email || "") +
+    "\n" +
+
+    "Phone: " +
+    (customer.phone || "") +
+    "\n" +
+
+    "Project: " +
+    (customer.project || "") +
+    "\n" +
+
+    "Location: " +
+    (customer.location || "") +
+    "\n\n" +
+
+    "PRODUCTS\n" +
+    itemText +
+
+    "BASE VALUE\n" +
+    "₹" +
+    formatMoney(baseValue) +
+    "\n";
+
+
+  GmailApp.sendEmail(
+    recipient,
+    subject,
+    body
+  );
+}
+
+
+/* =========================================================
+   CUSTOMER CONFIRMATION EMAIL
+   ========================================================= */
+
+function sendCustomerConfirmationEmail(
+  enquiryId,
+  customer,
+  items
+) {
+
+  if (!customer.email) {
+    return;
+  }
+
+
+  let itemText = "";
+
+
+  items.forEach(item => {
+
+    itemText +=
+      item.product +
+      " — " +
+      item.size +
+      " × " +
+      item.quantity +
+      "\n";
+
+  });
+
+
+  const subject =
+    "Concrete Ideas — Enquiry " +
+    enquiryId;
+
+
+  const body =
+    "Dear " +
+    (customer.name || "Customer") +
+    ",\n\n" +
+
+    "Thank you for your enquiry with " +
+    CONFIG.BUSINESS_NAME +
+    ".\n\n" +
+
+    "Your enquiry has been received successfully.\n\n" +
+
+    "ENQUIRY ID\n" +
+    enquiryId +
+    "\n\n" +
+
+    "YOUR ENQUIRY\n" +
+    itemText +
+    "\n" +
+
+    "We will review your requirements and get back to you shortly " +
+    "with pricing and delivery details.\n\n" +
+
+    "If you need to make any changes or have additional requirements, " +
+    "please reply to this email and mention your enquiry ID " +
+    enquiryId +
+    ".\n\n" +
+
+    "Regards,\n" +
+    CONFIG.BUSINESS_NAME +
+    "\n" +
+    CONFIG.WEBSITE;
+
+
+  GmailApp.sendEmail(
+    customer.email,
+    subject,
+    body
+  );
+}
+
+
+/* =========================================================
+   WEBSITE RESULT PAGE
+   ========================================================= */
+
+function createResultPage(
+  success,
+  enquiryId,
+  errorMessage
+) {
+
+  const result =
+    JSON.stringify({
+
+      type:
+        "concreteideas-enquiry-result",
+
+      success:
+        success,
+
+      enquiryId:
+        enquiryId || "",
+
+      error:
+        errorMessage || ""
+
+    });
+
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+</head>
+<body>
+<script>
+
+  window.top.postMessage(
+    ${result},
+    "*"
+  );
+
+</script>
+</body>
+</html>
+`;
+
+
+  return HtmlService
+    .createHtmlOutput(html)
+    .setXFrameOptionsMode(
+      HtmlService.XFrameOptionsMode.ALLOWALL
+    );
+}
+
+
+/* =========================================================
+   CREATE QUOTATION
+   ========================================================= */
+
+/*
+ * Creates a new quotation version for an enquiry.
+ *
+ * IMPORTANT:
+ * Existing quotations are NEVER overwritten.
+ *
+ * Example:
+ *
+ * Q-CI-2026-0006-01
+ * Q-CI-2026-0006-02
+ * Q-CI-2026-0006-03
+ *
+ *
+ * quoteData:
+ *
+ * {
+ *   deliveryCharges: 8000,
+ *   otherCharges: 0,
+ *   notes: "Project pricing",
+ *   validUntil: Date
+ * }
+ *
+ *
+ * quoteItems:
+ *
+ * [
+ *   {
+ *     productId: "ant_1",
+ *     product: "Ceneria Planter",
+ *     size: "Small",
+ *     quantity: 2,
+ *     quotedUnitPrice: 8000
+ *   }
+ * ]
+ */function createQuote(
+  enquiryId,
+  quoteData,
+  quoteItems
+) {
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+
+  try {
+
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    const quotesSheet =
+      ss.getSheetByName("Quotes");
+
+    const quoteItemsSheet =
+      ss.getSheetByName("Quote Items");
+
+    const enquiriesSheet =
+      ss.getSheetByName("Enquiries");
+
+    const enquiryItemsSheet =
+      ss.getSheetByName("Enquiry Items");
+
+    if (
+      !quotesSheet ||
+      !quoteItemsSheet ||
+      !enquiriesSheet ||
+      !enquiryItemsSheet
+    ) {
+      throw new Error(
+        "Required quotation sheets not found. " +
+        "Run setupConcreteIdeasCRM()."
+      );
+    }
+
+    if (!enquiryId) {
+      throw new Error("Enquiry ID is required.");
+    }
+
+    if (
+      !Array.isArray(quoteItems) ||
+      quoteItems.length === 0
+    ) {
+      throw new Error(
+        "Quotation must contain at least one item."
+      );
+    }
+
+    quoteData = quoteData || {};
+
+    /* -----------------------------------------------------
+       Build lookup from original enquiry items
+       ----------------------------------------------------- */
+
+    const enquiryData =
+      enquiryItemsSheet
+        .getDataRange()
+        .getValues();
+
+    const enquiryItemLookup = {};
+
+    for (let i = 1; i < enquiryData.length; i++) {
+
+      const row = enquiryData[i];
+
+      const rowEnquiryId =
+        String(row[0]).trim();
+
+      if (
+        rowEnquiryId !==
+        String(enquiryId).trim()
+      ) {
+        continue;
+      }
+
+      const productId =
+        String(row[1]).trim();
+
+      const size =
+        String(row[3]).trim();
+
+      const key =
+        productId.toLowerCase() +
+        "|" +
+        size.toLowerCase();
+
+      enquiryItemLookup[key] = {
+
+        dimension:
+          row[4] || "",
+
+        weight:
+          row[5] || "",
+
+        product:
+          row[2] || "",
+
+        quantity:
+          Number(row[6] || 0)
+
+      };
+
+    }
+
+    /* -----------------------------------------------------
+       Determine next quotation version
+       ----------------------------------------------------- */
+
+    const existingQuotes =
+      quotesSheet.getDataRange().getValues();
+
+    let maxVersion = 0;
+
+    for (let i = 1; i < existingQuotes.length; i++) {
+
+      const row = existingQuotes[i];
+
+      if (
+        String(row[1]).trim() ===
+        String(enquiryId).trim()
+      ) {
+
+        const version =
+          Number(row[2] || 0);
+
+        if (version > maxVersion) {
+          maxVersion = version;
+        }
+
+      }
+
+    }
+
+    const version =
+      maxVersion + 1;
+
+    const quoteId =
+      CONFIG.QUOTE_PREFIX +
+      "-" +
+      enquiryId +
+      "-" +
+      String(version).padStart(2, "0");
+
+    const now = new Date();
+
+    /* -----------------------------------------------------
+       Process quotation items
+       ----------------------------------------------------- */
+
+    let baseValue = 0;
+    let quotedProductValue = 0;
+
+    const processedItems =
+      quoteItems.map(item => {
+
+        const quantity =
+          Number(item.quantity || 0);
+
+        if (quantity <= 0) {
+          throw new Error(
+            "Invalid quantity for " +
+            item.product +
+            " — " +
+            item.size
+          );
+        }
+
+        const basePrice =
+          getBasePrice(
+            item.productId,
+            item.size
+          );
+
+        const quotedUnitPrice =
+          Number(item.quotedUnitPrice);
+
+        if (
+          !Number.isFinite(quotedUnitPrice) ||
+          quotedUnitPrice < 0
+        ) {
+          throw new Error(
+            "Invalid quoted price for " +
+            item.product +
+            " — " +
+            item.size
+          );
+        }
+
+        /* -------------------------------------------------
+           Get original dimension/weight snapshot
+           ------------------------------------------------- */
+
+        const lookupKey =
+          String(item.productId).trim().toLowerCase() +
+          "|" +
+          String(item.size).trim().toLowerCase();
+
+        const originalItem =
+          enquiryItemLookup[lookupKey] || {};
+
+        const dimension =
+          item.dimension ||
+          originalItem.dimension ||
+          "";
+
+        const weight =
+          item.weight ||
+          originalItem.weight ||
+          "";
+
+        const lineBaseValue =
+          basePrice * quantity;
+
+        const lineQuotedValue =
+          quotedUnitPrice * quantity;
+
+        const discountAmount =
+          lineBaseValue -
+          lineQuotedValue;
+
+        /*
+         * IMPORTANT:
+         *
+         * Store percentage as a decimal fraction.
+         *
+         * 5.882% becomes 0.05882
+         * 10% becomes 0.10
+         *
+         * Google Sheets percentage formatting will
+         * display these as 5.88% and 10.00%.
+         */
+
+        const discountPercent =
+          lineBaseValue > 0
+            ? discountAmount / lineBaseValue
+            : 0;
+
+        baseValue +=
+          lineBaseValue;
+
+        quotedProductValue +=
+          lineQuotedValue;
+
+        return {
+
+          productId:
+            item.productId || "",
+
+          product:
+            item.product ||
+            originalItem.product ||
+            "",
+
+          size:
+            item.size || "",
+
+          dimension:
+            dimension,
+
+          weight:
+            weight,
+
+          quantity:
+            quantity,
+
+          basePrice:
+            basePrice,
+
+          baseValue:
+            lineBaseValue,
+
+          quotedUnitPrice:
+            quotedUnitPrice,
+
+          quotedValue:
+            lineQuotedValue,
+
+          discountPercent:
+            discountPercent,
+
+          notes:
+            item.notes || ""
+
+        };
+
+      });
+
+    /* -----------------------------------------------------
+       Quote-level totals
+       ----------------------------------------------------- */
+
+    const deliveryCharges =
+      Number(
+        quoteData.deliveryCharges || 0
+      );
+
+    const otherCharges =
+      Number(
+        quoteData.otherCharges || 0
+      );
+
+    if (
+      deliveryCharges < 0 ||
+      otherCharges < 0
+    ) {
+      throw new Error(
+        "Charges cannot be negative."
+      );
+    }
+
+    const discountAmount =
+      baseValue -
+      quotedProductValue;
+
+    /*
+     * Store quote-level discount as decimal too.
+     */
+
+    const discountPercent =
+      baseValue > 0
+        ? discountAmount / baseValue
+        : 0;
+
+    const finalQuote =
+      quotedProductValue +
+      deliveryCharges +
+      otherCharges;
+
+    /* -----------------------------------------------------
+       Save quotation
+       ----------------------------------------------------- */
+
+    quotesSheet.appendRow([
+
+      quoteId,
+      enquiryId,
+      version,
+      now,
+
+      baseValue,
+
+      discountPercent,
+      discountAmount,
+
+      deliveryCharges,
+      otherCharges,
+
+      finalQuote,
+
+      "DRAFT",
+
+      "",
+      quoteData.validUntil || "",
+
+      quoteData.notes || ""
+
+    ]);
+
+    /* -----------------------------------------------------
+       Save quote items
+       ----------------------------------------------------- */
+
+    const rows =
+      processedItems.map(item => [
+
+        quoteId,
+        enquiryId,
+
+        item.productId,
+        item.product,
+        item.size,
+
+        item.dimension,
+        item.weight,
+
+        item.quantity,
+
+        item.basePrice,
+        item.baseValue,
+
+        item.quotedUnitPrice,
+        item.quotedValue,
+
+        item.discountPercent,
+
+        item.notes
+
+      ]);
+
+    quoteItemsSheet
+      .getRange(
+        quoteItemsSheet.getLastRow() + 1,
+        1,
+        rows.length,
+        14
+      )
+      .setValues(rows);
+
+    /* -----------------------------------------------------
+       Format discount column as percentage
+       ----------------------------------------------------- */
+
+    quoteItemsSheet
+      .getRange(
+        2,
+        13,
+        Math.max(
+          quoteItemsSheet.getLastRow() - 1,
+          1
+        ),
+        1
+      )
+      .setNumberFormat("0.00%");
+
+    quotesSheet
+      .getRange(
+        2,
+        6,
+        Math.max(
+          quotesSheet.getLastRow() - 1,
+          1
+        ),
+        1
+      )
+      .setNumberFormat("0.00%");
+
+    /* -----------------------------------------------------
+       Update enquiry
+       ----------------------------------------------------- */
+
+    updateEnquiryCurrentQuote(
+      enquiryId,
+      quoteId,
+      finalQuote,
+      now
+    );
+
+    return {
+
+      success: true,
+
+      quoteId:
+        quoteId,
+
+      enquiryId:
+        enquiryId,
+
+      version:
+        version,
+
+      baseValue:
+        baseValue,
+
+      quotedProductValue:
+        quotedProductValue,
+
+      discountAmount:
+        discountAmount,
+
+      discountPercent:
+        discountPercent,
+
+      deliveryCharges:
+        deliveryCharges,
+
+      otherCharges:
+        otherCharges,
+
+      finalQuote:
+        finalQuote
+
+    };
+
+  } finally {
+
+    lock.releaseLock();
+
+  }
+
+}
+
+/* =========================================================
+   UPDATE ENQUIRY WITH CURRENT QUOTE
+   ========================================================= */
+
+function updateEnquiryCurrentQuote(
+  enquiryId,
+  quoteId,
+  finalQuote,
+  updatedAt
+) {
+
+  const ss =
+    SpreadsheetApp.getActiveSpreadsheet();
+
+  const sheet =
+    ss.getSheetByName("Enquiries");
+
+  if (!sheet) {
+    throw new Error(
+      "Enquiries sheet not found."
+    );
+  }
+
+
+  const data =
+    sheet.getDataRange().getValues();
+
+
+  /*
+   * Current Enquiries structure:
+   *
+   * A  Enquiry ID
+   * B  Created At
+   * C  Status
+   * D  Name
+   * E  Company
+   * F  Email
+   * G  Phone
+   * H  Project
+   * I  Location
+   * J  Message
+   * K  Item Count
+   * L  Base Value
+   * M  Last Updated
+   * N  Internal Notes
+   *
+   * We intentionally don't force quote columns
+   * here because the original sheet may not have them.
+   *
+   * setupConcreteIdeasCRM() creates them.
+   */
+
+
+  let rowNumber = -1;
+
+  for (
+    let i = 1;
+    i < data.length;
+    i++
+  ) {
+
+    if (
+      String(data[i][0]).trim() ===
+      String(enquiryId).trim()
+    ) {
+
+      rowNumber =
+        i + 1;
+
+      break;
+
+    }
+
+  }
+
+
+  if (rowNumber === -1) {
+    throw new Error(
+      "Enquiry not found: " +
+      enquiryId
+    );
+  }
+
+
+  const headers =
+    data[0].map(
+      h => String(h).trim()
+    );
+
+
+  const quoteIdColumn =
+    headers.indexOf("Current Quote ID");
+
+
+  const quoteValueColumn =
+    headers.indexOf("Current Quote Value");
+
+
+  const updatedColumn =
+    headers.indexOf("Last Updated");
+
+
+  if (quoteIdColumn !== -1) {
+
+    sheet.getRange(
+      rowNumber,
+      quoteIdColumn + 1
+    ).setValue(quoteId);
+
+  }
+
+
+  if (quoteValueColumn !== -1) {
+
+    sheet.getRange(
+      rowNumber,
+      quoteValueColumn + 1
+    ).setValue(finalQuote);
+
+  }
+
+
+  if (updatedColumn !== -1) {
+
+    sheet.getRange(
+      rowNumber,
+      updatedColumn + 1
+    ).setValue(updatedAt);
+
+  }
+
+}
+
+
+
+
+/* =========================================================
+   CRM SETUP
+   ========================================================= */
+
+function setupConcreteIdeasCRM() {
+
+  const ss =
+    SpreadsheetApp.getActiveSpreadsheet();
+
+
+  /* -------------------------------------------------------
+     Enquiries
+     ------------------------------------------------------- */
+
+  const enquiries =
+    getOrCreateSheet(
+      ss,
+      "Enquiries"
+    );
+
+
+  const enquiryHeaders = [
+
+    "Enquiry ID",
+    "Created At",
+    "Status",
+    "Name",
+    "Company / Studio",
+    "Email",
+    "Phone / WhatsApp",
+    "Project",
+    "Delivery Location",
+    "Message",
+    "Item Count",
+    "Base Value",
+    "Last Updated",
+    "Internal Notes",
+    "Current Quote ID",
+    "Current Quote Value"
+
+  ];
+
+
+  ensureHeaders(
+    enquiries,
+    enquiryHeaders
+  );
+
+
+  formatHeader(
+    enquiries,
+    enquiryHeaders.length
+  );
+
+
+  /* -------------------------------------------------------
+     Enquiry Items
+     ------------------------------------------------------- */
+
+  const enquiryItems =
+    getOrCreateSheet(
+      ss,
+      "Enquiry Items"
+    );
+
+
+  const enquiryItemHeaders = [
+
+    "Enquiry ID",
+    "Product ID",
+    "Product",
+    "Size",
+    "Dimension",
+    "Weight",
+    "Quantity",
+    "Base Price",
+    "Base Value"
+
+  ];
+
+
+  ensureHeaders(
+    enquiryItems,
+    enquiryItemHeaders
+  );
+
+
+  formatHeader(
+    enquiryItems,
+    enquiryItemHeaders.length
+  );
+
+
+  /* -------------------------------------------------------
+     Product Pricing
+     ------------------------------------------------------- */
+
+  const pricing =
+    getOrCreateSheet(
+      ss,
+      "Product Pricing"
+    );
+
+
+  const pricingHeaders = [
+
+    "Product ID",
+    "Product",
+    "Size",
+    "Base Price (₹)",
+    "Active"
+
+  ];
+
+
+  ensureHeaders(
+    pricing,
+    pricingHeaders
+  );
+
+
+  formatHeader(
+    pricing,
+    pricingHeaders.length
+  );
+
+
+  /* -------------------------------------------------------
+     Quotes
+     ------------------------------------------------------- */
+
+  const quotes =
+    getOrCreateSheet(
+      ss,
+      "Quotes"
+    );
+
+
+  const quoteHeaders = [
+
+    "Quote ID",
+    "Enquiry ID",
+    "Version",
+    "Created At",
+    "Base Value",
+    "Discount %",
+    "Discount Amount",
+    "Delivery Charges",
+    "Other Charges",
+    "Final Quote",
+    "Status",
+    "Sent At",
+    "Valid Until",
+    "Notes"
+
+  ];
+
+
+  ensureHeaders(
+    quotes,
+    quoteHeaders
+  );
+
+
+  formatHeader(
+    quotes,
+    quoteHeaders.length
+  );
+
+
+  /* -------------------------------------------------------
+     Quote Items
+     ------------------------------------------------------- */
+
+  const quoteItems =
+    getOrCreateSheet(
+      ss,
+      "Quote Items"
+    );
+
+
+ const quoteItemHeaders = [
+
+  "Quote ID",
+  "Enquiry ID",
+  "Product ID",
+  "Product",
+  "Size",
+  "Dimension",
+  "Weight",
+  "Quantity",
+  "Base Price",
+  "Base Value",
+  "Quoted Unit Price",
+  "Quoted Value",
+  "Discount %",
+  "Notes"
+
+];
+
+
+  ensureHeaders(
+    quoteItems,
+    quoteItemHeaders
+  );
+
+
+  formatHeader(
+    quoteItems,
+    quoteItemHeaders.length
+  );
+
+
+  /* -------------------------------------------------------
+     Follow-ups
+     ------------------------------------------------------- */
+
+  const followUps =
+    getOrCreateSheet(
+      ss,
+      "Follow-ups"
+    );
+
+
+  const followUpHeaders = [
+
+    "Follow-up ID",
+    "Enquiry ID",
+    "Date",
+    "Type",
+    "Notes",
+    "Completed",
+    "Completed At"
+
+  ];
+
+
+  ensureHeaders(
+    followUps,
+    followUpHeaders
+  );
+
+
+  formatHeader(
+    followUps,
+    followUpHeaders.length
+  );
+
+
+  /* -------------------------------------------------------
+     Dashboard
+     ------------------------------------------------------- */
+
+  const dashboard =
+    getOrCreateSheet(
+      ss,
+      "Dashboard"
+    );
+
+
+  createDashboard(
+    dashboard,
+    enquiries
+  );
+
+
+  /* -------------------------------------------------------
+     Populate pricing table if empty
+     ------------------------------------------------------- */
+
+  populateInitialPricing(
+    pricing
+  );
+
+
+  /* -------------------------------------------------------
+     Status dropdown
+     ------------------------------------------------------- */
+
+  const statusRule =
+    SpreadsheetApp.newDataValidation()
+      .requireValueInList(
+        [
+          "NEW",
+          "CONTACTED",
+          "QUOTED",
+          "FOLLOW-UP",
+          "WON",
+          "LOST"
+        ],
+        true
+      )
+      .setAllowInvalid(false)
+      .build();
+
+
+  enquiries
+    .getRange(
+      2,
+      3,
+      Math.max(
+        enquiries.getMaxRows() - 1,
+        1
+      ),
+      1
+    )
+    .setDataValidation(
+      statusRule
+    );
+
+
+  Logger.log(
+    "Concrete Ideas CRM setup complete."
+  );
+
+}
+
+
+/* =========================================================
+   INITIAL PRICING
+   ========================================================= */
+
+function populateInitialPricing(
+  sheet
+) {
+
+  /*
+   * Only populate if there is currently
+   * no pricing data.
+   */
+
+  if (
+    sheet.getLastRow() > 1
+  ) {
+    return;
+  }
+
+
+  /*
+   * These are placeholder prices.
+   *
+   * Replace them with your actual prices
+   * directly in Google Sheets.
+   *
+   * Product IDs should match products.json.
+   */
+
+  const products = [
+
+    ["ant_1", "Ceneria Planter", "Small", 8500, true],
+    ["ant_1", "Ceneria Planter", "Medium", 11000, true],
+    ["ant_1", "Ceneria Planter", "Large", 15000, true],
+
+    ["terraviva-planter", "Terraviva Planter", "Small", 18000, true],
+    ["terraviva-planter", "Terraviva Planter", "Medium", 25000, true],
+    ["terraviva-planter", "Terraviva Planter", "Large", 35000, true],
+
+    ["sereno-bowl", "Sereno Bowl", "Small", 7500, true],
+    ["sereno-bowl", "Sereno Bowl", "Medium", 10000, true],
+    ["sereno-bowl", "Sereno Bowl", "Large", 14000, true]
+
+  ];
+
+
+  /*
+   * IMPORTANT:
+   *
+   * Add the remaining product/size rows here
+   * once the exact product IDs from products.json
+   * are confirmed.
+   *
+   * This function deliberately does not invent
+   * product IDs.
+   */
+
+
+  if (products.length > 0) {
+
+    sheet
+      .getRange(
+        2,
+        1,
+        products.length,
+        products[0].length
+      )
+      .setValues(products);
+
+  }
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+function createDashboard(
+  dashboard,
+  enquiries
+) {
+
+  dashboard.clear();
+
+
+  dashboard
+    .getRange("A1")
+    .setValue(
+      "CONCRETE IDEAS — SALES DASHBOARD"
+    );
+
+
+  dashboard
+    .getRange("A1")
+    .setFontWeight("bold")
+    .setFontSize(16);
+
+
+  dashboard
+    .getRange("A3:B3")
+    .setValues([
+      ["Status", "Count"]
+    ]);
+
+
+  const statuses = [
+
+    "NEW",
+    "CONTACTED",
+    "QUOTED",
+    "FOLLOW-UP",
+    "WON",
+    "LOST"
+
+  ];
+
+
+  statuses.forEach(
+    (status, index) => {
+
+      const row =
+        index + 4;
+
+
+      dashboard
+        .getRange(row, 1)
+        .setValue(status);
+
+
+      dashboard
+        .getRange(row, 2)
+        .setFormula(
+          `=COUNTIF(Enquiries!C:C,A${row})`
+        );
+
+    }
+  );
+
+
+  dashboard
+    .getRange("D3:E3")
+    .setValues([
+      ["Metric", "Value"]
+    ]);
+
+
+  dashboard
+    .getRange("D4:E7")
+    .setValues([
+
+      [
+        "Total Enquiries",
+        ""
+      ],
+
+      [
+        "Total Base Value",
+        ""
+      ],
+
+      [
+        "Quoted Value",
+        ""
+      ],
+
+      [
+        "Won Value",
+        ""
+      ]
+
+    ]);
+
+
+  dashboard
+    .getRange("E4")
+    .setFormula(
+      "=COUNTA(Enquiries!A2:A)"
+    );
+
+
+  dashboard
+    .getRange("E5")
+    .setFormula(
+      "=SUM(Enquiries!L2:L)"
+    );
+
+
+  dashboard
+    .getRange("E6")
+    .setFormula(
+      '=SUMIF(Enquiries!C:C,"QUOTED",Enquiries!P:P)'
+    );
+
+
+  dashboard
+    .getRange("E7")
+    .setFormula(
+      '=SUMIF(Enquiries!C:C,"WON",Enquiries!P:P)'
+    );
+
+
+  dashboard
+    .autoResizeColumns(
+      1,
+      5
+    );
+
+}
+
+
+/* =========================================================
+   SHEET HELPERS
+   ========================================================= */
+
+function getOrCreateSheet(
+  ss,
+  name
+) {
+
+  let sheet =
+    ss.getSheetByName(name);
+
+
+  if (!sheet) {
+
+    sheet =
+      ss.insertSheet(name);
+
+  }
+
+
+  return sheet;
+
+}
+
+
+function ensureHeaders(
+  sheet,
+  headers
+) {
+
+  if (
+    sheet.getLastRow() === 0
+  ) {
+
+    sheet
+      .getRange(
+        1,
+        1,
+        1,
+        headers.length
+      )
+      .setValues([
+        headers
+      ]);
+
+    return;
+
+  }
+
+
+  const existing =
+    sheet
+      .getRange(
+        1,
+        1,
+        1,
+        Math.max(
+          sheet.getLastColumn(),
+          headers.length
+        )
+      )
+      .getValues()[0];
+
+
+  headers.forEach(
+    (header, index) => {
+
+      if (
+        String(
+          existing[index] || ""
+        ).trim() === ""
+      ) {
+
+        sheet
+          .getRange(
+            1,
+            index + 1
+          )
+          .setValue(header);
+
+      }
+
+    }
+  );
+
+}
+
+
+function formatHeader(
+  sheet,
+  columnCount
+) {
+
+  sheet
+    .getRange(
+      1,
+      1,
+      1,
+      columnCount
+    )
+    .setFontWeight("bold");
+
+  sheet
+    .setFrozenRows(1);
+
+}
+
+
+/* =========================================================
+   MONEY FORMAT
+   ========================================================= */
+
+function formatMoney(
+  value
+) {
+
+  return Number(
+    value || 0
+  ).toLocaleString(
+    "en-IN",
+    {
+      maximumFractionDigits: 0
+    }
+  );
+
+}
+
+function createTestQuotation() {
+
+  const enquiryId = "CI-2026-0006";
+
+  const quoteData = {
+    deliveryCharges: 8000,
+    otherCharges: 0,
+    notes: "Test quotation",
+    validUntil: new Date(
+      new Date().getTime() +
+      15 * 24 * 60 * 60 * 1000
+    )
+  };
+
+  const quoteItems = [
+    {
+      productId: "test-product-01",
+      product: "Ceneria Planter",
+      size: "Small",
+      quantity: 2,
+      quotedUnitPrice: 8000
+    },
+    {
+      productId: "test-product-01",
+      product: "Ceneria Planter",
+      size: "Large",
+      quantity: 1,
+      quotedUnitPrice: 13500
+    }
+  ];
+
+  const result = createQuote(
+    enquiryId,
+    quoteData,
+    quoteItems
+  );
+
+  Logger.log(
+    JSON.stringify(
+      result,
+      null,
+      2
+    )
+  );
+}

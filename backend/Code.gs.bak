@@ -1,0 +1,330 @@
+const CRM_CONFIG = {
+  pricingSheet: 'Product Pricing',
+  enquiriesSheet: 'Enquiries',
+  itemsSheet: 'Enquiry Items',
+  dashboardSheet: 'Dashboard',
+  businessName: 'Concrete Ideas'
+};
+
+// Initial internal base prices only. Replace these values in Product Pricing after setup.
+const PRICING_SEED = [
+  ['ant_1', 'Ceneria Planter', 'Small', 8500, true],
+  ['ant_1', 'Ceneria Planter', 'Medium', 11000, true],
+  ['ant_1', 'Ceneria Planter', 'Large', 15000, true],
+  ['terraviva-planter', 'Terraviva Planter', 'Small', 18000, true],
+  ['terraviva-planter', 'Terraviva Planter', 'Medium', 25000, true],
+  ['terraviva-planter', 'Terraviva Planter', 'Large', 35000, true],
+  ['sereno-bowl', 'Sereno Bowl', 'Small', 6500, true],
+  ['sereno-bowl', 'Sereno Bowl', 'Medium', 8500, true],
+  ['sereno-bowl', 'Sereno Bowl', 'Large', 11500, true],
+  ['rocky-cluster', 'Rocky Cluster', 'Small', 9000, true],
+  ['rocky-cluster', 'Rocky Cluster', 'Medium', 13000, true],
+  ['rocky-cluster', 'Rocky Cluster', 'Large', 18000, true],
+  ['cavallo-console', 'Cavallo Console', 'Small', 14000, true],
+  ['cavallo-console', 'Cavallo Console', 'Medium', 19000, true],
+  ['cavallo-console', 'Cavallo Console', 'Large', 26000, true],
+  ['canon-pendant', 'Canon Pendant', 'Small', 7500, true],
+  ['canon-pendant', 'Canon Pendant', 'Medium', 10000, true],
+  ['canon-pendant', 'Canon Pendant', 'Large', 13500, true],
+  ['pendant-lamp', 'Monolith Pendant', 'Small', 8500, true],
+  ['pendant-lamp', 'Monolith Pendant', 'Medium', 11500, true],
+  ['pendant-lamp', 'Monolith Pendant', 'Large', 15000, true],
+  ['wall-lamp', 'Arc Wall Lamp', 'Small', 6500, true],
+  ['wall-lamp', 'Arc Wall Lamp', 'Medium', 8500, true],
+  ['wall-lamp', 'Arc Wall Lamp', 'Large', 11000, true],
+  ['maldives-cluster', 'Maldives Cluster', 'Small', 12000, true],
+  ['maldives-cluster', 'Maldives Cluster', 'Medium', 17000, true],
+  ['maldives-cluster', 'Maldives Cluster', 'Large', 24000, true],
+  ['courtyard-fountain', 'Courtyard Fountain', 'Small', 28000, true],
+  ['courtyard-fountain', 'Courtyard Fountain', 'Medium', 42000, true],
+  ['courtyard-fountain', 'Courtyard Fountain', 'Large', 60000, true],
+  ['hotel-entry', 'Entry Plinths', 'Small', 18000, true],
+  ['hotel-entry', 'Entry Plinths', 'Medium', 26000, true],
+  ['hotel-entry', 'Entry Plinths', 'Large', 38000, true],
+  ['wall-art-panel', 'Relief Wall Panel', 'Small', 12000, true],
+  ['wall-art-panel', 'Relief Wall Panel', 'Medium', 18000, true],
+  ['wall-art-panel', 'Relief Wall Panel', 'Large', 26000, true]
+];
+
+const ENQUIRY_HEADERS = [
+  'Enquiry ID', 'Created At', 'Status', 'Name', 'Company / Studio',
+  'Email', 'Phone / WhatsApp', 'Project', 'Delivery Location', 'Message',
+  'Item Count', 'Base Value', 'Last Updated', 'Internal Notes'
+];
+
+const ITEM_HEADERS = [
+  'Enquiry ID', 'Product ID', 'Product', 'Size', 'Dimension', 'Weight',
+  'Quantity', 'Base Price', 'Base Value'
+];
+
+const PRICING_HEADERS = [
+  'Product ID', 'Product', 'Size', 'Base Price (₹)', 'Active'
+];
+
+function setupConcreteIdeasCRM() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  const enquiries = ensureSheetWithHeaders(ss, CRM_CONFIG.enquiriesSheet, ENQUIRY_HEADERS);
+  const items = ensureSheetWithHeaders(ss, CRM_CONFIG.itemsSheet, ITEM_HEADERS);
+  const pricing = ensureSheetWithHeaders(ss, CRM_CONFIG.pricingSheet, PRICING_HEADERS);
+
+  seedPricingIfNeeded(pricing);
+  formatEnquiriesSheet(enquiries);
+  formatItemsSheet(items);
+  formatPricingSheet(pricing);
+  createDashboard(ss);
+
+  SpreadsheetApp.getUi().alert(
+    'Concrete Ideas CRM setup complete.\n\n' +
+    'Product Pricing, status tracking, internal notes and Dashboard are ready.'
+  );
+}
+
+function ensureSheetWithHeaders(ss, sheetName, requiredHeaders) {
+  let sheet = ss.getSheetByName(sheetName);
+  if (!sheet) sheet = ss.insertSheet(sheetName);
+
+  const lastColumn = Math.max(sheet.getLastColumn(), requiredHeaders.length);
+  const existing = sheet.getRange(1, 1, 1, lastColumn).getValues()[0];
+
+  requiredHeaders.forEach((header, index) => {
+    if (!existing[index]) sheet.getRange(1, index + 1).setValue(header);
+  });
+
+  return sheet;
+}
+
+function seedPricingIfNeeded(sheet) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow > 1) return;
+
+  sheet.getRange(2, 1, PRICING_SEED.length, PRICING_HEADERS.length)
+    .setValues(PRICING_SEED);
+}
+
+function formatEnquiriesSheet(sheet) {
+  sheet.setFrozenRows(1);
+  sheet.getRange(1, 1, 1, ENQUIRY_HEADERS.length)
+    .setFontWeight('bold');
+
+  const statusRange = sheet.getRange('C2:C1000');
+  const rule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(['NEW', 'CONTACTED', 'QUOTED', 'FOLLOW-UP', 'WON', 'LOST'], true)
+    .setAllowInvalid(false)
+    .build();
+  statusRange.setDataValidation(rule);
+
+  sheet.getRange('B2:B1000').setNumberFormat('dd-mmm-yyyy hh:mm');
+  sheet.getRange('L2:L1000').setNumberFormat('₹#,##0');
+  sheet.getRange('M2:M1000').setNumberFormat('dd-mmm-yyyy hh:mm');
+  sheet.autoResizeColumns(1, ENQUIRY_HEADERS.length);
+  sheet.setColumnWidth(15, 320);
+}
+
+function formatItemsSheet(sheet) {
+  sheet.setFrozenRows(1);
+  sheet.getRange(1, 1, 1, ITEM_HEADERS.length).setFontWeight('bold');
+  sheet.getRange('H2:I10000').setNumberFormat('₹#,##0');
+  sheet.autoResizeColumns(1, ITEM_HEADERS.length);
+}
+
+function formatPricingSheet(sheet) {
+  sheet.setFrozenRows(1);
+  sheet.getRange(1, 1, 1, PRICING_HEADERS.length).setFontWeight('bold');
+  sheet.getRange('D2:D1000').setNumberFormat('₹#,##0');
+  sheet.getRange('E2:E1000').insertCheckboxes();
+  sheet.autoResizeColumns(1, PRICING_HEADERS.length);
+  sheet.setColumnWidth(2, 220);
+}
+
+function createDashboard(ss) {
+  let sheet = ss.getSheetByName(CRM_CONFIG.dashboardSheet);
+  if (!sheet) sheet = ss.insertSheet(CRM_CONFIG.dashboardSheet);
+  sheet.clear();
+
+  sheet.getRange('A1').setValue('CONCRETE IDEAS — ENQUIRY DASHBOARD');
+  sheet.getRange('A1').setFontSize(18).setFontWeight('bold');
+
+  sheet.getRange('A3:B9').setValues([
+    ['Metric', 'Count'],
+    ['New', ''],
+    ['Contacted', ''],
+    ['Quoted', ''],
+    ['Follow-up', ''],
+    ['Won', ''],
+    ['Lost', '']
+  ]);
+
+  sheet.getRange('B4').setFormula('=COUNTIF(Enquiries!C:C,"NEW")');
+  sheet.getRange('B5').setFormula('=COUNTIF(Enquiries!C:C,"CONTACTED")');
+  sheet.getRange('B6').setFormula('=COUNTIF(Enquiries!C:C,"QUOTED")');
+  sheet.getRange('B7').setFormula('=COUNTIF(Enquiries!C:C,"FOLLOW-UP")');
+  sheet.getRange('B8').setFormula('=COUNTIF(Enquiries!C:C,"WON")');
+  sheet.getRange('B9').setFormula('=COUNTIF(Enquiries!C:C,"LOST")');
+
+  sheet.getRange('D3:E6').setValues([
+    ['Pipeline Metric', 'Value'],
+    ['Quoted Base Value', ''],
+    ['Follow-up Base Value', ''],
+    ['Won Base Value', '']
+  ]);
+  sheet.getRange('E4').setFormula('=SUMIF(Enquiries!C:C,"QUOTED",Enquiries!L:L)');
+  sheet.getRange('E5').setFormula('=SUMIF(Enquiries!C:C,"FOLLOW-UP",Enquiries!L:L)');
+  sheet.getRange('E6').setFormula('=SUMIF(Enquiries!C:C,"WON",Enquiries!L:L)');
+  sheet.getRange('E4:E6').setNumberFormat('₹#,##0');
+
+  sheet.getRange('A12:I12').setValues([[
+    'Enquiry ID', 'Created At', 'Client', 'Location', 'Items', 'Base Value', 'Status', 'Internal Notes'
+  ]]);
+  sheet.getRange('A12:I12').setFontWeight('bold');
+
+  sheet.getRange('A13').setFormula(
+    '=IFERROR(SORT(FILTER({Enquiries!A2:A,Enquiries!B2:B,Enquiries!D2:D&IF(Enquiries!E2:E<>""," — "&Enquiries!E2:E,""),Enquiries!I2:I,Enquiries!K2:K,Enquiries!L2:L,Enquiries!C2:C,Enquiries!N2:N},Enquiries!A2:A<>""),2,FALSE),"")'
+  );
+  sheet.getRange('F13:F1000').setNumberFormat('₹#,##0');
+  sheet.setFrozenRows(12);
+  sheet.autoResizeColumns(1, 8);
+  sheet.setColumnWidth(9, 320);
+}
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.parameter.payload);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const enquiriesSheet = ss.getSheetByName(CRM_CONFIG.enquiriesSheet);
+    const itemsSheet = ss.getSheetByName(CRM_CONFIG.itemsSheet);
+
+    if (!enquiriesSheet || !itemsSheet) throw new Error('CRM sheets are not configured. Run setupConcreteIdeasCRM().');
+
+    const customer = data.customer || {};
+    const items = Array.isArray(data.items) ? data.items : [];
+    if (!customer.name) throw new Error('Customer name is required.');
+    if (!customer.email) throw new Error('Customer email is required.');
+    if (!items.length) throw new Error('Enquiry contains no products.');
+
+    const enquiryId = generateEnquiryId();
+    const now = new Date();
+    const pricedItems = items.map(item => {
+      const basePrice = lookupBasePrice(item.productId, item.size);
+      const quantity = Math.max(0, Number(item.quantity || 0));
+      return {...item, quantity, basePrice, baseValue: basePrice * quantity};
+    });
+
+    const itemCount = pricedItems.reduce((sum, item) => sum + item.quantity, 0);
+    const baseValue = pricedItems.reduce((sum, item) => sum + item.baseValue, 0);
+
+    enquiriesSheet.appendRow([
+      enquiryId, now, 'NEW', customer.name || '', customer.company || '',
+      customer.email || '', customer.phone || '', customer.project || '',
+      customer.location || '', customer.message || '', itemCount, baseValue, now, ''
+    ]);
+
+    pricedItems.forEach(item => itemsSheet.appendRow([
+      enquiryId, item.productId || '', item.product || '', item.size || '',
+      item.dimension || '', item.weight || '', item.quantity, item.basePrice, item.baseValue
+    ]));
+
+    sendBusinessNotificationEmail(enquiryId, customer, pricedItems, baseValue);
+    sendCustomerConfirmationEmail(enquiryId, customer, pricedItems);
+
+    return createResultPage(true, enquiryId);
+  } catch (error) {
+    return createResultPage(false, '', error.message);
+  }
+}
+
+function lookupBasePrice(productId, size) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CRM_CONFIG.pricingSheet);
+  if (!sheet) throw new Error('Product Pricing sheet not found.');
+
+  const values = sheet.getDataRange().getValues();
+  const targetProduct = String(productId || '').trim();
+  const targetSize = String(size || '').trim().toLowerCase();
+
+  for (let i = 1; i < values.length; i++) {
+    const row = values[i];
+    const active = row[4] === true || String(row[4]).toLowerCase() === 'true';
+    if (String(row[0]).trim() === targetProduct && String(row[2]).trim().toLowerCase() === targetSize && active) {
+      const price = Number(row[3]);
+      if (!Number.isFinite(price) || price < 0) throw new Error(`Invalid base price for ${targetProduct} / ${size}.`);
+      return price;
+    }
+  }
+
+  throw new Error(`No active base price found for product ${productId}, size ${size}.`);
+}
+
+function generateEnquiryId() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const props = PropertiesService.getScriptProperties();
+    const year = new Date().getFullYear();
+    const storedYear = props.getProperty('ENQUIRY_COUNTER_YEAR');
+    let counter = Number(props.getProperty('ENQUIRY_COUNTER') || 0);
+    if (storedYear !== String(year)) counter = 0;
+    counter++;
+    props.setProperty('ENQUIRY_COUNTER', String(counter));
+    props.setProperty('ENQUIRY_COUNTER_YEAR', String(year));
+    return `CI-${year}-${String(counter).padStart(4, '0')}`;
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function sendBusinessNotificationEmail(enquiryId, customer, items, baseValue) {
+  const recipient = Session.getEffectiveUser().getEmail();
+  let itemText = '';
+  items.forEach(item => {
+    itemText += `${item.product || ''} — ${item.size || ''} × ${item.quantity || 0} | Base: ₹${formatMoney(item.basePrice)} | Value: ₹${formatMoney(item.baseValue)}\n`;
+  });
+
+  const subject = `[NEW] Concrete Ideas Enquiry ${enquiryId}`;
+  const body =
+    `New enquiry received.\n\n` +
+    `ENQUIRY\nID: ${enquiryId}\n\n` +
+    `CUSTOMER\n` +
+    `Name: ${customer.name || ''}\nCompany / Studio: ${customer.company || ''}\n` +
+    `Email: ${customer.email || ''}\nPhone: ${customer.phone || ''}\n` +
+    `Project: ${customer.project || ''}\nLocation: ${customer.location || ''}\n\n` +
+    `PRODUCTS\n${itemText}\n` +
+    `BASE VALUE: ₹${formatMoney(baseValue)}\n`;
+
+  GmailApp.sendEmail(recipient, subject, body);
+}
+
+function sendCustomerConfirmationEmail(enquiryId, customer, items) {
+  if (!customer.email) return;
+  let itemText = '';
+  items.forEach(item => {
+    itemText += `${item.product || ''} — ${item.size || ''} × ${item.quantity || 0}\n`;
+  });
+
+  const subject = `Concrete Ideas — Enquiry ${enquiryId}`;
+  const body =
+    `Dear ${customer.name || 'Customer'},\n\n` +
+    `Thank you for your enquiry with Concrete Ideas.\n\n` +
+    `Your enquiry has been received successfully.\n\n` +
+    `ENQUIRY ID\n${enquiryId}\n\n` +
+    `YOUR ENQUIRY\n${itemText}\n` +
+    `We will review your requirements and get back to you shortly with pricing and delivery details.\n\n` +
+    `If you need to make any changes or have additional requirements, please reply to this email and mention your enquiry ID ${enquiryId}.\n\n` +
+    `Regards,\nConcrete Ideas\nhttps://concreteideas.co`;
+
+  GmailApp.sendEmail(customer.email, subject, body);
+}
+
+function formatMoney(value) {
+  return Number(value || 0).toLocaleString('en-IN', {maximumFractionDigits: 0});
+}
+
+function createResultPage(success, enquiryId, errorMessage) {
+  const result = JSON.stringify({
+    type: 'concreteideas-enquiry-result',
+    success,
+    enquiryId: enquiryId || '',
+    error: errorMessage || ''
+  });
+  const html = `<!DOCTYPE html><html><head><base target="_top"></head><body><script>window.top.postMessage(${result}, '*');</script></body></html>`;
+  return HtmlService.createHtmlOutput(html).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
