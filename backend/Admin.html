@@ -90,6 +90,7 @@
           <button class="btn" onclick="resetPrices()">RESET PRICES</button>
           <button id="draftBtn" class="btn" onclick="saveQuotation('DRAFT')">SAVE DRAFT</button>
           <button id="createBtn" class="btn accent" onclick="saveQuotation('READY')">${modeQuote?'CREATE NEW QUOTATION':'FINALIZE QUOTATION'}</button>
+          ${modeQuote && modeQuote.status==='READY' ? `<button id="pdfBtn" class="btn primary" onclick="generatePdf('${esc(modeQuote.quoteId)}')">GENERATE PDF</button>` : modeQuote && modeQuote.status==='DRAFT' ? `<button id="pdfBtn" class="btn primary" onclick="generatePdf('${esc(modeQuote.quoteId)}')">GENERATE PDF</button>` : ''}
         </div>
       </div>
       <div class="history"><div class="section-title">QUOTATION HISTORY</div><div id="history"><div class="meta">Loading…</div></div></div>`;
@@ -101,13 +102,26 @@
   function loadHistory(id,current){google.script.run.withSuccessHandler(rows=>{document.getElementById('history').innerHTML=rows.length?rows.map(q=>`<div class="history-row" onclick="openQuote('${esc(q.quoteId)}')"><div class="history-left"><span class="history-id">${esc(q.quoteId)}</span><span>V${q.version}</span>${q.quoteId===current?'<span class="history-current">CURRENT VIEW</span>':''}<span class="badge ${String(q.status).toLowerCase()}">${esc(q.status)}</span></div><span>${money(q.finalQuote)}</span></div>`).join(''):'<div class="meta">No quotations yet.</div>'}).withFailureHandler(e=>{document.getElementById('history').innerHTML='<div class="toast error">'+esc(e.message)+'</div>'}).getAdminQuoteHistory(id)}
   function openQuote(id){google.script.run.withSuccessHandler(q=>{viewQuoteId=q.quoteId;renderDetail(q)}).withFailureHandler(e=>toast(e.message||'Could not load quotation.',true)).getAdminQuote(id)}
   function startNewQuote(){viewQuoteId=null;renderDetail()}
+  function generatePdf(quoteId){
+    if(!quoteId||busy)return;
+    const b=document.getElementById('pdfBtn');
+    if(b){b.disabled=true;b.textContent='GENERATING…';}
+    google.script.run.withSuccessHandler(r=>{
+      if(b){b.disabled=false;b.textContent='GENERATE PDF';}
+      toast('PDF generated successfully');
+      if(r&&r.url) window.open(r.url,'_blank');
+    }).withFailureHandler(e=>{
+      if(b){b.disabled=false;b.textContent='GENERATE PDF';}
+      toast(e.message||'Could not generate PDF.',true);
+    }).generateQuotePdfFromAdmin(quoteId);
+  }
   function saveQuotation(status){
     if(busy||!selected)return;
     const items=selected.items.map((it,i)=>({productId:it.productId,product:it.product,size:it.size,dimension:it.dimension,weight:it.weight,quantity:it.quantity,quotedUnitPrice:Number(document.querySelector(`.price[data-index="${i}"]`).value||0)}));
     if(items.some(x=>x.quotedUnitPrice<=0)){toast('Enter a quoted unit price for every item.',true);return}
     const quoteData={deliveryCharges:Number(document.getElementById('delivery').value||0),otherCharges:Number(document.getElementById('other').value||0),notes:document.getElementById('notes').value||'',validUntil:document.getElementById('validUntil').value,status:status};
     busy=true;const b=status==='DRAFT'?document.getElementById('draftBtn'):document.getElementById('createBtn');b.disabled=true;b.textContent=status==='DRAFT'?'SAVING…':'FINALIZING…';
-    google.script.run.withSuccessHandler(r=>{busy=false;b.disabled=false;b.textContent=status==='DRAFT'?'SAVE DRAFT':'FINALIZE QUOTATION';toast(r.quoteId+' saved as '+status);loadHistory(selected.enquiryId,r.quoteId);if(status==='READY'){selected.status='QUOTED';renderList()} }).withFailureHandler(e=>{busy=false;b.disabled=false;b.textContent=status==='DRAFT'?'SAVE DRAFT':'FINALIZE QUOTATION';toast(e.message||'Could not save quotation.',true)}).createQuoteFromAdmin(selected.enquiryId,quoteData,items);
+    google.script.run.withSuccessHandler(r=>{busy=false;b.disabled=false;b.textContent=status==='DRAFT'?'SAVE DRAFT':'FINALIZE QUOTATION';toast(r.quoteId+' saved as '+status);loadHistory(selected.enquiryId,r.quoteId);if(status==='READY'){selected.status='QUOTED';renderList();google.script.run.withSuccessHandler(q=>{viewQuoteId=q.quoteId;renderDetail(q)}).getAdminQuote(r.quoteId)} }).withFailureHandler(e=>{busy=false;b.disabled=false;b.textContent=status==='DRAFT'?'SAVE DRAFT':'FINALIZE QUOTATION';toast(e.message||'Could not save quotation.',true)}).createQuoteFromAdmin(selected.enquiryId,quoteData,items);
   }
   load();
 </script>

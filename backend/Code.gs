@@ -1422,6 +1422,214 @@ function toIsoDate(value) {
   return isNaN(d) ? String(value) : d.toISOString();
 }
 
+
+/* =========================================================
+   QUOTATION PDF GENERATION
+   ========================================================= */
+
+/**
+ * Generates a customer-facing PDF for an existing quotation.
+ *
+ * The PDF intentionally excludes internal base prices,
+ * discount percentages, discount amounts and internal notes.
+ * The generated PDF is saved in a Drive folder named
+ * "Concrete Ideas Quotations" and the file URL is stored
+ * against the quotation when a PDF URL column exists.
+ */
+function generateQuotePdf(quoteId) {
+
+  if (!quoteId) throw new Error("Quote ID is required.");
+
+  const quote = getAdminQuote(quoteId);
+  if (!quote) throw new Error("Quotation not found: " + quoteId);
+  if (!quote.items || quote.items.length === 0) {
+    throw new Error("Quotation has no items.");
+  }
+
+  const enquiry = getAdminEnquiryById(quote.enquiryId);
+  if (!enquiry) throw new Error("Enquiry not found: " + quote.enquiryId);
+
+  const folder = getOrCreateQuotationFolder_();
+
+  const doc = DocumentApp.create(
+    CONFIG.BUSINESS_NAME + " - Quotation " + quote.quoteId
+  );
+
+  try {
+    const body = doc.getBody();
+    body.clear();
+    body.setMarginTop(40);
+    body.setMarginBottom(40);
+    body.setMarginLeft(48);
+    body.setMarginRight(48);
+
+    const title = body.appendParagraph(CONFIG.BUSINESS_NAME.toUpperCase());
+    title.setHeading(DocumentApp.ParagraphHeading.TITLE);
+    title.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+
+    const subtitle = body.appendParagraph("QUOTATION");
+    subtitle.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+    subtitle.setBold(true);
+
+    body.appendParagraph("");
+
+    const meta = body.appendTable([
+      ["Quotation", quote.quoteId],
+      ["Date", formatQuoteDate_(quote.createdAt)],
+      ["Valid Until", formatQuoteDate_(quote.validUntil)],
+      ["Project", enquiry.project || "—"]
+    ]);
+    meta.setBorderWidth(0);
+
+    body.appendParagraph("");
+
+    const customer = body.appendParagraph("TO");
+    customer.setBold(true);
+    body.appendParagraph(enquiry.name || "");
+    if (enquiry.company) body.appendParagraph(enquiry.company);
+    if (enquiry.email) body.appendParagraph(enquiry.email);
+    if (enquiry.phone) body.appendParagraph(enquiry.phone);
+    if (enquiry.location) body.appendParagraph(enquiry.location);
+
+    body.appendParagraph("");
+
+    const table = body.appendTable();
+    const header = table.appendTableRow();
+    ["Product", "Size", "Dimensions", "Weight", "Qty", "Unit Price", "Value"]
+      .forEach(text => {
+        const cell = header.appendTableCell(text);
+        cell.setBackgroundColor("#eee9e2");
+        cell.getChild(0).asParagraph().setBold(true);
+      });
+
+    quote.items.forEach(item => {
+      const row = table.appendTableRow();
+      [
+        item.product || "",
+        item.size || "",
+        item.dimension || "",
+        item.weight || "",
+        String(item.quantity || 0),
+        formatCurrency_(item.quotedUnitPrice),
+        formatCurrency_(item.quotedValue)
+      ].forEach(text => row.appendTableCell(text));
+    });
+
+    body.appendParagraph("");
+
+    const totals = body.appendTable([
+      ["Products", formatCurrency_(sumQuoteItems_(quote.items))],
+      ["Delivery", formatCurrency_(quote.deliveryCharges)],
+      ["Other charges", formatCurrency_(quote.otherCharges)],
+      ["TOTAL", formatCurrency_(quote.finalQuote)]
+    ]);
+    totals.setBorderWidth(0);
+    const totalRow = totals.getRow(3);
+    totalRow.getCell(0).getChild(0).asParagraph().setBold(true);
+    totalRow.getCell(1).getChild(0).asParagraph().setBold(true);
+
+    body.appendParagraph("");
+    const footer = body.appendParagraph(
+      "Thank you for considering Concrete Ideas."
+    );
+    footer.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+
+    body.appendParagraph(CONFIG.WEBSITE)
+      .setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+
+    doc.saveAndClose();
+
+    Utilities.sleep(500);
+
+    const docFile = DriveApp.getFileById(doc.getId());
+    const pdfBlob = docFile
+      .getBlob()
+      .setName(quote.quoteId + ".pdf");
+
+    const pdfFile = folder.createFile(pdfBlob);
+    pdfFile.setName(quote.quoteId + ".pdf");
+
+    docFile.setTrashed(true);
+
+    storeQuotePdfUrl_(quoteId, pdfFile.getUrl());
+
+    return {
+      success: true,
+      quoteId: quoteId,
+      fileId: pdfFile.getId(),
+      fileName: pdfFile.getName(),
+      url: pdfFile.getUrl()
+    };
+
+  } catch (error) {
+    try { DriveApp.getFileById(doc.getId()).setTrashed(true); } catch (_) {}
+    throw error;
+  }
+}
+
+function getAdminEnquiryById(enquiryId) {
+  const enquiries = getAdminEnquiries();
+  return enquiries.find(e => e.enquiryId === enquiryId) || null;
+}
+
+function getOrCreateQuotationFolder_() {
+  const folders = DriveApp.getFoldersByName("Concrete Ideas Quotations");
+  return folders.hasNext()
+    ? folders.next()
+    : DriveApp.createFolder("Concrete Ideas Quotations");
+}
+
+function formatQuoteDate_(value) {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (isNaN(d)) return String(value);
+  return Utilities.formatDate(
+    d,
+    Session.getScriptTimeZone() || "Asia/Kolkata",
+    "dd MMM yyyy"
+  );
+}
+
+function formatCurrency_(value) {
+  const n = Number(value || 0);
+  return "₹" + n.toLocaleString("en-IN", {
+    maximumFractionDigits: 0
+  });
+}
+
+function sumQuoteItems_(items) {
+  return (items || []).reduce(
+    (sum, item) => sum + Number(item.quotedValue || 0),
+    0
+  );
+}
+
+function storeQuotePdfUrl_(quoteId, url) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Quotes");
+  if (!sheet) return;
+
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
+  let col = headers.indexOf("PDF URL") + 1;
+
+  if (col === 0) {
+    col = sheet.getLastColumn() + 1;
+    sheet.getRange(1, col).setValue("PDF URL");
+    sheet.getRange(1, col).setFontWeight("bold");
+  }
+
+  const values = sheet.getDataRange().getValues();
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i][0]).trim() === String(quoteId).trim()) {
+      sheet.getRange(i + 1, col).setValue(url);
+      return;
+    }
+  }
+}
+
+function generateQuotePdfFromAdmin(quoteId) {
+  return generateQuotePdf(quoteId);
+}
+
 /* =========================================================
    CRM SETUP
    ========================================================= */
