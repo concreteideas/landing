@@ -683,6 +683,51 @@ function createResultPage(
     quoteData = quoteData || {};
 
     /* -----------------------------------------------------
+       Normalize quotation items
+
+       The same product + size is one quotation line. This
+       protects against duplicate historical Enquiry Items
+       rows or duplicate client payloads being billed twice.
+       Quantities are combined. Conflicting quoted prices for
+       the same variant are rejected rather than guessed.
+       ----------------------------------------------------- */
+
+    const normalizedQuoteItems = [];
+    const normalizedByKey = {};
+
+    quoteItems.forEach(item => {
+      const productId = String(item.productId || '').trim();
+      const size = String(item.size || '').trim();
+      const key = productId.toLowerCase() + '|' + size.toLowerCase();
+      const quantity = Number(item.quantity || 0);
+      const quotedUnitPrice = Number(item.quotedUnitPrice);
+
+      if (!productId || !size) {
+        throw new Error('Every quotation item must have a product ID and size.');
+      }
+
+      if (!Number.isFinite(quantity) || quantity <= 0) {
+        throw new Error('Invalid quantity for ' + (item.product || productId) + ' — ' + size);
+      }
+
+      if (!Number.isFinite(quotedUnitPrice) || quotedUnitPrice < 0) {
+        throw new Error('Invalid quoted price for ' + (item.product || productId) + ' — ' + size);
+      }
+
+      if (normalizedByKey[key]) {
+        if (Math.abs(normalizedByKey[key].quotedUnitPrice - quotedUnitPrice) > 0.001) {
+          throw new Error('Conflicting quoted prices for ' + (item.product || productId) + ' — ' + size + '.');
+        }
+        normalizedByKey[key].quantity += quantity;
+      } else {
+        normalizedByKey[key] = { ...item, productId, size, quantity, quotedUnitPrice };
+        normalizedQuoteItems.push(normalizedByKey[key]);
+      }
+    });
+
+    quoteItems = normalizedQuoteItems;
+
+    /* -----------------------------------------------------
        Build lookup from original enquiry items
        ----------------------------------------------------- */
 
@@ -1290,16 +1335,29 @@ function getAdminEnquiries() {
     let basePrice = 0;
     try { basePrice = getBasePrice(productId, size); } catch (_) { basePrice = Number(r[itemCol("Base Price")] || 0); }
 
-    byEnquiry[id].push({
-      productId,
-      product: String(r[itemCol("Product")] || ""),
-      size,
-      dimension: String(r[itemCol("Dimension")] || ""),
-      weight: String(r[itemCol("Weight")] || ""),
-      quantity: Number(r[itemCol("Quantity")] || 0),
-      basePrice,
-      baseValue: basePrice * Number(r[itemCol("Quantity")] || 0)
-    });
+    const quantity = Number(r[itemCol("Quantity")] || 0);
+    const key = productId.toLowerCase() + "|" + size.toLowerCase();
+    const existing = byEnquiry[id].find(x => x.key === key);
+
+    // A product/size should appear only once in the internal quotation UI.
+    // If historical data contains duplicate rows, combine their quantities
+    // instead of displaying/billing the same variant twice.
+    if (existing) {
+      existing.quantity += quantity;
+      existing.baseValue = existing.basePrice * existing.quantity;
+    } else {
+      byEnquiry[id].push({
+        key,
+        productId,
+        product: String(r[itemCol("Product")] || ""),
+        size,
+        dimension: String(r[itemCol("Dimension")] || ""),
+        weight: String(r[itemCol("Weight")] || ""),
+        quantity,
+        basePrice,
+        baseValue: basePrice * quantity
+      });
+    }
   }
 
   return values.slice(1).map(r => {
@@ -1628,6 +1686,45 @@ function storeQuotePdfUrl_(quoteId, url) {
 
 function generateQuotePdfFromAdmin(quoteId) {
   return generateQuotePdf(quoteId);
+}
+
+function sendQuoteFromAdmin(quoteId) {
+  if (!quoteId) throw new Error("Quote ID is required.");
+  const lock = LockService.getScriptLock(); lock.waitLock(30000);
+  try {
+    const quote = getAdminQuote(quoteId);
+    if (!quote) throw new Error("Quotation not found: " + quoteId);
+    const status = String(quote.status || "").toUpperCase();
+    if (status === "SENT") throw new Error("This quotation has already been sent.");
+    if (status !== "READY") throw new Error("Only a READY quotation can be sent.");
+    const enquiry = getAdminEnquiryById(quote.enquiryId);
+    if (!enquiry) throw new Error("Enquiry not found: " + quote.enquiryId);
+    const recipient = String(enquiry.email || "").trim();
+    if (!recipient) throw new Error("No customer email address is available for " + quote.enquiryId + ".");
+    const pdfResult = generateQuotePdf(quoteId);
+    const pdfFile = DriveApp.getFileById(pdfResult.fileId);
+    const customerName = String(enquiry.name || "").trim();
+    const greeting = customerName ? "Dear " + customerName + "," : "Dear Sir / Madam,";
+    const projectLine = enquiry.project ? "\nProject: " + enquiry.project : "";
+    const body = greeting + "\n\n" + "Please find attached our quotation for your project." + projectLine + "\n\n" + "Quotation: " + quote.quoteId + "\n" + "Total: " + formatCurrency_(quote.finalQuote) + "\n" + "Valid until: " + formatQuoteDate_(quote.validUntil) + "\n\n" + "Please feel free to reach out if you would like any changes or have questions." + "\n\nRegards,\nConcrete Ideas\n" + CONFIG.WEBSITE;
+    MailApp.sendEmail({to: recipient, subject: "Quotation " + quote.quoteId + " — Concrete Ideas", body: body, attachments: [pdfFile.getBlob()], name: CONFIG.BUSINESS_NAME});
+    const sentAt = new Date(); markQuoteSent_(quoteId, sentAt);
+    return {success:true, quoteId:quoteId, recipient:recipient, sentAt:sentAt.toISOString(), pdfUrl:pdfResult.url};
+  } finally { lock.releaseLock(); }
+}
+
+function markQuoteSent_(quoteId, sentAt) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Quotes");
+  if (!sheet) throw new Error("Quotes sheet not found.");
+  const values = sheet.getDataRange().getValues(); const headers = values[0].map(String);
+  const statusCol = headers.indexOf("Status") + 1, sentAtCol = headers.indexOf("Sent At") + 1;
+  if (!statusCol || !sentAtCol) throw new Error("Quotes sheet is missing Status or Sent At columns.");
+  for (let i=1;i<values.length;i++) {
+    if (String(values[i][0]).trim() === String(quoteId).trim()) {
+      sheet.getRange(i+1,statusCol).setValue("SENT"); sheet.getRange(i+1,sentAtCol).setValue(sentAt); return;
+    }
+  }
+  throw new Error("Quotation not found: " + quoteId);
 }
 
 /* =========================================================
