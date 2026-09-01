@@ -981,7 +981,7 @@ function createResultPage(
 
       finalQuote,
 
-      quoteData.status || "DRAFT",
+      "DRAFT",
 
       "",
       quoteData.validUntil || "",
@@ -1247,179 +1247,75 @@ function updateEnquiryCurrentQuote(
 }
 
 
-
 /* =========================================================
-   INTERNAL QUOTATION APPLICATION
+   TEST QUOTATION
    ========================================================= */
 
-function doGet() {
-  return HtmlService
-    .createHtmlOutputFromFile("Admin")
-    .setTitle("Concrete Ideas — Internal Sales")
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-}
-
-/**
- * Returns all enquiries for the internal quotation screen.
- * Pricing is resolved from Product Pricing so the UI never
- * has to trust stale values in older Enquiry Items rows.
+/*
+ * Creates a quotation for CI-2026-0006.
+ *
+ * IMPORTANT:
+ * This is a TEST ONLY.
+ *
+ * It uses the first products from the example
+ * quotation we discussed.
  */
-function getAdminEnquiries() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName("Enquiries");
-  const itemSheet = ss.getSheetByName("Enquiry Items");
-  if (!sheet || !itemSheet) throw new Error("CRM sheets not found. Run setupConcreteIdeasCRM().");
 
-  const values = sheet.getDataRange().getValues();
-  const headers = values[0].map(String);
-  const items = itemSheet.getDataRange().getValues();
-  const itemHeaders = items[0].map(String);
+function createTestQuotation() {function createTestQuotation() {
 
-  const col = name => headers.indexOf(name);
-  const itemCol = name => itemHeaders.indexOf(name);
+  const enquiryId =
+    "CI-2026-0006";
 
-  const byEnquiry = {};
-  for (let i = 1; i < items.length; i++) {
-    const r = items[i];
-    const id = String(r[itemCol("Enquiry ID")] || "").trim();
-    if (!id) continue;
-    if (!byEnquiry[id]) byEnquiry[id] = [];
+  const quoteData = {
 
-    const productId = String(r[itemCol("Product ID")] || "").trim();
-    const size = String(r[itemCol("Size")] || "").trim();
-    let basePrice = 0;
-    try { basePrice = getBasePrice(productId, size); } catch (_) { basePrice = Number(r[itemCol("Base Price")] || 0); }
+    deliveryCharges: 8000,
 
-    byEnquiry[id].push({
-      productId,
-      product: String(r[itemCol("Product")] || ""),
-      size,
-      dimension: String(r[itemCol("Dimension")] || ""),
-      weight: String(r[itemCol("Weight")] || ""),
-      quantity: Number(r[itemCol("Quantity")] || 0),
-      basePrice,
-      baseValue: basePrice * Number(r[itemCol("Quantity")] || 0)
-    });
-  }
+    otherCharges: 0,
 
-  return values.slice(1).map(r => {
-    const id = String(r[col("Enquiry ID")] || "").trim();
-    const enquiryItems = byEnquiry[id] || [];
-    const baseValue = enquiryItems.reduce((sum, x) => sum + x.baseValue, 0);
-    return {
-      enquiryId: id,
-      createdAt: toIsoDate(r[col("Created At")]),
-      status: String(r[col("Status")] || "NEW"),
-      name: String(r[col("Name")] || ""),
-      company: String(r[col("Company / Studio")] || ""),
-      email: String(r[col("Email")] || ""),
-      phone: String(r[col("Phone / WhatsApp")] || ""),
-      project: String(r[col("Project")] || ""),
-      location: String(r[col("Delivery Location")] || ""),
-      message: String(r[col("Message")] || ""),
-      itemCount: enquiryItems.reduce((sum, x) => sum + x.quantity, 0),
-      baseValue,
-      currentQuoteId: col("Current Quote ID") >= 0 ? String(r[col("Current Quote ID")] || "") : "",
-      currentQuoteValue: col("Current Quote Value") >= 0 ? Number(r[col("Current Quote Value")] || 0) : 0,
-      items: enquiryItems
-    };
-  }).reverse();
-}
+    notes: "Test quotation",
 
-function getAdminQuoteHistory(enquiryId) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName("Quotes");
-  if (!sheet) return [];
-  const values = sheet.getDataRange().getValues();
-  if (values.length < 2) return [];
-  return values.slice(1)
-    .filter(r => String(r[1]).trim() === String(enquiryId).trim())
-    .map(r => ({
-      quoteId: String(r[0] || ""),
-      enquiryId: String(r[1] || ""),
-      version: Number(r[2] || 0),
-      createdAt: toIsoDate(r[3]),
-      baseValue: Number(r[4] || 0),
-      discountPercent: Number(r[5] || 0),
-      discountAmount: Number(r[6] || 0),
-      deliveryCharges: Number(r[7] || 0),
-      otherCharges: Number(r[8] || 0),
-      finalQuote: Number(r[9] || 0),
-      status: String(r[10] || ""),
-      sentAt: toIsoDate(r[11]),
-      validUntil: toIsoDate(r[12]),
-      notes: String(r[13] || "")
-    }))
-    .sort((a,b) => b.version - a.version);
-}
+    validUntil: new Date(
+      new Date().getTime() +
+      15 * 24 * 60 * 60 * 1000
+    )
 
-function getAdminQuote(quoteId) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const quotesSheet = ss.getSheetByName("Quotes");
-  const itemsSheet = ss.getSheetByName("Quote Items");
-  if (!quotesSheet || !itemsSheet) throw new Error("Quotation sheets not found.");
+  };
 
-  const qValues = quotesSheet.getDataRange().getValues();
-  if (qValues.length < 2) throw new Error("Quotation not found: " + quoteId);
+  const quoteItems = [
 
-  let quote = null;
-  for (let i = 1; i < qValues.length; i++) {
-    const r = qValues[i];
-    if (String(r[0]).trim() === String(quoteId).trim()) {
-      quote = {
-        quoteId: String(r[0] || ""),
-        enquiryId: String(r[1] || ""),
-        version: Number(r[2] || 0),
-        createdAt: toIsoDate(r[3]),
-        baseValue: Number(r[4] || 0),
-        discountPercent: Number(r[5] || 0),
-        discountAmount: Number(r[6] || 0),
-        deliveryCharges: Number(r[7] || 0),
-        otherCharges: Number(r[8] || 0),
-        finalQuote: Number(r[9] || 0),
-        status: String(r[10] || "DRAFT"),
-        sentAt: toIsoDate(r[11]),
-        validUntil: toIsoDate(r[12]),
-        notes: String(r[13] || "")
-      };
-      break;
+    {
+      productId: "test-product-01",
+      product: "Ceneria Planter",
+      size: "Small",
+      quantity: 2,
+      quotedUnitPrice: 8000
+    },
+
+    {
+      productId: "test-product-01",
+      product: "Ceneria Planter",
+      size: "Large",
+      quantity: 1,
+      quotedUnitPrice: 13500
     }
-  }
 
-  if (!quote) throw new Error("Quotation not found: " + quoteId);
+  ];
 
-  const values = itemsSheet.getDataRange().getValues();
-  if (values.length < 2) { quote.items = []; return quote; }
+  const result =
+    createQuote(
+      enquiryId,
+      quoteData,
+      quoteItems
+    );
 
-  quote.items = values.slice(1)
-    .filter(r => String(r[0]).trim() === String(quoteId).trim())
-    .map(r => ({
-      productId: String(r[2] || ""),
-      product: String(r[3] || ""),
-      size: String(r[4] || ""),
-      dimension: String(r[5] || ""),
-      weight: String(r[6] || ""),
-      quantity: Number(r[7] || 0),
-      basePrice: Number(r[8] || 0),
-      baseValue: Number(r[9] || 0),
-      quotedUnitPrice: Number(r[10] || 0),
-      quotedValue: Number(r[11] || 0),
-      discountPercent: Number(r[12] || 0),
-      notes: String(r[13] || "")
-    }));
+  Logger.log(
+    JSON.stringify(
+      result,
+      null,
+      2
+    )
+  );
 
-  return quote;
-}
-
-function createQuoteFromAdmin(enquiryId, quoteData, quoteItems) {
-  return createQuote(enquiryId, quoteData, quoteItems);
-}
-
-function toIsoDate(value) {
-  if (!value) return "";
-  if (Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value)) return value.toISOString();
-  const d = new Date(value);
-  return isNaN(d) ? String(value) : d.toISOString();
 }
 
 /* =========================================================

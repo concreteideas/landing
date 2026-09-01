@@ -3,7 +3,7 @@
   if (!root || !window.ConcreteIdeasEnquiry) return;
 
   const cart = window.ConcreteIdeasEnquiry;
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLZdKgEqCAy5QDCPOJ56MVvjwjXbmHeKYrISMfMy8Pq-BIKcn-4SW8OSw3VYaBpQWb/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyha3yARcJ-X9zvyCfFo-Tti6p-RUdc-YLXmwe3thdeDK9Gax8iLthhWwt4PASVfTO2/exec';
   const productUrl = (id) => `../products/product.html?id=${encodeURIComponent(id)}`;
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 
