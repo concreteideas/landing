@@ -3,139 +3,38 @@
 <head>
   <base target="_top">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Concrete Ideas — Internal Sales</title>
+  <title>Concrete Ideas — Order Review</title>
   <style>
-    :root{--ink:#25221f;--muted:#77716b;--line:#ddd7d0;--paper:#fff;--warm:#f5f2ed;--accent:#8b3427;--soft:#eee9e2;--green:#466b50;--blue:#536879}
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--warm);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:13px}
-    header{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 26px;position:sticky;top:0;z-index:5}
-    .brand{letter-spacing:3px;font-size:17px}.sub{font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:.3px}
-    .app{height:calc(100vh - 64px);display:grid;grid-template-columns:290px minmax(0,1fr);max-width:1280px;margin:0 auto;background:#fff}
-    aside{border-right:1px solid var(--line);overflow:auto;background:#fbfaf8}.side-head{padding:18px 16px 10px;font-size:11px;letter-spacing:2px;font-weight:700}
-    .tools{padding:0 12px 12px;display:flex;gap:7px}.tools input,.tools select{width:100%;border:1px solid #ccc5bd;background:#fff;padding:9px 8px;font-size:12px}
-    .enquiry{padding:13px 15px;border-top:1px solid #e9e4de;cursor:pointer}.enquiry:hover{background:#f4f1ed}.enquiry.active{background:#eee9e2;border-left:3px solid var(--accent);padding-left:12px}
-    .eid{font-size:10px;font-weight:700;letter-spacing:.3px}.company{font-size:13px;margin-top:4px}.meta{font-size:10px;color:var(--muted);margin-top:4px}.badge{display:inline-block;margin-top:7px;padding:3px 6px;background:#eee;border-radius:2px;font-size:9px;letter-spacing:.5px}.badge.ready{background:#e7efe9;color:var(--green)}.badge.sent{background:#e8eef2;color:var(--blue)}
-    main{overflow:auto;padding:30px 38px 60px}.empty{height:100%;display:flex;align-items:center;justify-content:center;color:var(--muted)}
-    .top{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;text-align:center;padding:12px 0 22px;border-bottom:1px solid var(--line)}
-    .label{font-size:9px;letter-spacing:1.4px;color:#8b837b}.value{margin-top:7px}.mono{font-variant-numeric:tabular-nums}
-    .message{margin:18px auto 28px;max-width:680px;text-align:center;color:#555;font-size:12px;line-height:1.6}
-    .modebar{max-width:820px;margin:0 auto 14px;padding:9px 12px;background:#f7f4ef;border:1px solid #e3ddd5;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#625b55}.modebar strong{letter-spacing:.5px}.modebar button{border:0;background:none;text-decoration:underline;cursor:pointer;color:var(--accent);font-size:10px}
-    .section-title{text-align:center;font-size:10px;letter-spacing:2px;margin:22px 0 12px;color:#655e58}.quote-box{max-width:820px;margin:0 auto}
-    .table-head,.item{display:grid;grid-template-columns:1.8fr .42fr .82fr 1.12fr .95fr;gap:10px;align-items:center}.table-head{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 10px;font-size:8px;letter-spacing:1.2px;color:#766e67}.item{padding:14px 10px;border-bottom:1px solid #ece7e1}
-    .prod{text-align:left}.prod-name{font-size:12px}.size{font-size:10px;margin-top:2px}.spec{font-size:9px;color:#777;margin-top:5px;line-height:1.35}.qty{text-align:center}.num{text-align:right;font-variant-numeric:tabular-nums}
-    .base-block{text-align:right}.base-price{font-size:11px}.base-label{font-size:8px;color:#999;margin-top:2px}.quote-input-wrap{display:flex;align-items:center;gap:7px}.quote-input-wrap .currency{font-size:11px;color:#6d655f}.price{width:100%;border:1px solid #aaa198;background:#fff;padding:10px 9px;text-align:right;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}.price:focus{outline:2px solid #d9c5bf;border-color:var(--accent)}
-    .line-main{font-size:12px}.line-discount{font-size:9px;color:var(--muted);margin-top:3px}.line-discount.positive{color:var(--accent)}
-    .discount-control{max-width:820px;margin:18px 10px 4px;padding:12px 14px;border:1px solid #e1dbd3;background:#f8f5f1;display:flex;justify-content:space-between;align-items:center;gap:18px}.discount-copy{min-width:0}.discount-hint{font-size:9px;color:var(--muted);margin-top:4px}.discount-input-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0}.discount-input-wrap input{width:90px;border:1px solid #aaa198;background:#fff;padding:9px;text-align:right;font-size:13px;font-weight:600}.discount-input-wrap>span{font-size:12px;color:#666}.discount-input-wrap .btn{padding:9px 11px;font-size:9px}.charges{max-width:340px;margin:18px 10px 0 auto}.charge-row{display:grid;grid-template-columns:1fr 150px;gap:14px;align-items:center;padding:5px 0}.charge{width:100%;border:1px solid #cfc8c0;background:#fff;padding:9px 8px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums}
-    .totals{max-width:340px;margin:20px 10px 0 auto}.total-row{display:flex;justify-content:space-between;padding:6px 0;color:#5e5852}.total-row.final{border-top:1px solid #625c56;margin-top:7px;padding-top:12px;font-size:16px;font-weight:600;color:var(--ink)}
-    .actions{display:flex;justify-content:flex-end;gap:8px;margin:24px 10px}.btn{border:1px solid #3a3734;background:#fff;padding:11px 17px;font-size:10px;letter-spacing:.7px;cursor:pointer}.btn.primary{background:#292725;color:#fff}.btn.accent{background:var(--accent);border-color:var(--accent);color:#fff}.btn:disabled{opacity:.45;cursor:not-allowed}
-    .valid{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:12px 10px}.valid input{border:1px solid #cfc8c0;padding:8px}.notes{margin:16px 10px}.notes textarea{width:100%;min-height:75px;border:1px solid #cfc8c0;padding:10px;font-family:inherit;font-size:12px;resize:vertical}.notes .label{text-align:center;margin-bottom:7px}
-    .history{max-width:820px;margin:34px auto 0}.history-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee9e3;padding:11px 8px;font-size:10px;cursor:pointer}.history-row:first-of-type{border-top:1px solid var(--line)}.history-row:hover{background:#f8f5f1}.history-left{display:flex;align-items:center;gap:8px}.history-id{font-weight:600}.history-current{font-size:8px;letter-spacing:.5px;color:var(--accent)}
-    .toast{position:fixed;right:22px;bottom:22px;background:#292725;color:#fff;padding:12px 16px;box-shadow:0 3px 15px #0002;display:none;z-index:20}.toast.show{display:block}.toast.error{background:#8b3427}
-    @media(max-width:800px){.app{grid-template-columns:1fr}.app aside{height:260px;border-right:0;border-bottom:1px solid var(--line)}main{padding:20px 14px}.top{grid-template-columns:1fr 1fr}.table-head,.item{grid-template-columns:1.35fr .38fr .75fr 1fr .85fr;gap:5px}.table-head{font-size:7px}.totals,.charges{margin-left:auto;margin-right:0}}
-    .btn.send{background:#1f1f1f;color:#fff;border-color:#1f1f1f}.btn.sent{background:#e7e2da;color:#555;border-color:#d5cec3;cursor:default}
-</style>
+    :root{--ink:#292623;--muted:#756f69;--line:#ded8d1;--warm:#f6f3ef;--paper:#fff;--accent:#8b3427;--green:#466b50;--soft:#eee9e2}
+    *{box-sizing:border-box} body{margin:0;background:var(--warm);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:13px}
+    header{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;justify-content:space-between;position:sticky;top:0;z-index:5}
+    .brand{letter-spacing:3px;font-size:17px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.5px;margin-top:4px}
+    .wrap{max-width:1280px;margin:0 auto;padding:24px}.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.stat{background:#fff;border:1px solid var(--line);padding:14px 18px;min-width:150px}.stat b{display:block;font-size:22px;margin-top:4px}.stat span{font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
+    .grid{display:grid;grid-template-columns:370px 1fr;gap:18px}.panel{background:#fff;border:1px solid var(--line)}.panel-head{padding:15px 17px;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center}.search{border:1px solid #ccc5bd;padding:9px;width:100%;font-size:12px}.list{max-height:calc(100vh - 260px);overflow:auto}.order{padding:15px 17px;border-bottom:1px solid #eee9e4;cursor:pointer}.order:hover,.order.active{background:#f7f4f0}.order.active{border-left:3px solid var(--accent);padding-left:14px}.oid{font-weight:700;font-size:11px;letter-spacing:.6px}.name{font-size:14px;margin:5px 0}.meta{color:var(--muted);font-size:11px;line-height:1.5}.badge{display:inline-block;border:1px solid #cdbfb7;border-radius:999px;padding:3px 7px;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-top:8px}.content{padding:22px}.empty{padding:60px 20px;text-align:center;color:var(--muted)}h2{margin:0 0 5px;font-size:25px}h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin:26px 0 10px}.customer{display:grid;grid-template-columns:1fr 1fr;gap:8px 25px;color:#4e4944}.customer div{padding:8px 0;border-bottom:1px solid #eee9e4}.items{width:100%;border-collapse:collapse}.items th,.items td{text-align:left;padding:10px 8px;border-bottom:1px solid #eee9e4}.items th{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}.items td:last-child,.items th:last-child{text-align:right}.total{text-align:right;font-size:19px;margin-top:16px}.actions{margin-top:24px;padding-top:18px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:15px}.btn{border:0;padding:12px 18px;font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);color:#fff}.btn:disabled{opacity:.5;cursor:not-allowed}.link{color:var(--accent);text-decoration:none;font-size:11px}.message{margin-top:15px;padding:12px;background:var(--soft);display:none}.message.show{display:block}.loading{padding:30px;text-align:center;color:var(--muted)}
+    @media(max-width:850px){.grid{grid-template-columns:1fr}.list{max-height:380px}.customer{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
-<header><div><div class="brand">CONCRETE IDEAS</div><div class="sub">Internal Sales &amp; Quotations</div></div></header>
-<div class="app">
-  <aside>
-    <div class="side-head">ENQUIRIES</div>
-    <div class="tools"><input id="search" placeholder="Search enquiries..." oninput="renderList()"></div>
-    <div class="tools"><select id="statusFilter" onchange="renderList()"><option value="">All statuses</option><option>NEW</option><option>CONTACTED</option><option>QUOTED</option><option>FOLLOW-UP</option><option>WON</option><option>LOST</option></select></div>
-    <div id="list"></div>
-  </aside>
-  <main id="main"><div class="empty">Loading enquiries…</div></main>
+<header><div class="brand">CONCRETE IDEAS<small>ORDER REVIEW</small></div><div id="refreshLabel" style="color:#756f69;font-size:11px">Loading…</div></header>
+<div class="wrap">
+  <div class="stats"><div class="stat"><span>Quote Sent</span><b id="quoteSentCount">—</b></div><div class="stat"><span>Payment Done</span><b id="paidCount">—</b></div><div class="stat"><span>New</span><b id="newCount">—</b></div><div class="stat"><span>Total Orders</span><b id="totalCount">—</b></div></div>
+  <div class="grid">
+    <section class="panel"><div class="panel-head">Orders awaiting payment</div><div style="padding:12px"><input id="search" class="search" placeholder="Search order, customer or project…"></div><div id="orderList" class="list"><div class="loading">Loading orders…</div></div></section>
+    <section class="panel"><div id="detail" class="empty">Select a Quote Sent order to review it.</div></section>
+  </div>
 </div>
-<div id="toast" class="toast"></div>
 <script>
-  let enquiries=[]; let selected=null; let busy=false; let viewQuoteId=null;
-  const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:0});
-  const pct=n=>(Number(n||0)*100).toLocaleString('en-IN',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
-  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const dateInput=d=>{if(!d)return '';const x=new Date(d);return isNaN(x)?'':x.toISOString().slice(0,10)};
-  function toast(msg,error=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(error?' error':'');setTimeout(()=>t.className='toast',3200)}
-  function load(){google.script.run.withSuccessHandler(data=>{enquiries=data||[];renderList();if(enquiries.length)select(enquiries[0].enquiryId);else document.getElementById('main').innerHTML='<div class="empty">No enquiries found.</div>'}).withFailureHandler(e=>{const msg=e&&e.message?e.message:(e&&e.toString?e.toString():'Unknown server error');document.getElementById('main').innerHTML='<div class="empty error">Could not load enquiries: '+esc(msg)+'</div>'}).getAdminEnquiries()}
-  function renderList(){const q=(document.getElementById('search').value||'').toLowerCase(),st=document.getElementById('statusFilter').value;const filtered=enquiries.filter(e=>(!st||e.status===st)&&(!q||[e.enquiryId,e.name,e.company,e.project,e.location].join(' ').toLowerCase().includes(q)));document.getElementById('list').innerHTML=filtered.map(e=>`<div class="enquiry ${selected&&selected.enquiryId===e.enquiryId?'active':''}" onclick="select('${esc(e.enquiryId)}')"><div class="eid">${esc(e.enquiryId)}</div><div class="company">${esc(e.company||e.name||'Unnamed')}</div><div class="meta">${esc(e.project||'No project')} · ${esc(e.location||'')}</div><span class="badge">${esc(e.status)}</span></div>`).join('')||'<div class="meta" style="padding:20px">No matching enquiries.</div>'}
-  function select(id){selected=enquiries.find(e=>e.enquiryId===id)||null;viewQuoteId=null;renderList();if(selected)renderDetail()}
-  function renderDetail(modeQuote=null){
-    const e=selected;
-    document.getElementById('main').innerHTML=`
-      <div class="top">
-        <div><div class="label">ENQUIRY</div><div class="value">${esc(e.enquiryId)}</div></div>
-        <div><div class="label">CUSTOMER</div><div class="value">${esc(e.name)}</div></div>
-        <div><div class="label">STUDIO</div><div class="value">${esc(e.company)}</div></div>
-        <div><div class="label">PROJECT</div><div class="value">${esc(e.project||'—')}</div></div>
-        <div><div class="label">EMAIL</div><div class="value">${esc(e.email)}</div></div>
-        <div><div class="label">PHONE</div><div class="value">${esc(e.phone||'—')}</div></div>
-        <div><div class="label">LOCATION</div><div class="value">${esc(e.location||'—')}</div></div>
-        <div><div class="label">STATUS</div><div class="value">${esc(e.status)}</div></div>
-      </div>
-      ${e.message?`<div class="message"><div class="label">CUSTOMER MESSAGE</div>${esc(e.message)}</div>`:''}
-      ${modeQuote?`<div class="modebar"><span>VIEWING <strong>${esc(modeQuote.quoteId)}</strong> · ${esc(modeQuote.status)}</span><button onclick="startNewQuote()">Create new quotation</button></div>`:''}
-      <div class="section-title">${modeQuote?'QUOTATION':'CREATE QUOTATION'}</div>
-      <div class="quote-box">
-        <div class="table-head"><div>PRODUCT / SPECIFICATION</div><div>QTY</div><div>LIST / UNIT</div><div>QUOTED / UNIT</div><div>QUOTED VALUE</div></div>
-        <div id="items">${(modeQuote?modeQuote.items:e.items).map((it,i)=>itemHtml(it,i,modeQuote)).join('')}</div>
-        <div class="discount-control">
-          <div class="discount-copy"><div class="label">ORDER DISCOUNT</div><div class="discount-hint">Suggested from order value · applies to all products</div></div>
-          <div class="discount-input-wrap"><input id="globalDiscount" type="number" min="0" max="100" step="0.5" value="${modeQuote?Number(modeQuote.discountPercent||0)*100:Number(e.suggestedDiscountPercent||0)*100}" onchange="applyGlobalDiscount()" onkeydown="if(event.key==='Enter')applyGlobalDiscount()"><span>%</span><button class="btn" type="button" onclick="applyGlobalDiscount()">APPLY TO ALL</button></div>
-        </div>
-        <div class="charges">
-          <div class="charge-row"><span>Delivery</span><input id="delivery" class="charge" type="number" min="0" value="${modeQuote?Number(modeQuote.deliveryCharges||0):0}" oninput="recalc()"></div>
-          <div class="charge-row"><span>Other charges</span><input id="other" class="charge" type="number" min="0" value="${modeQuote?Number(modeQuote.otherCharges||0):0}" oninput="recalc()"></div>
-        </div>
-        <div class="totals">
-          <div class="total-row"><span>Product subtotal</span><strong id="subtotal">₹0</strong></div>
-          <div class="total-row"><span>Discount</span><strong id="discount">₹0</strong></div>
-          <div class="total-row final"><span>Final quote</span><strong id="final">₹0</strong></div>
-        </div>
-        <div class="valid"><span class="label">VALID UNTIL</span><input id="validUntil" type="date" value="${modeQuote?dateInput(modeQuote.validUntil):dateInput(new Date(Date.now()+15*86400000))}"></div>
-        <div class="notes"><div class="label">INTERNAL NOTES</div><textarea id="notes" placeholder="Optional internal notes...">${modeQuote?esc(modeQuote.notes||''):''}</textarea></div>
-        <div class="actions">
-          <button class="btn" onclick="resetPrices()">RESET PRICES</button>
-          <button id="draftBtn" class="btn" onclick="saveQuotation('DRAFT')">SAVE DRAFT</button>
-          <button id="createBtn" class="btn accent" onclick="saveQuotation('READY')">${modeQuote?'CREATE NEW QUOTATION':'FINALIZE QUOTATION'}</button>
-          ${modeQuote && modeQuote.status==='READY' ? `<button id="pdfBtn" class="btn primary" onclick="generatePdf('${esc(modeQuote.quoteId)}')">GENERATE PDF</button><button id="sendBtn" class="btn send" onclick="sendQuotation('${esc(modeQuote.quoteId)}')">SEND QUOTATION</button>` : modeQuote && modeQuote.status==='DRAFT' ? `<button id="pdfBtn" class="btn primary" onclick="generatePdf('${esc(modeQuote.quoteId)}')">GENERATE PDF</button>` : modeQuote && modeQuote.status==='SENT' ? `<button class="btn sent" disabled>QUOTATION SENT</button>` : ''}
-        </div>
-      </div>
-      <div class="history"><div class="section-title">QUOTATION HISTORY</div><div id="history"><div class="meta">Loading…</div></div></div>`;
-    if(modeQuote){recalc();}else{applyGlobalDiscount();}loadHistory(e.enquiryId,modeQuote?modeQuote.quoteId:'');
-  }
-  function itemHtml(it,i,modeQuote){const quoted=modeQuote?Number(it.quotedUnitPrice||0):0;return `<div class="item" data-index="${i}"><div class="prod"><div class="prod-name">${esc(it.product)}</div><div class="size">${esc(it.size)}</div><div class="spec">${esc(it.dimension||'')}${it.weight?' · '+esc(it.weight):''}</div></div><div class="qty">${Number(it.quantity||0)}</div><div class="base-block"><div class="base-price">${money(it.basePrice)}</div><div class="base-label">published rate</div></div><div><div class="quote-input-wrap"><span class="currency">₹</span><input class="price" data-index="${i}" type="number" min="0" step="1" value="${quoted}" oninput="recalc()"></div></div><div class="num"><div class="line-main" id="line-${i}">${money(quoted*Number(it.quantity||0))}</div><div class="line-discount" id="disc-${i}"></div></div></div>`}
-  function recalc(){if(!selected)return;const source=selected.items;let subtotal=0,base=0;source.forEach((it,i)=>{const p=Number(document.querySelector(`.price[data-index="${i}"]`)?.value||0),qty=Number(it.quantity||0),v=p*qty,b=Number(it.basePrice||0)*qty;subtotal+=v;base+=b;const el=document.getElementById('line-'+i);if(el)el.textContent=money(v);const d=b-v;const de=document.getElementById('disc-'+i);if(de){de.textContent=d>0?'- '+pct(d/b):d<0?'+ '+pct(Math.abs(d)/b):'No discount';de.className='line-discount'+(d>0?' positive':'')}});const discount=base-subtotal,delivery=Number(document.getElementById('delivery')?.value||0),other=Number(document.getElementById('other')?.value||0);document.getElementById('subtotal').textContent=money(subtotal);document.getElementById('discount').textContent=money(discount);document.getElementById('final').textContent=money(subtotal+delivery+other)}
-  function applyGlobalDiscount(){const input=document.getElementById('globalDiscount');if(!input)return;let d=Number(input.value||0);if(!Number.isFinite(d))d=0;d=Math.max(0,Math.min(100,d));input.value=d;document.querySelectorAll('.price').forEach((el,i)=>{const it=selected.items[i];const base=Number(it.basePrice||0);el.value=Math.round(base*(1-d/100));});recalc()}
-  function resetPrices(){document.querySelectorAll('.price').forEach(x=>x.value='0');const d=document.getElementById('globalDiscount');if(d)d.value='0';recalc()}
-  function loadHistory(id,current){google.script.run.withSuccessHandler(rows=>{document.getElementById('history').innerHTML=rows.length?rows.map(q=>`<div class="history-row" onclick="openQuote('${esc(q.quoteId)}')"><div class="history-left"><span class="history-id">${esc(q.quoteId)}</span><span>V${q.version}</span>${q.quoteId===current?'<span class="history-current">CURRENT VIEW</span>':''}<span class="badge ${String(q.status).toLowerCase()}">${esc(q.status)}</span></div><span>${money(q.finalQuote)}</span></div>`).join(''):'<div class="meta">No quotations yet.</div>'}).withFailureHandler(e=>{document.getElementById('history').innerHTML='<div class="toast error">'+esc(e.message)+'</div>'}).getAdminQuoteHistory(id)}
-  function openQuote(id){google.script.run.withSuccessHandler(q=>{viewQuoteId=q.quoteId;renderDetail(q)}).withFailureHandler(e=>toast(e.message||'Could not load quotation.',true)).getAdminQuote(id)}
-  function startNewQuote(){viewQuoteId=null;renderDetail()}
-  function generatePdf(quoteId){
-    if(!quoteId||busy)return;
-    const b=document.getElementById('pdfBtn');
-    if(b){b.disabled=true;b.textContent='GENERATING…';}
-    google.script.run.withSuccessHandler(r=>{
-      if(b){b.disabled=false;b.textContent='GENERATE PDF';}
-      toast('PDF generated successfully');
-      if(r&&r.url) window.open(r.url,'_blank');
-    }).withFailureHandler(e=>{
-      if(b){b.disabled=false;b.textContent='GENERATE PDF';}
-      toast(e.message||'Could not generate PDF.',true);
-    }).generateQuotePdfFromAdmin(quoteId);
-  }
-  function sendQuotation(quoteId){
-    if(busy||!quoteId)return;
-    if(!confirm('Send quotation '+quoteId+' to the customer email address?'))return;
-    busy=true; const b=document.getElementById('sendBtn'); if(b){b.disabled=true;b.textContent='SENDING…';}
-    google.script.run.withSuccessHandler(r=>{busy=false;toast('Quotation sent successfully');google.script.run.withSuccessHandler(q=>{viewQuoteId=q.quoteId;renderDetail(q)}).getAdminQuote(quoteId)}).withFailureHandler(e=>{busy=false;if(b){b.disabled=false;b.textContent='SEND QUOTATION'}toast(e.message||'Could not send quotation.',true)}).sendQuoteFromAdmin(quoteId);
-  }
-  function saveQuotation(status){
-    if(busy||!selected)return;
-    const items=selected.items.map((it,i)=>({productId:it.productId,product:it.product,size:it.size,dimension:it.dimension,weight:it.weight,quantity:it.quantity,quotedUnitPrice:Number(document.querySelector(`.price[data-index="${i}"]`).value||0)}));
-    if(items.some(x=>x.quotedUnitPrice<=0)){toast('Enter a quoted unit price for every item.',true);return}
-    const quoteData={deliveryCharges:Number(document.getElementById('delivery').value||0),otherCharges:Number(document.getElementById('other').value||0),discountPercent:Number(document.getElementById('globalDiscount').value||0)/100,notes:document.getElementById('notes').value||'',validUntil:document.getElementById('validUntil').value,status:status};
-    busy=true;const b=status==='DRAFT'?document.getElementById('draftBtn'):document.getElementById('createBtn');b.disabled=true;b.textContent=status==='DRAFT'?'SAVING…':'FINALIZING…';
-    google.script.run.withSuccessHandler(r=>{busy=false;b.disabled=false;b.textContent=status==='DRAFT'?'SAVE DRAFT':'FINALIZE QUOTATION';toast(r.quoteId+' saved as '+status);loadHistory(selected.enquiryId,r.quoteId);if(status==='READY'){selected.status='QUOTED';renderList();google.script.run.withSuccessHandler(q=>{viewQuoteId=q.quoteId;renderDetail(q)}).getAdminQuote(r.quoteId)} }).withFailureHandler(e=>{busy=false;b.disabled=false;b.textContent=status==='DRAFT'?'SAVE DRAFT':'FINALIZE QUOTATION';toast((e&&e.message)||'Could not save quotation. Check Apps Script execution logs for details.',true)}).createQuoteFromAdmin(selected.enquiryId,quoteData,items);
-  }
-  load();
+let orders=[];let selected=null;
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function load(){google.script.run.withSuccessHandler(data=>{orders=data||[];renderList();updateStats();document.getElementById('refreshLabel').textContent='Updated '+new Date().toLocaleTimeString();}).withFailureHandler(showError).getAllOrders();}
+function updateStats(){document.getElementById('quoteSentCount').textContent=orders.filter(o=>o.status.toLowerCase()==='quote sent').length;document.getElementById('paidCount').textContent=orders.filter(o=>o.status.toLowerCase()==='payment done').length;document.getElementById('newCount').textContent=orders.filter(o=>o.status.toLowerCase()==='new').length;document.getElementById('totalCount').textContent=orders.length;}
+function renderList(){const q=document.getElementById('search').value.toLowerCase();const list=orders.filter(o=>o.status.toLowerCase()==='quote sent' && [o.orderId,o.name,o.company,o.project].join(' ').toLowerCase().includes(q));document.getElementById('orderList').innerHTML=list.length?list.map(o=>`<div class="order ${selected===o.orderId?'active':''}" onclick="selectOrder('${o.orderId}')"><div class="oid">${esc(o.orderId)}</div><div class="name">${esc(o.name||'—')}</div><div class="meta">${esc(o.company||'')}<br>${esc(o.project||'')}<br>${money(o.orderTotal)}</div><span class="badge">Quote Sent</span></div>`).join(''):'<div class="empty">No Quote Sent orders awaiting payment.</div>';}
+function selectOrder(id){selected=id;const o=orders.find(x=>x.orderId===id);if(!o)return;renderList();renderDetail(o);}
+function renderDetail(o){document.getElementById('detail').innerHTML=`<div class="content"><div class="oid">${esc(o.orderId)}</div><h2>${esc(o.name||'Customer')}</h2><div class="meta">${esc(o.company||'')} · ${esc(o.project||'')}</div><h3>Customer</h3><div class="customer"><div><b>Email</b><br>${esc(o.email)}</div><div><b>Phone</b><br>${esc(o.phone)}</div><div><b>Delivery</b><br>${esc(o.location)}</div><div><b>Order date</b><br>${new Date(o.createdAt).toLocaleString()}</div></div><h3>Order items</h3><table class="items"><thead><tr><th>Product</th><th>Size</th><th>Qty</th><th>Rate</th><th>Value</th></tr></thead><tbody>${o.items.map(i=>`<tr><td>${esc(i.product)}</td><td>${esc(i.size)}</td><td>${i.quantity}</td><td>${money(i.rate)}</td><td>${money(i.lineValue)}</td></tr>`).join('')}</tbody></table><div class="total">Products ${money(o.productValue)}<br><span style="font-size:13px;color:#756f69">Shipment (5%) ${money(o.shipment)}</span><br><b>${money(o.orderTotal)}</b></div>${o.quotePdfUrl?`<p><a class="link" href="${esc(o.quotePdfUrl)}" target="_blank">View quotation PDF →</a></p>`:''}<div class="actions"><div style="font-size:11px;color:#756f69">Verify the customer's payment before confirming.</div><button class="btn primary" onclick="markPaid('${o.orderId}')">Mark Payment done</button></div><div id="msg" class="message"></div></div>`;}
+function markPaid(id){const btn=document.querySelector('.btn.primary');if(btn)btn.disabled=true;const msg=document.getElementById('msg');if(msg){msg.className='message show';msg.textContent='Confirming payment, generating bill and notifying manufacturing…';}google.script.run.withSuccessHandler(res=>{if(msg){msg.textContent='Payment confirmed. Bill sent to customer and manufacturing order created.';}load();setTimeout(()=>{const o=orders.find(x=>x.orderId===id);if(o){selected=id;renderDetail(o);}},700);}).withFailureHandler(err=>{if(btn)btn.disabled=false;showError(err);if(msg){msg.textContent='Payment confirmation failed: '+(err.message||err);}}).markPaymentDone(id);}
+function showError(err){document.getElementById('detail').innerHTML='<div class="empty">Error: '+esc(err&&err.message?err.message:err)+'</div>';}
+document.getElementById('search').addEventListener('input',renderList);load();
 </script>
 </body>
 </html>
