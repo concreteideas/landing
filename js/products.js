@@ -27,6 +27,7 @@
         <p class="product-card__category">${categoriesFor(product).join(' / ')}</p>
         <h2><a href="${productUrl(product.id)}">${product.name}</a></h2>
         <p>${product.description}</p>
+        ${(() => { const rates=(product.sizes||[]).map(s=>Number(s.rate||0)).filter(Boolean); return rates.length ? `<p class="product-card__price">From ₹${Math.min(...rates).toLocaleString('en-IN')} / piece</p>` : `<p class="product-card__price">Price on request</p>`; })()}
         <div class="product-card__actions"><a class="product-card__link" href="${productUrl(product.id)}">View piece <span aria-hidden="true">→</span></a><a class="product-card__enquiry" href="${productUrl(product.id)}">Select size <span aria-hidden="true">→</span></a></div>
       </div>
     </article>`;

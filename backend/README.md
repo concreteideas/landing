@@ -1,7 +1,7 @@
 # Concrete Ideas — Google Workspace enquiry backend
 
 `Code.gs` contains the Apps Script backend for:
-- Product Pricing tab with initial assumed base prices
+- Public rates are maintained only in data/products.json. The legacy Product Pricing tab is no longer used.
 - Enquiries / Enquiry Items schema
 - Status dropdowns and internal notes
 - Google Sheets Dashboard tab

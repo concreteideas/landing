@@ -22,19 +22,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "Ø 430 × H 430 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": 8500
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "Ø 533 × H 533 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": 11000
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "Ø 640 × H 640 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": 15000
       }
     ]
   },
@@ -58,19 +61,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "Ø 625 × H 560 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": 18000
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "Ø 780 × H 700 mm",
-        "weight": "Approx. 200 kg"
+        "weight": "Approx. 200 kg",
+        "rate": 25000
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "Ø 940 × H 840 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": 35000
       }
     ]
   },
@@ -94,19 +100,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "Ø 720 × H 210 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": 7500
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "Ø 900 × H 260 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": 10000
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "Ø 1080 × H 310 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": 14000
       }
     ]
   },
@@ -130,19 +139,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "Set of three, up to Ø 450 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "Set of three, up to Ø 600 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "Set of three, up to Ø 800 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   },
@@ -166,19 +178,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "W 1120 × D 320 × H 660 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "W 1400 × D 400 × H 820 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "W 1680 × D 480 × H 980 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   },
@@ -202,19 +217,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "Ø 190 × H 220 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "Ø 240 × H 280 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "Ø 290 × H 340 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   },
@@ -238,19 +256,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "Ø 145 × H 290 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "Ø 180 × H 360 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "Ø 215 × H 430 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   },
@@ -274,19 +295,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "W 240 × D 130 × H 335 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "W 300 × D 160 × H 420 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "W 360 × D 190 × H 505 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   },
@@ -310,19 +334,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "Approx. W 900 × H 1200 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "Approx. W 1400 × H 1800 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "Approx. W 2000 × H 2500 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   },
@@ -346,19 +373,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "W 900 × D 600 × H 450 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "W 1200 × D 800 × H 600 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "W 1800 × D 1000 × H 750 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   },
@@ -382,19 +412,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "W 450 × D 450 × H 600 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "W 600 × D 600 × H 900 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "W 900 × D 900 × H 1200 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   },
@@ -418,19 +451,22 @@
         "id": "small",
         "name": "Small",
         "dimensions": "W 600 × H 900 × D 40 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "medium",
         "name": "Medium",
         "dimensions": "W 900 × H 1200 × D 50 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       },
       {
         "id": "large",
         "name": "Large",
         "dimensions": "W 1200 × H 1800 × D 60 mm",
-        "weight": "To be confirmed"
+        "weight": "To be confirmed",
+        "rate": null
       }
     ]
   }

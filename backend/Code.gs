@@ -6,7 +6,6 @@
  * Sheets:
  *   Enquiries
  *   Enquiry Items
- *   Product Pricing
  *   Quotes
  *   Quote Items
  *   Follow-ups
@@ -22,9 +21,214 @@ const CONFIG = {
   BUSINESS_NAME: "Concrete Ideas",
   WEBSITE: "https://concreteideas.co",
   ENQUIRY_PREFIX: "CI",
-  QUOTE_PREFIX: "Q"
+  QUOTE_PREFIX: "Q",
+  // Replace with the UPI ID that should receive customer payments.
+  PAYMENT_UPI_ID: "payme12@okhdfcbank",
+  PAYMENT_NAME: "Concrete Ideas"
 };
 
+
+/* =========================================================
+   PUBLIC ORDER / AUTO-QUOTATION
+   ========================================================= */
+
+function processPublicOrder_(data) {
+  let enquiryId = "";
+  let quoteId = "";
+  let stage = "starting";
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const enquiriesSheet = ss.getSheetByName("Enquiries");
+    const itemsSheet = ss.getSheetByName("Enquiry Items");
+    if (!enquiriesSheet || !itemsSheet) throw new Error("Required sheets not found. Run setupConcreteIdeasCRM().");
+
+    const customer = data.customer || {};
+    const items = Array.isArray(data.items) ? data.items : [];
+    if (!customer.name || !customer.email || !customer.phone || !customer.location) {
+      throw new Error("Name, email, phone and delivery location are required.");
+    }
+    if (!items.length) throw new Error("Order contains no products.");
+
+    stage = "validating products and prices";
+    const now = new Date();
+    let itemCount = 0, productValue = 0;
+    const processedItems = items.map(item => {
+      const quantity = Number(item.quantity || 0);
+      if (!Number.isFinite(quantity) || quantity <= 0) throw new Error("Invalid quantity for " + (item.product || item.productId) + ".");
+      // Public orders are priced from the rate submitted by the customer-facing
+      // catalogue. This is intentional while the site is being developed locally:
+      // Apps Script cannot see the latest local products.json.
+      const rate = Number(item.rate);
+      if (!Number.isFinite(rate) || rate <= 0) {
+        throw new Error("Missing or invalid published rate for product '" + (item.productId || item.product) + "', size '" + (item.size || "") + "'.");
+      }
+      const line = rate * quantity;
+      itemCount += quantity;
+      productValue += line;
+      return {
+        productId:String(item.productId||''), product:String(item.product||''), size:String(item.size||''),
+        dimension:String(item.dimension||''), weight:String(item.weight||''), quantity, basePrice:rate, baseValue:line
+      };
+    });
+
+    const shipment = productValue * 0.05;
+    const total = productValue + shipment;
+
+    stage = "creating order";
+    enquiryId = generateEnquiryId();
+    enquiriesSheet.appendRow([
+      enquiryId, now, "ORDER CONFIRMED", customer.name||"", customer.company||"", customer.email||"",
+      customer.phone||"", customer.project||"", customer.location||"", customer.message||"",
+      itemCount, productValue, now, "", "", total
+    ]);
+    processedItems.forEach(item => itemsSheet.appendRow([
+      enquiryId,item.productId,item.product,item.size,item.dimension,item.weight,item.quantity,item.basePrice,item.baseValue
+    ]));
+
+    stage = "creating quotation";
+    const quoteItems = processedItems.map(item => ({
+      productId:item.productId, product:item.product, size:item.size, dimension:item.dimension,
+      weight:item.weight, quantity:item.quantity,
+      // Public order price comes from the customer-facing products.json payload.
+      // Pass it through explicitly so createQuote never needs to fetch the hosted catalogue.
+      basePrice:item.basePrice, quotedUnitPrice:item.basePrice
+    }));
+    const quote = createQuote(enquiryId, {
+      deliveryCharges:shipment,
+      otherCharges:0,
+      discountPercent:0,
+      notes:"Public website order — prices taken from data/products.json.",
+      validUntil:new Date(now.getTime()+7*86400000),
+      status:"READY"
+    }, quoteItems);
+    quoteId = quote.quoteId;
+
+    // Do not generate Drive files or send email while the customer is waiting.
+    // Queue those operations for the installable one-minute worker instead.
+    stage = "queueing quotation delivery";
+    enqueuePublicOrderDelivery_({
+      enquiryId,
+      quoteId,
+      customer,
+      items: processedItems,
+      productValue,
+      total,
+      attempts: 0,
+      queuedAt: now.toISOString()
+    });
+
+    return createResultPage(true, enquiryId, "", "concreteideas-order-result", quoteId,
+      "Your order is confirmed. Your quotation will be emailed shortly.");
+  } catch (error) {
+    const detail = "Order processing failed during " + stage + ": " + cleanErrorMessage_(error) +
+      (enquiryId ? " Order ID: " + enquiryId + (quoteId ? ". Quote ID: " + quoteId + "." : "") : "");
+    return createResultPage(false, enquiryId, detail, "concreteideas-order-result", quoteId);
+  }
+}
+
+function enqueuePublicOrderDelivery_(job) {
+  const props = PropertiesService.getScriptProperties();
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const raw = props.getProperty("PUBLIC_ORDER_DELIVERY_QUEUE") || "[]";
+    let jobs;
+    try { jobs = JSON.parse(raw); } catch (_) { jobs = []; }
+    if (!Array.isArray(jobs)) jobs = [];
+    jobs.push(job);
+    props.setProperty("PUBLIC_ORDER_DELIVERY_QUEUE", JSON.stringify(jobs));
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Background worker for customer-order quotation delivery.
+ * Run by an installable time-driven trigger every minute.
+ */
+function processPublicOrderDeliveryQueue_() {
+  const props = PropertiesService.getScriptProperties();
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  let jobs = [];
+  try {
+    const raw = props.getProperty("PUBLIC_ORDER_DELIVERY_QUEUE") || "[]";
+    try { jobs = JSON.parse(raw); } catch (_) { jobs = []; }
+    if (!Array.isArray(jobs) || !jobs.length) return;
+
+    const remaining = [];
+    // Keep each invocation bounded. Failed jobs remain queued for retry.
+    jobs.slice(0, 3).forEach(job => {
+      try {
+        processOnePublicOrderDelivery_(job);
+      } catch (error) {
+        job.attempts = Number(job.attempts || 0) + 1;
+        job.lastError = cleanErrorMessage_(error);
+        job.lastAttemptAt = new Date().toISOString();
+        // Retry for up to 10 attempts; after that, leave a visible backend log.
+        if (job.attempts <= 10) remaining.push(job);
+        console.error("Public order delivery failed", job.quoteId, job.lastError);
+      }
+    });
+    if (jobs.length > 3) remaining.push.apply(remaining, jobs.slice(3));
+    props.setProperty("PUBLIC_ORDER_DELIVERY_QUEUE", JSON.stringify(remaining));
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function processOnePublicOrderDelivery_(job) {
+  if (!job || !job.quoteId || !job.enquiryId) throw new Error("Invalid quotation delivery job.");
+
+  const quote = getAdminQuote(job.quoteId);
+  if (!quote) throw new Error("Quotation not found: " + job.quoteId);
+  if (String(quote.status || "").toUpperCase() === "SENT") return;
+
+  const enquiry = getAdminEnquiryById(job.enquiryId);
+  if (!enquiry) throw new Error("Enquiry not found: " + job.enquiryId);
+  const recipient = String(enquiry.email || job.customer?.email || "").trim();
+  if (!recipient) throw new Error("No customer email address is available for " + job.enquiryId + ".");
+
+  const pdfResult = generateQuotePdf(job.quoteId);
+
+  try {
+    sendBusinessNotificationEmail(
+      job.enquiryId,
+      job.customer || {},
+      Array.isArray(job.items) ? job.items : [],
+      Number(job.productValue || 0)
+    );
+  } catch (error) {
+    console.error("Internal notification email failed", job.quoteId, cleanErrorMessage_(error));
+  }
+
+  sendOrderQuoteEmail_(job.quoteId, recipient, enquiry.name || job.customer?.name || "", pdfResult.fileId, Number(quote.finalQuote || job.total || 0));
+  markQuoteSent_(job.quoteId, new Date());
+}
+
+function ensurePublicOrderDeliveryTrigger_() {
+  const triggers = ScriptApp.getProjectTriggers();
+  const exists = triggers.some(t => t.getHandlerFunction() === "processPublicOrderDeliveryQueue_");
+  if (!exists) {
+    ScriptApp.newTrigger("processPublicOrderDeliveryQueue_")
+      .timeBased()
+      .everyMinutes(1)
+      .create();
+  }
+}
+
+function cleanErrorMessage_(error) {
+  if (!error) return "Unknown backend error.";
+  const message = error.message || String(error);
+  return String(message).replace(/\s+/g, " ").trim();
+}
+
+function sendOrderQuoteEmail_(quoteId, recipient, customerName, fileId, total) {
+  const file = DriveApp.getFileById(fileId);
+  const greeting = customerName ? "Dear " + customerName + "," : "Dear Sir / Madam,";
+  const body = greeting + "\n\nThank you for your order with Concrete Ideas.\n\nYour quotation " + quoteId + " is attached.\nTotal: " + formatCurrency_(total) + "\n\nPlease use the UPI / Google Pay QR code included in the quotation to make payment. Please quote your quotation number when contacting us about the order.\n\nRegards,\nConcrete Ideas\n" + CONFIG.WEBSITE;
+  GmailApp.sendEmail(recipient, "Concrete Ideas — Quotation " + quoteId, body, {attachments:[file.getBlob()], name:CONFIG.BUSINESS_NAME});
+}
 
 /* =========================================================
    WEBSITE ENQUIRY SUBMISSION
@@ -48,6 +252,10 @@ function doPost(e) {
      */
 
     const data = JSON.parse(e.parameter.payload);
+
+    if (String(data.type || "").toLowerCase() === "order") {
+      return processPublicOrder_(data);
+    }
 
     const ss = SpreadsheetApp.getActiveSpreadsheet();
 
@@ -292,78 +500,33 @@ function generateEnquiryId() {
    PRODUCT PRICING
    ========================================================= */
 
+function getPublicProductCatalog_() {
+  const cache = CacheService.getScriptCache();
+  const cached = cache.get("PUBLIC_PRODUCT_CATALOG_V1");
+  if (cached) return JSON.parse(cached);
+  const url = CONFIG.WEBSITE.replace(/\/$/, '') + "/data/products.json";
+  const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
+  if (response.getResponseCode() !== 200) throw new Error("Could not load the public product catalogue.");
+  const products = JSON.parse(response.getContentText());
+  if (!Array.isArray(products)) throw new Error("Invalid public product catalogue.");
+  cache.put("PUBLIC_PRODUCT_CATALOG_V1", JSON.stringify(products), 300);
+  return products;
+}
+
+// Fallback used by internal quotation tools when a stored/public rate is not
+// already present on the enquiry/quotation item. Public orders do not rely on
+// this function because their rate is supplied by the customer-facing GUI.
 function getBasePrice(productId, size) {
-
-  const ss =
-    SpreadsheetApp.getActiveSpreadsheet();
-
-  const sheet =
-    ss.getSheetByName("Product Pricing");
-
-  if (!sheet) {
-    throw new Error(
-      "Product Pricing sheet not found."
-    );
+  const products = getPublicProductCatalog_();
+  const product = products.find(p => String(p.id).trim() === String(productId).trim());
+  if (!product) throw new Error("Product not found in public catalogue: " + productId);
+  const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+  const variant = sizes.find(s => String(s.name).trim().toLowerCase() === String(size).trim().toLowerCase() || String(s.id).trim().toLowerCase() === String(size).trim().toLowerCase());
+  const rate = Number(variant && variant.rate);
+  if (!variant || !Number.isFinite(rate) || rate <= 0) {
+    throw new Error("No published rate found for product '" + productId + "', size '" + size + "'.");
   }
-
-  const data =
-    sheet.getDataRange().getValues();
-
-  /*
-   * Expected columns:
-   *
-   * Product ID
-   * Product
-   * Size
-   * Base Price (₹)
-   * Active
-   */
-
-  for (let i = 1; i < data.length; i++) {
-
-    const row = data[i];
-
-    const rowProductId =
-      String(row[0]).trim();
-
-    const rowSize =
-      String(row[2]).trim();
-
-    const basePrice =
-      Number(row[3] || 0);
-
-    const active =
-      row[4] === true ||
-      String(row[4]).toUpperCase() === "TRUE";
-
-
-    if (
-      rowProductId === String(productId).trim() &&
-      rowSize.toLowerCase() ===
-        String(size).trim().toLowerCase() &&
-      active
-    ) {
-
-      return basePrice;
-
-    }
-
-  }
-
-  /*
-   * Missing price is deliberately an error.
-   *
-   * We do NOT want an enquiry to silently
-   * receive a ₹0 base price.
-   */
-
-  throw new Error(
-    "No active base price found for product '" +
-    productId +
-    "', size '" +
-    size +
-    "'."
-  );
+  return rate;
 }
 
 
@@ -543,14 +706,17 @@ function sendCustomerConfirmationEmail(
 function createResultPage(
   success,
   enquiryId,
-  errorMessage
+  errorMessage,
+  resultType = "concreteideas-enquiry-result",
+  quoteId = "",
+  warningMessage = ""
 ) {
 
   const result =
     JSON.stringify({
 
       type:
-        "concreteideas-enquiry-result",
+        resultType,
 
       success:
         success,
@@ -558,8 +724,14 @@ function createResultPage(
       enquiryId:
         enquiryId || "",
 
+      quoteId:
+        quoteId || "",
+
       error:
-        errorMessage || ""
+        errorMessage || "",
+
+      warning:
+        warningMessage || ""
 
     });
 
@@ -844,11 +1016,13 @@ function createResultPage(
           );
         }
 
-        const basePrice =
-          getBasePrice(
-            item.productId,
-            item.size
-          );
+        // Prefer the price explicitly supplied with the quotation item.
+        // Public orders carry the rate from the customer's local products.json,
+        // so Apps Script must not attempt to fetch the hosted catalogue.
+        const suppliedBasePrice = Number(item.basePrice);
+        const basePrice = Number.isFinite(suppliedBasePrice) && suppliedBasePrice > 0
+          ? suppliedBasePrice
+          : getBasePrice(item.productId, item.size);
 
         const quotedUnitPrice =
           Number(item.quotedUnitPrice);
@@ -1306,9 +1480,67 @@ function doGet() {
 
 /**
  * Returns all enquiries for the internal quotation screen.
- * Pricing is resolved from Product Pricing so the UI never
- * has to trust stale values in older Enquiry Items rows.
+ * Pricing is resolved from the public data/products.json catalogue so the UI uses one source of truth.
  */
+function getDiscountRules_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("Discount Rules");
+
+  // Keep quotation creation resilient even if the optional rules tab has
+  // not yet been created. These are the same defaults seeded by setup.
+  if (!sheet) {
+    return [
+      { min: 0, max: 25000, discount: 0 },
+      { min: 25001, max: 50000, discount: 0.05 },
+      { min: 50001, max: 100000, discount: 0.10 },
+      { min: 100001, max: 200000, discount: 0.20 },
+      { min: 200001, max: Infinity, discount: 0.25 }
+    ];
+  }
+
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+
+  const headers = values[0].map(v => String(v).trim());
+  const minCol = headers.indexOf("Min Order Value");
+  const maxCol = headers.indexOf("Max Order Value");
+  const discountCol = headers.indexOf("Default Discount %");
+  if (minCol < 0 || maxCol < 0 || discountCol < 0) return [];
+
+  return values.slice(1).map(r => {
+    const min = Number(r[minCol] || 0);
+    const rawMax = r[maxCol];
+    const max = rawMax === "" || rawMax == null ? Infinity : Number(rawMax);
+    let discount = Number(r[discountCol] || 0);
+
+    // Google Sheets percentage-formatted cells normally return 0.05 for 5%.
+    // Also accept a manually entered 5 as 5%, making the table less error-prone.
+    if (discount > 1) discount = discount / 100;
+
+    return { min, max, discount };
+  }).filter(r =>
+    Number.isFinite(r.min) &&
+    Number.isFinite(r.discount) &&
+    r.min >= 0 &&
+    r.max >= r.min &&
+    r.discount >= 0 &&
+    r.discount <= 1
+  ).sort((a, b) => a.min - b.min);
+}
+
+function getSuggestedDiscountForOrderValue(orderValue) {
+  const value = Number(orderValue || 0);
+  if (!Number.isFinite(value) || value < 0) return 0;
+
+  const rules = getDiscountRules_();
+  for (let i = 0; i < rules.length; i++) {
+    if (value >= rules[i].min && value <= rules[i].max) {
+      return rules[i].discount;
+    }
+  }
+  return 0;
+}
+
 function getAdminEnquiries() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName("Enquiries");
@@ -1332,8 +1564,10 @@ function getAdminEnquiries() {
 
     const productId = String(r[itemCol("Product ID")] || "").trim();
     const size = String(r[itemCol("Size")] || "").trim();
-    let basePrice = 0;
-    try { basePrice = getBasePrice(productId, size); } catch (_) { basePrice = Number(r[itemCol("Base Price")] || 0); }
+    const storedBasePrice = Number(r[itemCol("Base Price")] || 0);
+    const basePrice = Number.isFinite(storedBasePrice) && storedBasePrice > 0
+      ? storedBasePrice
+      : getBasePrice(productId, size);
 
     const quantity = Number(r[itemCol("Quantity")] || 0);
     const key = productId.toLowerCase() + "|" + size.toLowerCase();
@@ -1377,6 +1611,7 @@ function getAdminEnquiries() {
       message: String(r[col("Message")] || ""),
       itemCount: enquiryItems.reduce((sum, x) => sum + x.quantity, 0),
       baseValue,
+      suggestedDiscountPercent: getSuggestedDiscountForOrderValue(baseValue),
       currentQuoteId: col("Current Quote ID") >= 0 ? String(r[col("Current Quote ID")] || "") : "",
       currentQuoteValue: col("Current Quote Value") >= 0 ? Number(r[col("Current Quote Value")] || 0) : 0,
       items: enquiryItems
@@ -1471,6 +1706,22 @@ function getAdminQuote(quoteId) {
 
 function createQuoteFromAdmin(enquiryId, quoteData, quoteItems) {
   return createQuote(enquiryId, quoteData, quoteItems);
+}
+
+function applyDiscountToQuoteItems_(quoteItems, discountPercent) {
+  const d = Number(discountPercent || 0);
+  if (!Number.isFinite(d) || d < 0 || d > 1) {
+    throw new Error("Discount must be between 0% and 100%.");
+  }
+  return (quoteItems || []).map(item => {
+    const suppliedBasePrice = Number(item.basePrice);
+    const basePrice = Number.isFinite(suppliedBasePrice) && suppliedBasePrice > 0
+      ? suppliedBasePrice
+      : getBasePrice(item.productId, item.size);
+    return Object.assign({}, item, {
+      quotedUnitPrice: Math.round(basePrice * (1 - d))
+    });
+  });
 }
 
 function toIsoDate(value) {
@@ -1587,6 +1838,15 @@ function generateQuotePdf(quoteId) {
     totalRow.getCell(1).getChild(0).asParagraph().setBold(true);
 
     body.appendParagraph("");
+    const paymentTitle = body.appendParagraph("PAYMENT");
+    paymentTitle.setBold(true);
+    body.appendParagraph("Scan the QR code below with Google Pay or another UPI app to make payment.");
+    const qrBlob = createPaymentQrBlob_(quote.quoteId, quote.finalQuote);
+    const qrParagraph = body.appendParagraph("");
+    qrParagraph.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+    qrParagraph.appendInlineImage(qrBlob).setWidth(150).setHeight(150);
+    body.appendParagraph("UPI ID: " + CONFIG.PAYMENT_UPI_ID).setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+    body.appendParagraph("");
     const footer = body.appendParagraph(
       "Thank you for considering Concrete Ideas."
     );
@@ -1623,6 +1883,22 @@ function generateQuotePdf(quoteId) {
     try { DriveApp.getFileById(doc.getId()).setTrashed(true); } catch (_) {}
     throw error;
   }
+}
+
+function createPaymentQrBlob_(quoteId, amount) {
+  const upi = String(CONFIG.PAYMENT_UPI_ID || "").trim();
+  if (!upi || upi === "REPLACE_WITH_YOUR_UPI_ID") throw new Error("Configure CONFIG.PAYMENT_UPI_ID in Code.gs before accepting online orders.");
+  const params = [
+    "pa=" + encodeURIComponent(upi),
+    "pn=" + encodeURIComponent(CONFIG.PAYMENT_NAME || CONFIG.BUSINESS_NAME),
+    "am=" + encodeURIComponent(Number(amount || 0).toFixed(2)),
+    "cu=INR",
+    "tn=" + encodeURIComponent(quoteId)
+  ].join("&");
+  const url = "https://quickchart.io/qr?size=320&margin=2&text=" + encodeURIComponent("upi://pay?" + params);
+  const response = UrlFetchApp.fetch(url, {muteHttpExceptions:true});
+  if (response.getResponseCode() !== 200) throw new Error("Could not generate the payment QR code.");
+  return response.getBlob().setName(quoteId + "-payment-qr.png");
 }
 
 function getAdminEnquiryById(enquiryId) {
@@ -1822,37 +2098,54 @@ function setupConcreteIdeasCRM() {
 
   /* -------------------------------------------------------
      Product Pricing
+
+     Public product rates now live only in data/products.json.
+     Remove the legacy pricing tab if it still exists.
      ------------------------------------------------------- */
 
-  const pricing =
+  const legacyPricing = ss.getSheetByName("Product Pricing");
+  if (legacyPricing && ss.getSheets().length > 1) ss.deleteSheet(legacyPricing);
+
+
+  /* -------------------------------------------------------
+     Discount Rules
+     ------------------------------------------------------- */
+
+  const discountRules =
     getOrCreateSheet(
       ss,
-      "Product Pricing"
+      "Discount Rules"
     );
 
-
-  const pricingHeaders = [
-
-    "Product ID",
-    "Product",
-    "Size",
-    "Base Price (₹)",
-    "Active"
-
+  const discountRuleHeaders = [
+    "Min Order Value",
+    "Max Order Value",
+    "Default Discount %"
   ];
 
-
   ensureHeaders(
-    pricing,
-    pricingHeaders
+    discountRules,
+    discountRuleHeaders
   );
-
 
   formatHeader(
-    pricing,
-    pricingHeaders.length
+    discountRules,
+    discountRuleHeaders.length
   );
 
+  /* Seed the default commercial policy only when the sheet is empty. */
+  if (discountRules.getLastRow() === 1) {
+    discountRules.getRange(2, 1, 5, 3).setValues([
+      [0, 25000, 0],
+      [25001, 50000, 0.05],
+      [50001, 100000, 0.10],
+      [100001, 200000, 0.20],
+      [200001, "", 0.25]
+    ]);
+    discountRules.getRange(2, 3, 5, 1).setNumberFormat("0.00%");
+    discountRules.getRange(2, 1, 5, 2).setNumberFormat("₹#,##0");
+    discountRules.setFrozenRows(1);
+  }
 
   /* -------------------------------------------------------
      Quotes
@@ -1993,14 +2286,6 @@ function setupConcreteIdeasCRM() {
   );
 
 
-  /* -------------------------------------------------------
-     Populate pricing table if empty
-     ------------------------------------------------------- */
-
-  populateInitialPricing(
-    pricing
-  );
-
 
   /* -------------------------------------------------------
      Status dropdown
@@ -2038,6 +2323,9 @@ function setupConcreteIdeasCRM() {
     );
 
 
+  // Background worker for public-order quotation PDF/email delivery.
+  ensurePublicOrderDeliveryTrigger_();
+
   Logger.log(
     "Concrete Ideas CRM setup complete."
   );
@@ -2048,76 +2336,6 @@ function setupConcreteIdeasCRM() {
 /* =========================================================
    INITIAL PRICING
    ========================================================= */
-
-function populateInitialPricing(
-  sheet
-) {
-
-  /*
-   * Only populate if there is currently
-   * no pricing data.
-   */
-
-  if (
-    sheet.getLastRow() > 1
-  ) {
-    return;
-  }
-
-
-  /*
-   * These are placeholder prices.
-   *
-   * Replace them with your actual prices
-   * directly in Google Sheets.
-   *
-   * Product IDs should match products.json.
-   */
-
-  const products = [
-
-    ["ant_1", "Ceneria Planter", "Small", 8500, true],
-    ["ant_1", "Ceneria Planter", "Medium", 11000, true],
-    ["ant_1", "Ceneria Planter", "Large", 15000, true],
-
-    ["terraviva-planter", "Terraviva Planter", "Small", 18000, true],
-    ["terraviva-planter", "Terraviva Planter", "Medium", 25000, true],
-    ["terraviva-planter", "Terraviva Planter", "Large", 35000, true],
-
-    ["sereno-bowl", "Sereno Bowl", "Small", 7500, true],
-    ["sereno-bowl", "Sereno Bowl", "Medium", 10000, true],
-    ["sereno-bowl", "Sereno Bowl", "Large", 14000, true]
-
-  ];
-
-
-  /*
-   * IMPORTANT:
-   *
-   * Add the remaining product/size rows here
-   * once the exact product IDs from products.json
-   * are confirmed.
-   *
-   * This function deliberately does not invent
-   * product IDs.
-   */
-
-
-  if (products.length > 0) {
-
-    sheet
-      .getRange(
-        2,
-        1,
-        products.length,
-        products[0].length
-      )
-      .setValues(products);
-
-  }
-
-}
-
 
 /* =========================================================
    DASHBOARD

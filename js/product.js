@@ -32,12 +32,13 @@
       const pendingQuantities = Object.fromEntries(sizes.map((size) => [size.id, 0]));
       const sizeOptions = sizes.map((size) => {
         const quantity = pendingQuantities[size.id] || 0;
-        return `<div class="product-size__option" data-size-id="${size.id}">
-          <div class="product-size__info"><span class="product-size__name">${size.name}</span><span class="product-size__dimensions"><strong>Dimension:</strong> ${size.dimensions}</span><span class="product-size__weight"><strong>Weight:</strong> ${size.weight || 'To be confirmed'}</span></div>
+        const priced = Number(size.rate || 0) > 0;
+        return `<div class="product-size__option ${priced ? '' : 'is-unpriced'}" data-size-id="${size.id}">
+          <div class="product-size__info"><span class="product-size__name">${size.name}</span><span class="product-size__dimensions"><strong>Dimension:</strong> ${size.dimensions}</span><span class="product-size__weight"><strong>Weight:</strong> ${size.weight || 'To be confirmed'}</span><span class="product-size__price">${priced ? `₹${Number(size.rate).toLocaleString('en-IN')} / piece` : 'Price on request'}</span></div>
           <div class="product-size__quantity" aria-label="Quantity of ${size.name}">
-            <button type="button" class="product-size__quantity-btn" data-product-size-decrease="${size.id}" aria-label="Decrease ${size.name} quantity">−</button>
+            <button type="button" class="product-size__quantity-btn" data-product-size-decrease="${size.id}" aria-label="Decrease ${size.name} quantity" ${priced ? "" : "disabled"}>−</button>
             <span class="product-size__quantity-value" data-product-size-count="${size.id}" aria-live="polite">${quantity}</span>
-            <button type="button" class="product-size__quantity-btn" data-product-size-increase="${size.id}" aria-label="Increase ${size.name} quantity">+</button>
+            <button type="button" class="product-size__quantity-btn" data-product-size-increase="${size.id}" aria-label="Increase ${size.name} quantity" ${priced ? "" : "disabled"}>+</button>
           </div>
         </div>`;
       }).join('');
@@ -49,7 +50,7 @@
         </div>
         <div class="product-detail__content"><p class="site-eyebrow">${categories.join(' / ')}</p><h1>${product.name}</h1><p class="product-detail__intro">${product.description}</p>
           ${specifications ? `<dl class="product-specs">${specifications}</dl>` : ''}
-          <div class="product-size"><div class="product-size__heading"><div><p class="site-eyebrow">Available sizes</p><h2>Select quantities</h2></div><a class="product-size__view-enquiry" href="../enquiry/index.html">View enquiry <span aria-hidden="true">→</span></a></div><div class="product-size__options" role="group" aria-label="Available sizes">${sizeOptions}</div><div class="product-size__footer"><button type="button" class="product-size__add-button" data-add-selected-to-enquiry disabled>Add to enquiry <span aria-hidden="true">→</span></button><span class="product-size__add-status" data-add-status aria-live="polite"></span></div></div>
+          <div class="product-size"><div class="product-size__heading"><div><p class="site-eyebrow">Available sizes</p><h2>Select quantities</h2></div><a class="product-size__view-enquiry" href="../enquiry/index.html">View cart <span aria-hidden="true">→</span></a></div><div class="product-size__options" role="group" aria-label="Available sizes">${sizeOptions}</div><div class="product-size__footer"><button type="button" class="product-size__add-button" data-add-selected-to-enquiry disabled>Add to cart <span aria-hidden="true">→</span></button><span class="product-size__add-status" data-add-status aria-live="polite"></span></div></div>
         </div>`;
       const addButton = detail.querySelector('[data-add-selected-to-enquiry]');
       const statusEl = detail.querySelector('[data-add-status]');
@@ -63,7 +64,7 @@
         });
         addButton.disabled = total === 0;
         addButton.classList.toggle('is-ready', total > 0);
-        addButton.innerHTML = total > 0 ? `Add ${total} ${total === 1 ? 'piece' : 'pieces'} to enquiry <span aria-hidden="true">→</span>` : 'Add to enquiry <span aria-hidden="true">→</span>';
+        addButton.innerHTML = total > 0 ? `Add ${total} ${total === 1 ? 'piece' : 'pieces'} to cart <span aria-hidden="true">→</span>` : 'Add to cart <span aria-hidden="true">→</span>';
       };
       detail.querySelectorAll('[data-product-size-increase], [data-product-size-decrease]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -78,13 +79,13 @@
         let added = 0;
         sizes.forEach((size) => {
           const quantity = pendingQuantities[size.id] || 0;
-          if (!quantity) return;
+          if (!quantity || !(Number(size.rate || 0) > 0)) return;
           window.ConcreteIdeasEnquiry.addItem(product, size, quantity);
           added += quantity;
           pendingQuantities[size.id] = 0;
         });
         if (added) {
-          statusEl.textContent = `${added} ${added === 1 ? 'piece' : 'pieces'} added to your enquiry.`;
+          statusEl.textContent = `${added} ${added === 1 ? 'piece' : 'pieces'} added to your cart.`;
           refreshPendingCounts();
         }
       });
