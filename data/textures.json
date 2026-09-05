@@ -1,0 +1,58 @@
+[
+  {
+    "id": "T-01",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Raw Concrete",
+    "description": "A quiet, natural concrete surface with subtle tonal variation and visible material character.",
+    "shadeImage": "../texture-images/raw-concrete.svg"
+  },
+  {
+    "id": "T-02",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Fine Sand",
+    "description": "A softly textured finish with a fine granular surface that catches light gently.",
+    "shadeImage": "../texture-images/fine-sand.svg"
+  },
+  {
+    "id": "T-03",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Stone Grain",
+    "description": "A hand-crafted mineral texture inspired by the irregularity and depth of natural stone.",
+    "shadeImage": "../texture-images/stone-grain.svg"
+  },
+  {
+    "id": "T-04",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Linear Brush",
+    "description": "Fine directional marks create a tactile, architectural surface with a crafted character.",
+    "shadeImage": "../texture-images/linear-brush.svg"
+  },
+  {
+    "id": "S-01",
+    "category": "Curated solid shades",
+    "name": "Warm White",
+    "description": "A soft off-white shade designed to sit naturally alongside stone, timber and planting.",
+    "shadeImage": "../texture-images/warm-white.svg"
+  },
+  {
+    "id": "S-02",
+    "category": "Curated solid shades",
+    "name": "Natural Grey",
+    "description": "A balanced concrete grey that preserves the understated character of the material.",
+    "shadeImage": "../texture-images/natural-grey.svg"
+  },
+  {
+    "id": "S-03",
+    "category": "Curated solid shades",
+    "name": "Charcoal",
+    "description": "A deep, contemporary shade for stronger architectural contrast and visual weight.",
+    "shadeImage": "../texture-images/charcoal.svg"
+  },
+  {
+    "id": "S-04",
+    "category": "Curated solid shades",
+    "name": "Earth",
+    "description": "A muted earthy tone developed to complement warm natural materials and landscape settings.",
+    "shadeImage": "../texture-images/earth.svg"
+  }
+]

@@ -88,3 +88,5 @@
 
 .product-size__weight { color: #777; display: block; font-size: 12px; line-height: 1.5; margin-top: 3px; }
 .product-size__dimensions strong, .product-size__weight strong { color: var(--color-charcoal); font-weight: 500; }
+
+.product-specs dd{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}.product-specs__link{color:var(--color-terracotta);font:500 10px/1.4 var(--font-ui);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}.product-specs__link:hover{text-decoration:underline}@media(max-width:767px){.product-specs dd{gap:5px 10px}}

@@ -23,10 +23,10 @@
       const categories = categoriesFor(product);
       const images = productImages(product);
       const specifications = [
-        ['Material', product.materials],
+        ['Material', product.materials, '../manufacturing/index.html', 'View materials'],
         ['Reinforcement', product.reinforcement],
-        ['Finish', product.finish]
-      ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('');
+        ['Finish', product.finish, '../textures/index.html', 'View curated finishes']
+      ].filter(([, value]) => value).map(([label, value, href, linkLabel]) => `<div><dt>${label}</dt><dd><span>${value}</span>${href ? ` <a class="product-specs__link" href="${href}">${linkLabel} <span aria-hidden="true">→</span></a>` : ''}</dd></div>`).join('');
       const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : [{ id: 'standard', name: 'Standard', dimensions: product.dimensions || 'Project specific' }];
       const defaultSize = sizes.find((size) => size.id === 'medium') || sizes[0];
       const getVariantQuantity = (sizeId) => window.ConcreteIdeasEnquiry?.getVariantQuantity?.(product.id, sizeId) || 0;
