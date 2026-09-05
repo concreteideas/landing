@@ -48,7 +48,7 @@
         <aside class="enquiry-summary">
           <p class="site-eyebrow">Ready to talk?</p>
           <h2>Send this selection to the studio.</h2>
-          <p>Share a few details about your project and we'll get back to you with availability, pricing and delivery guidance.</p>
+          <p>Share a few details about your project and we'll prepare a quotation based on the volume of your order. Larger quantities allow us to offer better per-piece pricing. Shipping costs are calculated separately based on the delivery location.</p>
           <button class="site-button site-button--primary enquiry-summary__button" type="button" data-open-enquiry-form>Send enquiry <span aria-hidden="true">→</span></button>
           <a class="enquiry-summary__continue" href="../products/index.html">Continue browsing</a>
         </aside>
@@ -58,7 +58,7 @@
           <div class="enquiry-form-heading">
             <p class="site-eyebrow">Project enquiry</p>
             <h2 id="enquiry-form-title">Tell us about your project.</h2>
-            <p>We'll review your selection and contact you with pricing, availability and delivery guidance.</p>
+            <p>We'll review your selection and prepare a quotation based on the volume of your order. Larger quantities allow us to offer better per-piece pricing. Shipping costs will be calculated based on your delivery location.</p>
           </div>
           <form data-enquiry-form novalidate>
             <div class="enquiry-form-grid">

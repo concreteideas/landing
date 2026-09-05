@@ -23,15 +23,15 @@
       const categories = categoriesFor(product);
       const images = productImages(product);
       const specifications = [
-        ['Material', product.materials],
+        ['Material', product.materials, '../manufacturing/index.html', 'View materials'],
         ['Reinforcement', product.reinforcement],
-        ['Finish', product.finish]
-      ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('');
+        ['Finish', product.finish, '../textures/index.html', 'View curated finishes']
+      ].filter(([, value]) => value).map(([label, value, href, linkLabel]) => `<div><dt>${label}</dt><dd><span>${value}</span>${href ? ` <a class="product-specs__link" href="${href}">${linkLabel} <span aria-hidden="true">→</span></a>` : ''}</dd></div>`).join('');
       const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : [{ id: 'standard', name: 'Standard', dimensions: product.dimensions || 'Project specific' }];
       const defaultSize = sizes.find((size) => size.id === 'medium') || sizes[0];
-      const getVariantQuantity = (sizeId) => window.ConcreteIdeasEnquiry?.getVariantQuantity?.(product.id, sizeId) || 0;
+      const pendingQuantities = Object.fromEntries(sizes.map((size) => [size.id, 0]));
       const sizeOptions = sizes.map((size) => {
-        const quantity = getVariantQuantity(size.id);
+        const quantity = pendingQuantities[size.id] || 0;
         return `<div class="product-size__option" data-size-id="${size.id}">
           <div class="product-size__info"><span class="product-size__name">${size.name}</span><span class="product-size__dimensions"><strong>Dimension:</strong> ${size.dimensions}</span><span class="product-size__weight"><strong>Weight:</strong> ${size.weight || 'To be confirmed'}</span></div>
           <div class="product-size__quantity" aria-label="Quantity of ${size.name}">
@@ -49,43 +49,46 @@
         </div>
         <div class="product-detail__content"><p class="site-eyebrow">${categories.join(' / ')}</p><h1>${product.name}</h1><p class="product-detail__intro">${product.description}</p>
           ${specifications ? `<dl class="product-specs">${specifications}</dl>` : ''}
-          <div class="product-size"><div class="product-size__heading"><div><p class="site-eyebrow">Available sizes</p><h2>Select quantities</h2></div><a class="product-size__view-enquiry" href="../enquiry/index.html">View enquiry <span aria-hidden="true">→</span></a></div><div class="product-size__options" role="group" aria-label="Available sizes">${sizeOptions}</div></div>
+          <div class="product-size"><div class="product-size__heading"><div><p class="site-eyebrow">Available sizes</p><h2>Select quantities</h2></div><a class="product-size__view-enquiry" href="../enquiry/index.html">View enquiry <span aria-hidden="true">→</span></a></div><div class="product-size__options" role="group" aria-label="Available sizes">${sizeOptions}</div><div class="product-size__footer"><button type="button" class="product-size__add-button" data-add-selected-to-enquiry disabled>Add to enquiry <span aria-hidden="true">→</span></button><span class="product-size__add-status" data-add-status aria-live="polite"></span></div></div>
         </div>`;
-      const addButton = detail.querySelector('[data-add-to-enquiry]');
-      detail.querySelectorAll('[data-product-size]').forEach((button) => {
-        button.addEventListener('click', () => {
-          const size = JSON.parse(button.dataset.productSize);
-          detail.querySelectorAll('[data-product-size]').forEach((option) => {
-            const active = option === button;
-            option.classList.toggle('is-active', active);
-            option.setAttribute('aria-pressed', String(active));
-          });
-          detail.querySelector('[data-selected-size-name]').textContent = size.name;
-          addButton.dataset.size = JSON.stringify(size);
-        });
-      });
-      const refreshVariantCounts = () => {
+      const addButton = detail.querySelector('[data-add-selected-to-enquiry]');
+      const statusEl = detail.querySelector('[data-add-status]');
+      const refreshPendingCounts = () => {
+        let total = 0;
         sizes.forEach((size) => {
-          const count = getVariantQuantity(size.id);
+          const count = pendingQuantities[size.id] || 0;
+          total += count;
           const countEl = detail.querySelector(`[data-product-size-count="${size.id}"]`);
           if (countEl) countEl.textContent = count;
         });
+        addButton.disabled = total === 0;
+        addButton.classList.toggle('is-ready', total > 0);
+        addButton.innerHTML = total > 0 ? `Add ${total} ${total === 1 ? 'piece' : 'pieces'} to enquiry <span aria-hidden="true">→</span>` : 'Add to enquiry <span aria-hidden="true">→</span>';
       };
       detail.querySelectorAll('[data-product-size-increase], [data-product-size-decrease]').forEach((button) => {
         button.addEventListener('click', () => {
           const sizeId = button.dataset.productSizeIncrease || button.dataset.productSizeDecrease;
-          const current = getVariantQuantity(sizeId);
-          const next = button.dataset.productSizeIncrease ? current + 1 : Math.max(0, current - 1);
-          const size = sizes.find((entry) => entry.id === sizeId);
-          if (!size) return;
-          const key = `${product.id}::${size.id}`;
-          if (next === 0) window.ConcreteIdeasEnquiry.removeItem(key);
-          else window.ConcreteIdeasEnquiry.addItem(product, size, next - current);
-          refreshVariantCounts();
+          const current = pendingQuantities[sizeId] || 0;
+          pendingQuantities[sizeId] = button.dataset.productSizeIncrease ? current + 1 : Math.max(0, current - 1);
+          statusEl.textContent = '';
+          refreshPendingCounts();
         });
       });
-      document.addEventListener('concreteideas:cart-updated', refreshVariantCounts);
-      refreshVariantCounts();
+      addButton.addEventListener('click', () => {
+        let added = 0;
+        sizes.forEach((size) => {
+          const quantity = pendingQuantities[size.id] || 0;
+          if (!quantity) return;
+          window.ConcreteIdeasEnquiry.addItem(product, size, quantity);
+          added += quantity;
+          pendingQuantities[size.id] = 0;
+        });
+        if (added) {
+          statusEl.textContent = `${added} ${added === 1 ? 'piece' : 'pieces'} added to your enquiry.`;
+          refreshPendingCounts();
+        }
+      });
+      refreshPendingCounts();
 
       if (images.length > 1) {
         const mainImage = detail.querySelector('[data-product-main-image]');

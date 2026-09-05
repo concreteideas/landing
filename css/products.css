@@ -88,3 +88,16 @@
 
 .product-size__weight { color: #777; display: block; font-size: 12px; line-height: 1.5; margin-top: 3px; }
 .product-size__dimensions strong, .product-size__weight strong { color: var(--color-charcoal); font-weight: 500; }
+
+.product-specs dd{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}.product-specs__link{color:var(--color-terracotta);font:500 10px/1.4 var(--font-ui);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}.product-specs__link:hover{text-decoration:underline}@media(max-width:767px){.product-specs dd{gap:5px 10px}}
+
+
+/* Staged enquiry selection */
+.product-size__footer { align-items: center; display: flex; flex-wrap: wrap; gap: 14px 20px; justify-content: space-between; margin-top: 18px; }
+.product-size__add-button { align-items: center; background: var(--color-charcoal); border: 1px solid var(--color-charcoal); color: #fff; cursor: pointer; display: inline-flex; font: 500 11px var(--font-display); gap: 7px; letter-spacing: .1em; padding: 13px 17px; text-transform: uppercase; transition: background .2s ease, border-color .2s ease, opacity .2s ease; }
+.product-size__add-button:hover:not(:disabled) { background: var(--color-terracotta); border-color: var(--color-terracotta); }
+.product-size__add-button:disabled { cursor: not-allowed; opacity: .42; }
+.product-size__add-button span { color: var(--color-terracotta); font-size: 16px; transition: transform .2s ease; }
+.product-size__add-button:hover:not(:disabled) span { color: #fff; transform: translateX(3px); }
+.product-size__add-status { color: #777; font-size: 12px; line-height: 1.5; }
+@media (max-width: 575px) { .product-size__footer { align-items: flex-start; flex-direction: column; } .product-size__add-button { width: 100%; justify-content: center; } }

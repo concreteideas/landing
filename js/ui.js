@@ -7,16 +7,17 @@
     ['Collections', page === 'home' ? '#collections' : `${root}index.html#collections`, 'collections'],
     ['Products', `${root}products/index.html`, 'products'],
     ['Projects', `${root}projects/index.html`, 'projects'],
-    // ['Resources', `${root}resources/index.html`, 'resources'],
     ['Contact', `${root}contact/index.html`, 'contact']
   ];
 
   const header = document.querySelector('[data-site-header]');
   if (header) {
-    header.innerHTML = `<header class="site-header"><div class="site-header__inner"><a class="site-header__brand" href="${root}index.html"><img src="${root}brand/blacklogo.png" alt="Concrete Ideas"></a><button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-menu"><i class="fa-solid fa-bars" aria-hidden="true"></i><span class="visually-hidden">Toggle navigation</span></button><nav class="site-header__menu" id="site-menu" aria-label="Main navigation"><ul class="site-header__nav">${links.map(([label, href, key]) => `<li><a href="${href}"${page === key ? ' aria-current="page"' : ''}>${label}</a></li>`).join('')}<li><a class="site-header__enquiry" href="${root}enquiry/index.html"${page === 'enquiry' ? ' aria-current="page"' : ''} aria-label="Open enquiry list"><i class="fa-regular fa-file-lines" aria-hidden="true"></i><span data-enquiry-label>Enquiry</span><span class="site-header__enquiry-count" data-enquiry-count hidden>0</span></a></li></ul></nav></div></header>`;
+    header.innerHTML = `<header class="site-header"><div class="site-header__inner"><a class="site-header__brand" href="${root}index.html"><img src="${root}brand/blacklogo.png" alt="Concrete Ideas"></a><button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-menu"><i class="fa-solid fa-bars" aria-hidden="true"></i><span class="visually-hidden">Toggle navigation</span></button><nav class="site-header__menu" id="site-menu" aria-label="Main navigation"><ul class="site-header__nav">${links.map(([label, href, key]) => `<li><a href="${href}"${page === key ? ' aria-current="page"' : ''}>${label}</a></li>`).join('')}<li class="site-header__dropdown"><button class="site-header__dropdown-toggle" type="button" aria-expanded="false">Resources <span aria-hidden="true">⌄</span></button><div class="site-header__dropdown-menu"><a href="${root}resources/index.html"${page === 'resources' ? ' aria-current="page"' : ''}>Resources overview</a><a href="${root}textures/index.html"${page === 'textures' ? ' aria-current="page"' : ''}>Curated finishes</a><a href="${root}manufacturing/index.html"${page === 'manufacturing' ? ' aria-current="page"' : ''}>Manufacturing &amp; materials</a></div></li><li><a class="site-header__enquiry" href="${root}enquiry/index.html"${page === 'enquiry' ? ' aria-current="page"' : ''} aria-label="Open enquiry list"><i class="fa-regular fa-file-lines" aria-hidden="true"></i><span data-enquiry-label>Enquiry</span><span class="site-header__enquiry-count" data-enquiry-count hidden>0</span></a></li></ul></nav></div></header>`;
     const toggle = header.querySelector('.site-header__toggle');
     const menu = header.querySelector('.site-header__menu');
     toggle.addEventListener('click', () => { const open = menu.classList.toggle('is-open'); toggle.setAttribute('aria-expanded', String(open)); });
+    const resourceToggle = header.querySelector('.site-header__dropdown-toggle');
+    if (resourceToggle) resourceToggle.addEventListener('click', () => { const open = resourceToggle.parentElement.classList.toggle('is-open'); resourceToggle.setAttribute('aria-expanded', String(open)); });
   }
 
   const footer = document.querySelector('[data-site-footer]');
