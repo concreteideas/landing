@@ -101,3 +101,5 @@
 .product-size__add-button:hover:not(:disabled) span { color: #fff; transform: translateX(3px); }
 .product-size__add-status { color: #777; font-size: 12px; line-height: 1.5; }
 @media (max-width: 575px) { .product-size__footer { align-items: flex-start; flex-direction: column; } .product-size__add-button { width: 100%; justify-content: center; } }
+
+.product-specs dd{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}.product-specs__link{color:var(--color-terracotta);font:500 10px/1.4 var(--font-ui);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}.product-specs__link:hover{text-decoration:underline}@media(max-width:767px){.product-specs dd{gap:5px 10px}}
