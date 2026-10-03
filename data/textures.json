@@ -15,6 +15,22 @@
       { "label": "Best suited for", "value": "Outdoor landscapes, villas, courtyards, terraces and statement installations" }
     ]
   },
+    {
+    "id": "T-06",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Weatherded Earth",
+    "description": "A weathered mineral finish with layered earthy tones of taupe, brown, charcoal and muted terracotta. The rugged, hand-textured surface and natural tonal variation create an aged, handcrafted character.",
+    "shadeImage": "../texture_images/T01.png",
+    "characteristics": [
+      { "label": "Appearance", "value": "Weathered mineral / aged stone" },
+      { "label": "Texture", "value": "Coarse, irregular, hand-worked" },
+      { "label": "Finish", "value": "Matte and understated" },
+      { "label": "Colour palette", "value": "Earthy taupe, brown, charcoal & muted terracotta" },
+      { "label": "Variation", "value": "High — each piece will have natural tonal and textural variation" },
+      { "label": "Design character", "value": "Rustic, organic, artisanal" },
+      { "label": "Best suited for", "value": "Outdoor landscapes, villas, courtyards, terraces and statement installations" }
+    ]
+  },
   {
     "id": "T-02",
     "category": "Curated textures and hand-crafted finishes",

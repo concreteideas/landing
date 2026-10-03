@@ -6,12 +6,13 @@
       "Landscape",
       "Indoor"
     ],
-    "image": "../product_images/AQ01/T01/AQ01-T01_1.png",
+    "image": "../product_images/AQ01/T01/AQ01-T01_5.png",
     "images": [
-      "../product_images/AQ01/T01/AQ01-T01_1.png",
+      "../product_images/AQ01/T01/AQ01-T01_5.png",
       "../product_images/AQ01/T01/AQ01-T01_2.png",
       "../product_images/AQ01/T01/AQ01-T01_3.png",
-      "../product_images/AQ01/T01/AQ01-T01_4.png"
+      "../product_images/AQ01/T01/AQ01-T01_4.png",
+      "../product_images/AQ01/T01/AQ01-T01_1.png"
     ],
     "description": "A bold, rounded planter with a generous organic form and subtly flared rim. Its substantial silhouette and rugged surface give it a strong architectural presence, making it well suited to landscapes, courtyards, terraces and contemporary outdoor spaces.",
     "materials": "Galvanized iron mesh, Polyurethane sealed finish",
