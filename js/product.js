@@ -13,19 +13,42 @@
     return image ? [image] : [];
   };
   const productImage = (product) => productImages(product)[0] || '';
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[character]);
 
-  loadJson('../data/products.json')
-    .then((products) => {
+  Promise.all([loadJson('../data/products.json'), loadJson('../data/textures.json')])
+    .then(([products, textures]) => {
       const product = products.find((item) => item.id === id);
       if (!product) return showError();
       document.title = `${product.name} | Concrete Ideas`;
       document.querySelector('[data-breadcrumb-name]').textContent = product.name;
       const categories = categoriesFor(product);
       const images = productImages(product);
+      const finishIds = Array.isArray(product.finishIds) ? product.finishIds : product.finishId ? [product.finishId] : [];
+      const finishes = finishIds.map((finishId) => textures.find((finish) => finish.id === finishId)).filter(Boolean);
+      const finishDetails = finishes.length ? `<section class="product-finish" aria-labelledby="product-finish-heading">
+        <p class="site-eyebrow">Surface & shade</p>
+        <h2 id="product-finish-heading">Finish details</h2>
+        <div class="product-finish__list">${finishes.map((finish) => {
+          const characteristics = Array.isArray(finish.characteristics) ? finish.characteristics : [];
+          const list = characteristics.length ? `<ul class="product-finish__characteristics">${characteristics.map(({ label, value }) => `<li><strong>${escapeHtml(label)}</strong><span>${escapeHtml(value)}</span></li>`).join('')}</ul>` : '';
+          return `<article class="product-finish__item">
+            <p class="product-finish__id">${escapeHtml(finish.id)}</p>
+            <h3>${escapeHtml(finish.name)}</h3>
+            <p class="product-finish__description">${escapeHtml(finish.description)}</p>
+            ${list}
+            <a class="product-finish__link" href="../textures/index.html#${encodeURIComponent(finish.id)}">View finish <span aria-hidden="true">→</span></a>
+          </article>`;
+        }).join('')}</div>
+      </section>` : '';
       const specifications = [
         ['Material', product.materials, '../manufacturing/index.html', 'View materials'],
-        ['Reinforcement', product.reinforcement],
-        ['Finish', product.finish, '../textures/index.html', 'View curated finishes']
+        ['Reinforcement', product.reinforcement]
       ].filter(([, value]) => value).map(([label, value, href, linkLabel]) => `<div><dt>${label}</dt><dd><span>${value}</span>${href ? ` <a class="product-specs__link" href="${href}">${linkLabel} <span aria-hidden="true">→</span></a>` : ''}</dd></div>`).join('');
       const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : [{ id: 'standard', name: 'Standard', dimensions: product.dimensions || 'Project specific' }];
       const defaultSize = sizes.find((size) => size.id === 'medium') || sizes[0];
@@ -50,6 +73,7 @@
         </div>
         <div class="product-detail__content"><p class="site-eyebrow">${categories.join(' / ')}</p><h1>${product.name}</h1><p class="product-detail__intro">${product.description}</p>
           ${specifications ? `<dl class="product-specs">${specifications}</dl>` : ''}
+          ${finishDetails}
           <div class="product-size"><div class="product-size__heading"><div><p class="site-eyebrow">Available sizes</p><h2>Select quantities</h2></div><a class="product-size__view-enquiry" href="../enquiry/index.html">View cart <span aria-hidden="true">→</span></a></div><div class="product-size__options" role="group" aria-label="Available sizes">${sizeOptions}</div><div class="product-size__footer"><button type="button" class="product-size__add-button" data-add-selected-to-enquiry disabled>Add to cart <span aria-hidden="true">→</span></button><span class="product-size__add-status" data-add-status aria-live="polite"></span></div></div>
         </div>`;
       const addButton = detail.querySelector('[data-add-selected-to-enquiry]');

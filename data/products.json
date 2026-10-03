@@ -16,7 +16,7 @@
     "description": "A bold, rounded planter with a generous organic form and subtly flared rim. Its substantial silhouette and rugged surface give it a strong architectural presence, making it well suited to landscapes, courtyards, terraces and contemporary outdoor spaces.",
     "materials": "Galvanized iron mesh, Polyurethane sealed finish",
     "dimensions": "Ø 533 × H 533 mm",
-    "finish": "Weathered Earth — A rugged, hand-textured finish with organic stone-like grain and layered earthy tones. Matte and naturally irregular, it creates an aged, handcrafted character that works particularly well in contemporary landscapes and rustic settings",
+    "finishIds": ["T-01"],
     "featured": true,
     "sizes": [
       {
@@ -42,7 +42,7 @@
     "description": "Generous proportions for planting schemes that need a strong, tactile anchor.",
     "materials": "Cast concrete, sealed finish",
     "dimensions": "Ø 780 × H 700 mm",
-    "finish": "Natural grey / custom pigment",
+    "finishIds": ["S-02"],
     "featured": true,
     "sizes": [
       {
@@ -81,7 +81,7 @@
     "description": "A low, contemplative bowl designed for water, planting or sculptural arrangements.",
     "materials": "Cast concrete",
     "dimensions": "Ø 900 × H 260 mm",
-    "finish": "Natural grey / charcoal",
+    "finishIds": ["S-02", "S-03"],
     "featured": false,
     "sizes": [
       {
@@ -120,7 +120,7 @@
     "description": "A composition of hand-cast forms that brings rhythm and texture to exterior spaces.",
     "materials": "GFRC concrete",
     "dimensions": "Set of three, custom sizes",
-    "finish": "Textured mineral finish",
+    "finishIds": ["T-03"],
     "featured": false,
     "sizes": [
       {
@@ -159,7 +159,7 @@
     "description": "A slim concrete console with softened edges, made for enduring interiors.",
     "materials": "GFRC concrete, steel support",
     "dimensions": "W 1400 × D 400 × H 820 mm",
-    "finish": "Honed grey / custom pigment",
+    "finishIds": ["S-02"],
     "featured": true,
     "sizes": [
       {
@@ -198,7 +198,7 @@
     "description": "A precision-cast pendant that pools a warm, focused light over considered spaces.",
     "materials": "Concrete shade, brass fitting",
     "dimensions": "Ø 240 × H 280 mm",
-    "finish": "Natural grey / charcoal",
+    "finishIds": ["S-02", "S-03"],
     "featured": true,
     "sizes": [
       {
@@ -237,7 +237,7 @@
     "description": "A sculptural pendant with a restrained silhouette and hand-finished surface.",
     "materials": "Cast concrete, brass fitting",
     "dimensions": "Ø 180 × H 360 mm",
-    "finish": "Natural grey",
+    "finishIds": ["S-02"],
     "featured": false,
     "sizes": [
       {
@@ -276,7 +276,7 @@
     "description": "An atmospheric wall light pairing a durable concrete body with a diffuse glow.",
     "materials": "Cast concrete, LED fitting",
     "dimensions": "W 300 × D 160 × H 420 mm",
-    "finish": "Natural grey / sand",
+    "finishIds": ["S-02", "S-05"],
     "featured": false,
     "sizes": [
       {
@@ -315,7 +315,7 @@
     "description": "A clustered lighting composition for hospitality and generous residential volumes.",
     "materials": "Concrete shades, adjustable suspension",
     "dimensions": "Made to project",
-    "finish": "Natural grey / custom pigment",
+    "finishIds": ["S-02"],
     "featured": false,
     "sizes": [
       {
@@ -354,7 +354,7 @@
     "description": "A made-to-measure water feature developed around the pace and geometry of its site.",
     "materials": "GFRC concrete, concealed water system",
     "dimensions": "Made to project",
-    "finish": "Specified to project",
+    "finishIds": ["C-01"],
     "featured": true,
     "sizes": [
       {
@@ -393,7 +393,7 @@
     "description": "Bespoke concrete objects that turn an arrival sequence into a material experience.",
     "materials": "GFRC concrete",
     "dimensions": "Made to project",
-    "finish": "Specified to project",
+    "finishIds": ["C-01"],
     "featured": false,
     "sizes": [
       {
@@ -432,7 +432,7 @@
     "description": "A tactile, custom-cast relief that brings depth to an architectural interior.",
     "materials": "GFRC concrete",
     "dimensions": "Made to project",
-    "finish": "Specified to project",
+    "finishIds": ["C-01"],
     "featured": false,
     "sizes": [
       {
