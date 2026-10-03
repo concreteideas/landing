@@ -1,46 +1,34 @@
 [
-  {
-    "id": "ant_1",
-    "name": "Ceneria Planter",
+    {
+    "id": "AQ01-T01",
+    "name": "AQ01-T01 Planter",
     "category": [
       "Landscape",
       "Indoor"
     ],
-    "image": "../product_images/1.png",
+    "image": "../product_images/AQ01/T01/AQ01-T01_1.png",
     "images": [
-      "../product_images/7.png",
-      "../product_images/7_plant.png",
-      "../product_images/3.png"
+      "../product_images/AQ01/T01/AQ01-T01_1.png",
+      "../product_images/AQ01/T01/AQ01-T01_2.png",
+      "../product_images/AQ01/T01/AQ01-T01_3.png",
+      "../product_images/AQ01/T01/AQ01-T01_4.png"
     ],
-    "description": "A softly tapered concrete planter with a quiet, architectural presence.",
+    "description": "A bold, rounded planter with a generous organic form and subtly flared rim. Its substantial silhouette and rugged surface give it a strong architectural presence, making it well suited to landscapes, courtyards, terraces and contemporary outdoor spaces.",
     "materials": "Galvanized iron mesh, Polyurethane sealed finish",
     "dimensions": "Ø 533 × H 533 mm",
-    "finish": "Natural grey / custom pigment",
+    "finish": "Weathered Earth — A rugged, hand-textured finish with organic stone-like grain and layered earthy tones. Matte and naturally irregular, it creates an aged, handcrafted character that works particularly well in contemporary landscapes and rustic settings",
     "featured": true,
     "sizes": [
       {
-        "id": "small",
-        "name": "Small",
-        "dimensions": "Ø 430 × H 430 mm",
-        "weight": "To be confirmed",
-        "rate": 8500
-      },
-      {
         "id": "medium",
         "name": "Medium",
-        "dimensions": "Ø 533 × H 533 mm",
-        "weight": "To be confirmed",
-        "rate": 11000
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "Ø 640 × H 640 mm",
-        "weight": "To be confirmed",
-        "rate": 15000
+        "dimensions": "Ø 21\" × H 21\"",
+        "weight": "26 Kg",
+        "rate": 9800
       }
     ]
   },
+ 
   {
     "id": "terraviva-planter",
     "name": "Terraviva Planter",
