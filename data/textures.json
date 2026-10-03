@@ -1,0 +1,142 @@
+[
+  {
+    "id": "T-01",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Weathered Earth",
+    "description": "A weathered mineral finish with layered earthy tones of taupe, brown, charcoal and muted terracotta. The rugged, hand-textured surface and natural tonal variation create an aged, handcrafted character.",
+    "shadeImage": "../texture_images/T01.png",
+    "characteristics": [
+      { "label": "Appearance", "value": "Weathered mineral / aged stone" },
+      { "label": "Texture", "value": "Coarse, irregular, hand-worked" },
+      { "label": "Finish", "value": "Matte and understated" },
+      { "label": "Colour palette", "value": "Earthy taupe, brown, charcoal & muted terracotta" },
+      { "label": "Variation", "value": "High — each piece will have natural tonal and textural variation" },
+      { "label": "Design character", "value": "Rustic, organic, artisanal" },
+      { "label": "Best suited for", "value": "Outdoor landscapes, villas, courtyards, terraces and statement installations" }
+    ]
+  },
+    {
+    "id": "T-06",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Weatherded Earth",
+    "description": "A weathered mineral finish with layered earthy tones of taupe, brown, charcoal and muted terracotta. The rugged, hand-textured surface and natural tonal variation create an aged, handcrafted character.",
+    "shadeImage": "../texture_images/T01.png",
+    "characteristics": [
+      { "label": "Appearance", "value": "Weathered mineral / aged stone" },
+      { "label": "Texture", "value": "Coarse, irregular, hand-worked" },
+      { "label": "Finish", "value": "Matte and understated" },
+      { "label": "Colour palette", "value": "Earthy taupe, brown, charcoal & muted terracotta" },
+      { "label": "Variation", "value": "High — each piece will have natural tonal and textural variation" },
+      { "label": "Design character", "value": "Rustic, organic, artisanal" },
+      { "label": "Best suited for", "value": "Outdoor landscapes, villas, courtyards, terraces and statement installations" }
+    ]
+  },
+  {
+    "id": "T-02",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Fine Sand",
+    "description": "A softly textured finish with a fine granular surface that catches light gently.",
+    "shadeImage": "../texture-images/fine-sand.svg",
+    "characteristics": [
+      { "label": "Appearance", "value": "Soft, fine-grained surface" },
+      { "label": "Texture", "value": "Subtle granular tactility" },
+      { "label": "Light response", "value": "Gently catches and diffuses light" }
+    ]
+  },
+  {
+    "id": "T-03",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Stone Grain",
+    "description": "A hand-crafted mineral texture inspired by the irregularity and depth of natural stone.",
+    "shadeImage": "../texture-images/stone-grain.svg",
+    "characteristics": [
+      { "label": "Appearance", "value": "Organic, stone-like variation" },
+      { "label": "Texture", "value": "Distinct mineral grain with tactile depth" },
+      { "label": "Character", "value": "Hand-crafted and naturally irregular" }
+    ]
+  },
+  {
+    "id": "T-04",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Linear Brush",
+    "description": "Fine directional marks create a tactile, architectural surface with a crafted character.",
+    "shadeImage": "../texture-images/linear-brush.svg",
+    "characteristics": [
+      { "label": "Pattern", "value": "Fine directional brush marks" },
+      { "label": "Texture", "value": "Tactile with a controlled surface rhythm" },
+      { "label": "Character", "value": "Crafted and architectural" }
+    ]
+  },
+  {
+    "id": "S-01",
+    "category": "Curated solid shades",
+    "name": "Warm White",
+    "description": "A soft off-white shade designed to sit naturally alongside stone, timber and planting.",
+    "shadeImage": "../texture-images/warm-white.svg",
+    "characteristics": [
+      { "label": "Tone", "value": "Soft off-white with a warm undertone" },
+      { "label": "Pairs with", "value": "Stone, timber and planting" },
+      { "label": "Use", "value": "A calm, light palette for interiors and landscapes" }
+    ]
+  },
+  {
+    "id": "S-02",
+    "category": "Curated solid shades",
+    "name": "Natural Grey",
+    "description": "A balanced concrete grey that preserves the understated character of the material.",
+    "shadeImage": "../texture-images/natural-grey.svg",
+    "characteristics": [
+      { "label": "Tone", "value": "Balanced, natural concrete grey" },
+      { "label": "Character", "value": "Understated and material-led" },
+      { "label": "Options", "value": "Custom pigment variations available on request" }
+    ]
+  },
+  {
+    "id": "S-03",
+    "category": "Curated solid shades",
+    "name": "Charcoal",
+    "description": "A deep, contemporary shade for stronger architectural contrast and visual weight.",
+    "shadeImage": "../texture-images/charcoal.svg",
+    "characteristics": [
+      { "label": "Tone", "value": "Deep charcoal" },
+      { "label": "Character", "value": "Contemporary with strong visual weight" },
+      { "label": "Use", "value": "Creates clear contrast against lighter materials" }
+    ]
+  },
+  {
+    "id": "S-04",
+    "category": "Curated solid shades",
+    "name": "Earth",
+    "description": "A muted earthy tone developed to complement warm natural materials and landscape settings.",
+    "shadeImage": "../texture-images/earth.svg",
+    "characteristics": [
+      { "label": "Tone", "value": "Muted, warm earth" },
+      { "label": "Pairs with", "value": "Natural stone, timber and landscape planting" },
+      { "label": "Use", "value": "Adds warmth to exterior and rustic settings" }
+    ]
+  },
+  {
+    "id": "S-05",
+    "category": "Curated solid shades",
+    "name": "Sand",
+    "description": "A soft sandy neutral that brings a gentle warmth to concrete forms and complements natural materials.",
+    "shadeImage": "../texture-images/fine-sand.svg",
+    "characteristics": [
+      { "label": "Tone", "value": "Soft, warm sandy neutral" },
+      { "label": "Pairs with", "value": "Natural grey, timber and warm stone" },
+      { "label": "Use", "value": "A gentle alternative to cooler concrete shades" }
+    ]
+  },
+  {
+    "id": "C-01",
+    "category": "Project-specific finishes",
+    "name": "Project-Specified Finish",
+    "description": "A finish developed or selected for the requirements of a specific project, with its appearance agreed during design development.",
+    "shadeImage": "../texture-images/raw-concrete.svg",
+    "characteristics": [
+      { "label": "Selection", "value": "Specified in collaboration with the project team" },
+      { "label": "Appearance", "value": "Agreed to suit the project context and material palette" },
+      { "label": "Availability", "value": "Confirmed during project development" }
+    ]
+  }
+]

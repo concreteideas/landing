@@ -1,20 +1,35 @@
 [
-  {
-    "id": "ant_1",
-    "name": "Ceneria Planter",
-    "category": ["Landscape", "Indoor"],
-    "image": "../product_images/1.png",
-    "images": [
-      "../product_images/7.png",
-      "../product_images/7_plant.png",
-      "../product_images/3.png"
+    {
+    "id": "AQ01-T01",
+    "name": "AQ01-T01 Planter",
+    "category": [
+      "Landscape",
+      "Indoor"
     ],
-    "description": "A softly tapered concrete planter with a quiet, architectural presence.",
+    "image": "../product_images/AQ01/T01/AQ01-T01_5.png",
+    "images": [
+      "../product_images/AQ01/T01/AQ01-T01_5.png",
+      "../product_images/AQ01/T01/AQ01-T01_2.png",
+      "../product_images/AQ01/T01/AQ01-T01_3.png",
+      "../product_images/AQ01/T01/AQ01-T01_4.png",
+      "../product_images/AQ01/T01/AQ01-T01_1.png"
+    ],
+    "description": "A bold, rounded planter with a generous organic form and subtly flared rim. Its substantial silhouette and rugged surface give it a strong architectural presence, making it well suited to landscapes, courtyards, terraces and contemporary outdoor spaces.",
     "materials": "Galvanized iron mesh, Polyurethane sealed finish",
     "dimensions": "Ø 533 × H 533 mm",
-    "finish": "Natural grey / custom pigment",
-    "featured": true
+    "finishIds": ["T-01"],
+    "featured": true,
+    "sizes": [
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 21\" × H 21\"",
+        "weight": "26 Kg",
+        "rate": 9800
+      }
+    ]
   },
+ 
   {
     "id": "terraviva-planter",
     "name": "Terraviva Planter",
@@ -28,9 +43,31 @@
     "description": "Generous proportions for planting schemes that need a strong, tactile anchor.",
     "materials": "Cast concrete, sealed finish",
     "dimensions": "Ø 780 × H 700 mm",
-    "weight": "Approx. 200 kg",
-    "finish": "Natural grey / custom pigment",
-    "featured": true
+    "finishIds": ["S-02"],
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 625 × H 560 mm",
+        "weight": "To be confirmed",
+        "rate": 18000
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 780 × H 700 mm",
+        "weight": "Approx. 200 kg",
+        "rate": 25000
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 940 × H 840 mm",
+        "weight": "To be confirmed",
+        "rate": 35000
+      }
+    ]
   },
   {
     "id": "sereno-bowl",
@@ -45,8 +82,31 @@
     "description": "A low, contemplative bowl designed for water, planting or sculptural arrangements.",
     "materials": "Cast concrete",
     "dimensions": "Ø 900 × H 260 mm",
-    "finish": "Natural grey / charcoal",
-    "featured": false
+    "finishIds": ["S-02", "S-03"],
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 720 × H 210 mm",
+        "weight": "To be confirmed",
+        "rate": 7500
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 900 × H 260 mm",
+        "weight": "To be confirmed",
+        "rate": 10000
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 1080 × H 310 mm",
+        "weight": "To be confirmed",
+        "rate": 14000
+      }
+    ]
   },
   {
     "id": "rocky-cluster",
@@ -61,8 +121,31 @@
     "description": "A composition of hand-cast forms that brings rhythm and texture to exterior spaces.",
     "materials": "GFRC concrete",
     "dimensions": "Set of three, custom sizes",
-    "finish": "Textured mineral finish",
-    "featured": false
+    "finishIds": ["T-03"],
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Set of three, up to Ø 450 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Set of three, up to Ø 600 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Set of three, up to Ø 800 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   },
   {
     "id": "cavallo-console",
@@ -77,8 +160,31 @@
     "description": "A slim concrete console with softened edges, made for enduring interiors.",
     "materials": "GFRC concrete, steel support",
     "dimensions": "W 1400 × D 400 × H 820 mm",
-    "finish": "Honed grey / custom pigment",
-    "featured": true
+    "finishIds": ["S-02"],
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 1120 × D 320 × H 660 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 1400 × D 400 × H 820 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 1680 × D 480 × H 980 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   },
   {
     "id": "canon-pendant",
@@ -93,8 +199,31 @@
     "description": "A precision-cast pendant that pools a warm, focused light over considered spaces.",
     "materials": "Concrete shade, brass fitting",
     "dimensions": "Ø 240 × H 280 mm",
-    "finish": "Natural grey / charcoal",
-    "featured": true
+    "finishIds": ["S-02", "S-03"],
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 190 × H 220 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 240 × H 280 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 290 × H 340 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   },
   {
     "id": "pendant-lamp",
@@ -109,8 +238,31 @@
     "description": "A sculptural pendant with a restrained silhouette and hand-finished surface.",
     "materials": "Cast concrete, brass fitting",
     "dimensions": "Ø 180 × H 360 mm",
-    "finish": "Natural grey",
-    "featured": false
+    "finishIds": ["S-02"],
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Ø 145 × H 290 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 180 × H 360 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Ø 215 × H 430 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   },
   {
     "id": "wall-lamp",
@@ -125,8 +277,31 @@
     "description": "An atmospheric wall light pairing a durable concrete body with a diffuse glow.",
     "materials": "Cast concrete, LED fitting",
     "dimensions": "W 300 × D 160 × H 420 mm",
-    "finish": "Natural grey / sand",
-    "featured": false
+    "finishIds": ["S-02", "S-05"],
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 240 × D 130 × H 335 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 300 × D 160 × H 420 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 360 × D 190 × H 505 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   },
   {
     "id": "maldives-cluster",
@@ -141,8 +316,31 @@
     "description": "A clustered lighting composition for hospitality and generous residential volumes.",
     "materials": "Concrete shades, adjustable suspension",
     "dimensions": "Made to project",
-    "finish": "Natural grey / custom pigment",
-    "featured": false
+    "finishIds": ["S-02"],
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "Approx. W 900 × H 1200 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Approx. W 1400 × H 1800 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "Approx. W 2000 × H 2500 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   },
   {
     "id": "courtyard-fountain",
@@ -157,8 +355,31 @@
     "description": "A made-to-measure water feature developed around the pace and geometry of its site.",
     "materials": "GFRC concrete, concealed water system",
     "dimensions": "Made to project",
-    "finish": "Specified to project",
-    "featured": true
+    "finishIds": ["C-01"],
+    "featured": true,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 900 × D 600 × H 450 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 1200 × D 800 × H 600 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 1800 × D 1000 × H 750 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   },
   {
     "id": "hotel-entry",
@@ -173,8 +394,31 @@
     "description": "Bespoke concrete objects that turn an arrival sequence into a material experience.",
     "materials": "GFRC concrete",
     "dimensions": "Made to project",
-    "finish": "Specified to project",
-    "featured": false
+    "finishIds": ["C-01"],
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 450 × D 450 × H 600 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 600 × D 600 × H 900 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 900 × D 900 × H 1200 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   },
   {
     "id": "wall-art-panel",
@@ -189,7 +433,30 @@
     "description": "A tactile, custom-cast relief that brings depth to an architectural interior.",
     "materials": "GFRC concrete",
     "dimensions": "Made to project",
-    "finish": "Specified to project",
-    "featured": false
+    "finishIds": ["C-01"],
+    "featured": false,
+    "sizes": [
+      {
+        "id": "small",
+        "name": "Small",
+        "dimensions": "W 600 × H 900 × D 40 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "W 900 × H 1200 × D 50 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      },
+      {
+        "id": "large",
+        "name": "Large",
+        "dimensions": "W 1200 × H 1800 × D 60 mm",
+        "weight": "To be confirmed",
+        "rate": null
+      }
+    ]
   }
 ]
