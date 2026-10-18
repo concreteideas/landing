@@ -31,41 +31,42 @@
   },
  
   {
-    "id": "terraviva-planter",
-    "name": "Terraviva Planter",
+    "id": "CP01-T04",
+    "name": "Strata Noir",
     "category": "Landscape",
-    "image": "../cimgs/terraviva.png",
+    "image": "../product_images/CP01/T04/CP01-T04_01.png",
     "images": [
-      "../cimgs/terraviva.png",
-      "../product_images/4.png",
-      "../product_images/5.png"
+      "../product_images/CP01/T04/CP01-T04_02.png",
+      "../product_images/CP01/T04/CP01-T04_01.png",
+      "../product_images/CP01/T04/CP01-T04_03.jpg",
+      "../product_images/CP01/T04/CP01-T04_04.jpg",
+      "../product_images/CP01/T04/CP01-T04_cluster.jpg"
     ],
-    "description": "Generous proportions for planting schemes that need a strong, tactile anchor.",
+    "description": "A generously proportioned planter with a softly rounded, barrel-like silhouette and a clean, understated profile. Its distinctive horizontal ridges create a strong sense of rhythm and depth, making it a striking addition to contemporary landscapes, modern villas, courtyards and architectural outdoor spaces.",
     "materials": "Cast concrete, sealed finish",
-    "dimensions": "Ø 780 × H 700 mm",
-    "finishIds": ["S-02"],
+    "finishIds": ["T-04"],
     "featured": true,
     "sizes": [
       {
         "id": "small",
         "name": "Small",
-        "dimensions": "Ø 625 × H 560 mm",
-        "weight": "To be confirmed",
-        "rate": 18000
+        "dimensions": "Ø 13\" × H 15\"",
+        "weight": "18 Kg",
+        "rate": 7570
       },
       {
         "id": "medium",
         "name": "Medium",
-        "dimensions": "Ø 780 × H 700 mm",
-        "weight": "Approx. 200 kg",
-        "rate": 25000
+        "dimensions": "Ø 17\" × H 21\"",
+        "weight": "27 Kg",
+        "rate": 10760
       },
-      {
+            {
         "id": "large",
         "name": "Large",
-        "dimensions": "Ø 940 × H 840 mm",
-        "weight": "To be confirmed",
-        "rate": 35000
+        "dimensions": "Ø 21\" × H 28\"",
+        "weight": "38 Kg",
+        "rate": 14640
       }
     ]
   },
