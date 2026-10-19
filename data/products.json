@@ -15,7 +15,7 @@
       "../product_images/AQ01/T01/AQ01-T01_1.png"
     ],
     "description": "A bold, rounded planter with a generous organic form and subtly flared rim. Its substantial silhouette and rugged surface give it a strong architectural presence, making it well suited to landscapes, courtyards, terraces and contemporary outdoor spaces.",
-    "materials": "Galvanized iron mesh, Polyurethane sealed finish",
+    "materials": "Cast concrete with galvanized iron mesh and polyurethane sealed finish",
     "dimensions": "Ø 533 × H 533 mm",
     "finishIds": ["T-01"],
     "featured": true,
@@ -71,41 +71,26 @@
     ]
   },
   {
-    "id": "sereno-bowl",
-    "name": "Sereno Bowl",
+    "id": "AQ04-T06",
+    "name": "Ember Vessel",
     "category": "Landscape",
     "image": "../cimgs/sereno.png",
     "images": [
-      "../cimgs/sereno.png",
-      "../product_images/6.png",
-      "../product_images/7.png"
+      "../product_images/AQ04/T06/AQ04-T06_01.png",
+      "../product_images/AQ04/T06/AQ04-T06_02.jpg",
+      "../product_images/AQ04/T06/AQ04-T06_03.jpg"
     ],
-    "description": "A low, contemplative bowl designed for water, planting or sculptural arrangements.",
+    "description": "A tall, sculptural planter featuring a gently tapered body, rounded base and distinctive flared neck. Its bold silhouette and dramatic two-tone finish make it a striking accent for contemporary landscapes, luxury villas and statement entrances.",
     "materials": "Cast concrete",
-    "dimensions": "Ø 900 × H 260 mm",
-    "finishIds": ["S-02", "S-03"],
+    "finishIds": ["T-06"],
     "featured": false,
     "sizes": [
       {
-        "id": "small",
-        "name": "Small",
-        "dimensions": "Ø 720 × H 210 mm",
-        "weight": "To be confirmed",
-        "rate": 7500
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "Ø 900 × H 260 mm",
-        "weight": "To be confirmed",
-        "rate": 10000
-      },
-      {
         "id": "large",
         "name": "Large",
-        "dimensions": "Ø 1080 × H 310 mm",
-        "weight": "To be confirmed",
-        "rate": 14000
+        "dimensions": "Ø 19\" × H 30\"",
+        "weight": "36 Kg",
+        "rate": 14290
       }
     ]
   },

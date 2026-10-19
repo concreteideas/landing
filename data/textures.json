@@ -20,7 +20,7 @@
     "category": "Curated textures and hand-crafted finishes",
     "name": "Linear Strata",
     "description": "A finely layered, stone-inspired finish defined by closely spaced horizontal grooves and a naturally weathered surface. Its muted greige tones, with subtle charcoal undertones and tonal variation, create a raw, tactile aesthetic with a contemporary architectural appeal.",
-    "shadeImage": "../texture_images/T01.png",
+    "shadeImage": "../texture_images/T04.png",
     "characteristics": [
       { "label": "Appearance", "value": "Layered stone / linear striations" },
       { "label": "Texture", "value": "Fine, closely spaced horizontal ridges with irregular, hand-worked grooves" },
@@ -31,16 +31,20 @@
       { "label": "Best suited for", "value": "Modern villas, landscaped gardens, courtyards, entranceways, terraces and minimalist outdoor spaces" }
     ]
   },
-  {
-    "id": "T-02",
+    {
+    "id": "T-06",
     "category": "Curated textures and hand-crafted finishes",
-    "name": "Fine Sand",
-    "description": "A softly textured finish with a fine granular surface that catches light gently.",
-    "shadeImage": "../texture-images/fine-sand.svg",
+    "name": "Copper Char",
+    "description": "A richly contrasting finish combining warm terracotta-copper tones with deep charcoal detailing across an irregular, heavily textured surface. The dark, understated neck creates a striking contrast with the expressive body, giving the planter a raw, artisanal character.",
+    "shadeImage": "../texture_images/T06.png",
     "characteristics": [
-      { "label": "Appearance", "value": "Soft, fine-grained surface" },
-      { "label": "Texture", "value": "Subtle granular tactility" },
-      { "label": "Light response", "value": "Gently catches and diffuses light" }
+      { "label": "Appearance", "value": "Layered stone / linear striations" },
+      { "label": "Texture", "value": "Fine, closely spaced horizontal ridges with irregular, hand-worked grooves" },
+      { "label": "Finish", "value": "Matte and understated" },
+      { "label": "Colour palette", "value": "Warm grey, greige, taupe and subtle charcoal" },
+      { "label": "Variation", "value": "Moderate to high — natural tonal variations and irregularities across the surface" },
+      { "label": "Design character", "value": "Contemporary, architectural, organic and artisanal" },
+      { "label": "Best suited for", "value": "Modern villas, landscaped gardens, courtyards, entranceways, terraces and minimalist outdoor spaces" }
     ]
   },
   {
