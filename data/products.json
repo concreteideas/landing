@@ -15,7 +15,7 @@
       "../product_images/AQ01/T01/AQ01-T01_1.png"
     ],
     "description": "A bold, rounded planter with a generous organic form and subtly flared rim. Its substantial silhouette and rugged surface give it a strong architectural presence, making it well suited to landscapes, courtyards, terraces and contemporary outdoor spaces.",
-    "materials": "Galvanized iron mesh, Polyurethane sealed finish",
+    "materials": "Cast concrete with galvanized iron mesh and polyurethane sealed finish",
     "dimensions": "Ø 533 × H 533 mm",
     "finishIds": ["T-01"],
     "featured": true,
@@ -31,119 +31,93 @@
   },
  
   {
-    "id": "terraviva-planter",
-    "name": "Terraviva Planter",
+    "id": "CP01-T04",
+    "name": "Strata Noir",
     "category": "Landscape",
-    "image": "../cimgs/terraviva.png",
+    "image": "../product_images/CP01/T04/CP01-T04_01.png",
     "images": [
-      "../cimgs/terraviva.png",
-      "../product_images/4.png",
-      "../product_images/5.png"
+      "../product_images/CP01/T04/CP01-T04_02.png",
+      "../product_images/CP01/T04/CP01-T04_01.png",
+      "../product_images/CP01/T04/CP01-T04_03.jpg",
+      "../product_images/CP01/T04/CP01-T04_04.jpg",
+      "../product_images/CP01/T04/CP01-T04_cluster.jpg"
     ],
-    "description": "Generous proportions for planting schemes that need a strong, tactile anchor.",
+    "description": "A generously proportioned planter with a softly rounded, barrel-like silhouette and a clean, understated profile. Its distinctive horizontal ridges create a strong sense of rhythm and depth, making it a striking addition to contemporary landscapes, modern villas, courtyards and architectural outdoor spaces.",
     "materials": "Cast concrete, sealed finish",
-    "dimensions": "Ø 780 × H 700 mm",
-    "finishIds": ["S-02"],
+    "finishIds": ["T-04"],
     "featured": true,
     "sizes": [
       {
         "id": "small",
         "name": "Small",
-        "dimensions": "Ø 625 × H 560 mm",
-        "weight": "To be confirmed",
-        "rate": 18000
+        "dimensions": "Ø 13\" × H 15\"",
+        "weight": "18 Kg",
+        "rate": 7570
       },
       {
         "id": "medium",
         "name": "Medium",
-        "dimensions": "Ø 780 × H 700 mm",
-        "weight": "Approx. 200 kg",
-        "rate": 25000
+        "dimensions": "Ø 17\" × H 21\"",
+        "weight": "27 Kg",
+        "rate": 10760
       },
-      {
+            {
         "id": "large",
         "name": "Large",
-        "dimensions": "Ø 940 × H 840 mm",
-        "weight": "To be confirmed",
-        "rate": 35000
+        "dimensions": "Ø 21\" × H 28\"",
+        "weight": "38 Kg",
+        "rate": 14640
       }
     ]
   },
   {
-    "id": "sereno-bowl",
-    "name": "Sereno Bowl",
+    "id": "AQ04-T06",
+    "name": "Ember Vessel",
     "category": "Landscape",
-    "image": "../cimgs/sereno.png",
     "images": [
-      "../cimgs/sereno.png",
-      "../product_images/6.png",
-      "../product_images/7.png"
+      "../product_images/AQ04/T06/AQ04-T06_01.png",
+      "../product_images/AQ04/T06/AQ04-T06_02.jpg",
+      "../product_images/AQ04/T06/AQ04-T06_03.jpg"
     ],
-    "description": "A low, contemplative bowl designed for water, planting or sculptural arrangements.",
+    "description": "A tall, sculptural planter featuring a gently tapered body, rounded base and distinctive flared neck. Its bold silhouette and dramatic two-tone finish make it a striking accent for contemporary landscapes, luxury villas and statement entrances.",
     "materials": "Cast concrete",
-    "dimensions": "Ø 900 × H 260 mm",
-    "finishIds": ["S-02", "S-03"],
+    "finishIds": ["T-06"],
     "featured": false,
     "sizes": [
       {
-        "id": "small",
-        "name": "Small",
-        "dimensions": "Ø 720 × H 210 mm",
-        "weight": "To be confirmed",
-        "rate": 7500
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "Ø 900 × H 260 mm",
-        "weight": "To be confirmed",
-        "rate": 10000
-      },
-      {
         "id": "large",
         "name": "Large",
-        "dimensions": "Ø 1080 × H 310 mm",
-        "weight": "To be confirmed",
-        "rate": 14000
+        "dimensions": "Ø 19\" × H 30\"",
+        "weight": "36 Kg",
+        "rate": 14290
       }
     ]
   },
   {
-    "id": "rocky-cluster",
-    "name": "Rocky Cluster",
+    "id": "AQ05-T02",
+    "name": "Terra Noir",
     "category": "Landscape",
-    "image": "../cimgs/rocky-cluster.jpg",
     "images": [
-      "../cimgs/rocky-cluster.jpg",
-      "../cimgs/landscape1.png",
-      "../cimgs/landscape2.png"
+      "../product_images/AQ05/T02/AQ05-T02_07.png",
+      "../product_images/AQ05/T02/AQ05-T02_02.jpg",
+      "../product_images/AQ05/T02/AQ05-T02_03.jpg",
+      "../product_images/AQ05/T02/AQ05-T02_04.jpg",
+      "../product_images/AQ05/T02/AQ05-T02_05.jpg",
+      "../product_images/AQ05/T02/AQ05-T02_06.jpg"
     ],
     "description": "A composition of hand-cast forms that brings rhythm and texture to exterior spaces.",
     "materials": "GFRC concrete",
     "dimensions": "Set of three, custom sizes",
-    "finishIds": ["T-03"],
+    "finishIds": ["T-02"],
     "featured": false,
     "sizes": [
-      {
-        "id": "small",
-        "name": "Small",
-        "dimensions": "Set of three, up to Ø 450 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
+
       {
         "id": "medium",
         "name": "Medium",
-        "dimensions": "Set of three, up to Ø 600 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "Set of three, up to Ø 800 mm",
-        "weight": "To be confirmed",
-        "rate": null
+        "dimensions": "Ø 21\" × H 15\"",
+        "weight": "20 Kg",
+        "rate": 7830
       }
     ]
   },

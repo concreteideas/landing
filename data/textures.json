@@ -8,7 +8,7 @@
     "characteristics": [
       { "label": "Appearance", "value": "Weathered mineral / aged stone" },
       { "label": "Texture", "value": "Coarse, irregular, hand-worked" },
-      { "label": "Finish", "value": "Matte and understated" },
+      { "label": "Finish", "value": "Matte" },
       { "label": "Colour palette", "value": "Earthy taupe, brown, charcoal & muted terracotta" },
       { "label": "Variation", "value": "High — each piece will have natural tonal and textural variation" },
       { "label": "Design character", "value": "Rustic, organic, artisanal" },
@@ -16,31 +16,35 @@
     ]
   },
     {
-    "id": "T-06",
+    "id": "T-04",
     "category": "Curated textures and hand-crafted finishes",
-    "name": "Weatherded Earth",
-    "description": "A weathered mineral finish with layered earthy tones of taupe, brown, charcoal and muted terracotta. The rugged, hand-textured surface and natural tonal variation create an aged, handcrafted character.",
-    "shadeImage": "../texture_images/T01.png",
+    "name": "Linear Strata",
+    "description": "A finely layered, stone-inspired finish defined by closely spaced horizontal grooves and a naturally weathered surface. Its muted greige tones, with subtle charcoal undertones and tonal variation, create a raw, tactile aesthetic with a contemporary architectural appeal.",
+    "shadeImage": "../texture_images/T04.png",
     "characteristics": [
-      { "label": "Appearance", "value": "Weathered mineral / aged stone" },
-      { "label": "Texture", "value": "Coarse, irregular, hand-worked" },
+      { "label": "Appearance", "value": "Layered stone / linear striations" },
+      { "label": "Texture", "value": "Fine, closely spaced horizontal ridges with irregular, hand-worked grooves" },
       { "label": "Finish", "value": "Matte and understated" },
-      { "label": "Colour palette", "value": "Earthy taupe, brown, charcoal & muted terracotta" },
-      { "label": "Variation", "value": "High — each piece will have natural tonal and textural variation" },
-      { "label": "Design character", "value": "Rustic, organic, artisanal" },
-      { "label": "Best suited for", "value": "Outdoor landscapes, villas, courtyards, terraces and statement installations" }
+      { "label": "Colour palette", "value": "Warm grey, greige, taupe and subtle charcoal" },
+      { "label": "Variation", "value": "Moderate to high — natural tonal variations and irregularities across the surface" },
+      { "label": "Design character", "value": "Contemporary, architectural, organic and artisanal" },
+      { "label": "Best suited for", "value": "Modern villas, landscaped gardens, courtyards, entranceways, terraces and minimalist outdoor spaces" }
     ]
   },
-  {
-    "id": "T-02",
+    {
+    "id": "T-06",
     "category": "Curated textures and hand-crafted finishes",
-    "name": "Fine Sand",
-    "description": "A softly textured finish with a fine granular surface that catches light gently.",
-    "shadeImage": "../texture-images/fine-sand.svg",
+    "name": "Copper Char",
+    "description": "A richly contrasting finish combining warm terracotta-copper tones with deep charcoal detailing across an irregular, heavily textured surface. The dark, understated neck creates a striking contrast with the expressive body, giving the planter a raw, artisanal character.",
+    "shadeImage": "../texture_images/T06.png",
     "characteristics": [
-      { "label": "Appearance", "value": "Soft, fine-grained surface" },
-      { "label": "Texture", "value": "Subtle granular tactility" },
-      { "label": "Light response", "value": "Gently catches and diffuses light" }
+      { "label": "Appearance", "value": "Coarse, irregular, raised and distressed surface" },
+      { "label": "Texture", "value": "Mottled, weathered mineral finish with contrasting dark accents" },
+      { "label": "Finish", "value": "Matte" },
+      { "label": "Colour palette", "value": "Burnt terracotta, copper rose and charcoal black" },
+      { "label": "Variation", "value": "High — irregular colour distribution and pronounced surface variation" },
+      { "label": "Design character", "value": "Bold, rustic, artisanal and contemporary" },
+      { "label": "Best suited for", "value": "Luxury villas, landscaped gardens, entranceways, courtyards, patios and statement outdoor installations" }
     ]
   },
   {

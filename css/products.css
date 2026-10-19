@@ -31,7 +31,7 @@
 
 .products-empty { grid-column: 1 / -1; padding: 40px 0 80px; text-align: center; }
 .product-detail { display: grid; grid-template-columns: 1.12fr .88fr; gap: clamp(35px, 7vw, 100px); padding: 60px 0 90px; }
-.product-detail__gallery { display: grid; gap: 14px; }
+.product-detail__gallery { align-content: start; display: grid; gap: 15px; }
 .product-detail__gallery-main { aspect-ratio: 1 / 1; background: #eeeae5; overflow: hidden; }
 .product-detail__gallery-main img { display: block; height: 100%; object-fit: cover; width: 100%; }
 .product-detail__gallery-thumbs { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); }
