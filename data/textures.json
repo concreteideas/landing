@@ -38,13 +38,13 @@
     "description": "A richly contrasting finish combining warm terracotta-copper tones with deep charcoal detailing across an irregular, heavily textured surface. The dark, understated neck creates a striking contrast with the expressive body, giving the planter a raw, artisanal character.",
     "shadeImage": "../texture_images/T06.png",
     "characteristics": [
-      { "label": "Appearance", "value": "Layered stone / linear striations" },
-      { "label": "Texture", "value": "Fine, closely spaced horizontal ridges with irregular, hand-worked grooves" },
-      { "label": "Finish", "value": "Matte and understated" },
-      { "label": "Colour palette", "value": "Warm grey, greige, taupe and subtle charcoal" },
-      { "label": "Variation", "value": "Moderate to high — natural tonal variations and irregularities across the surface" },
-      { "label": "Design character", "value": "Contemporary, architectural, organic and artisanal" },
-      { "label": "Best suited for", "value": "Modern villas, landscaped gardens, courtyards, entranceways, terraces and minimalist outdoor spaces" }
+      { "label": "Appearance", "value": "Coarse, irregular, raised and distressed surface" },
+      { "label": "Texture", "value": "Mottled, weathered mineral finish with contrasting dark accents" },
+      { "label": "Finish", "value": "Matte" },
+      { "label": "Colour palette", "value": "Burnt terracotta, copper rose and charcoal black" },
+      { "label": "Variation", "value": "High — irregular colour distribution and pronounced surface variation" },
+      { "label": "Design character", "value": "Bold, rustic, artisanal and contemporary" },
+      { "label": "Best suited for", "value": "Luxury villas, landscaped gardens, entranceways, courtyards, patios and statement outdoor installations" }
     ]
   },
   {

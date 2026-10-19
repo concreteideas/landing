@@ -74,7 +74,6 @@
     "id": "AQ04-T06",
     "name": "Ember Vessel",
     "category": "Landscape",
-    "image": "../cimgs/sereno.png",
     "images": [
       "../product_images/AQ04/T06/AQ04-T06_01.png",
       "../product_images/AQ04/T06/AQ04-T06_02.jpg",
@@ -95,41 +94,30 @@
     ]
   },
   {
-    "id": "rocky-cluster",
-    "name": "Rocky Cluster",
+    "id": "AQ05-T02",
+    "name": "Terra Noir",
     "category": "Landscape",
-    "image": "../cimgs/rocky-cluster.jpg",
     "images": [
-      "../cimgs/rocky-cluster.jpg",
-      "../cimgs/landscape1.png",
-      "../cimgs/landscape2.png"
+      "../product_images/AQ05/T02/AQ05-T02_07.png",
+      "../product_images/AQ05/T02/AQ05-T02_02.jpg",
+      "../product_images/AQ05/T02/AQ05-T02_03.jpg",
+      "../product_images/AQ05/T02/AQ05-T02_04.jpg",
+      "../product_images/AQ05/T02/AQ05-T02_05.jpg",
+      "../product_images/AQ05/T02/AQ05-T02_06.jpg"
     ],
     "description": "A composition of hand-cast forms that brings rhythm and texture to exterior spaces.",
     "materials": "GFRC concrete",
     "dimensions": "Set of three, custom sizes",
-    "finishIds": ["T-03"],
+    "finishIds": ["T-02"],
     "featured": false,
     "sizes": [
-      {
-        "id": "small",
-        "name": "Small",
-        "dimensions": "Set of three, up to Ø 450 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
+
       {
         "id": "medium",
         "name": "Medium",
-        "dimensions": "Set of three, up to Ø 600 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "Set of three, up to Ø 800 mm",
-        "weight": "To be confirmed",
-        "rate": null
+        "dimensions": "Ø 21\" × H 15\"",
+        "weight": "20 Kg",
+        "rate": 7830
       }
     ]
   },
