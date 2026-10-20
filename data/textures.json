@@ -32,6 +32,23 @@
     ]
   },
     {
+    "id": "T-05",
+    "category": "Curated textures and hand-crafted finishes",
+    "name": "Basalt Grain",
+    "description": "A deep charcoal-black finish with subtle slate-grey highlights across a rugged, stone-like surface. Its coarse, irregular texture creates a naturally weathered appearance with a bold, understated elegance.",
+    "shadeImage": "../texture_images/T05.png",
+    "characteristics": [
+      { "label": "Appearance", "value": "Dark, weathered stone with subtle mineral-like highlights" },
+      { "label": "Texture", "value": "Coarse, granular and irregularly textured" },
+      { "label": "Finish", "value": "Matte and understated" },
+      { "label": "Colour palette", "value": "Charcoal black, graphite and slate grey" },
+      { "label": "Variation", "value": "Moderate to high — natural-looking tonal shifts across the textured surface" },
+      { "label": "Design character", "value": "Contemporary, sculptural, minimalist and industrial" },
+      { "label": "Best suited for", "value": "Modern villas, landscaped gardens, entranceways, courtyards, patios and premium outdoor installations" }
+    ]
+  },
+
+    {
     "id": "T-06",
     "category": "Curated textures and hand-crafted finishes",
     "name": "Copper Char",
