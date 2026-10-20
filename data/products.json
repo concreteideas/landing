@@ -122,53 +122,61 @@
     ]
   },
   {
+    "id": "AQ05-T05",
+    "name": "Obsidian Vessel",
+    "category": "Landscape",
+    "images": [
+      "../product_images/AQ05/T05/AQ05-T05_01.png",
+      "../product_images/AQ05/T05/AQ05-T05_02.jpg",
+      "../product_images/AQ05/T05/AQ05-T05_03.jpg",
+      "../product_images/AQ05/T05/AQ05-T05_04.jpg"
+    ],
+    "description": "A generously rounded planter with a broad, gently flared rim and a softly tapering base. Its bold silhouette and dark, tactile surface create a sculptural statement suited to contemporary landscapes, modern villas and sophisticated outdoor spaces.",
+    "materials": "GFRC concrete",
+    "dimensions": "Set of three, custom sizes",
+    "finishIds": ["T-05"],
+    "featured": false,
+    "sizes": [
+
+      {
+        "id": "medium",
+        "name": "Medium",
+        "dimensions": "Ø 21\" × H 15\"",
+        "weight": "20 Kg",
+        "rate": 7830
+      }
+    ]
+  },
+  {
     "id": "cavallo-console",
     "name": "Cavallo Console",
     "category": "Indoor",
     "image": "../cimgs/cavallo.png",
     "images": [
-      "../cimgs/cavallo.png",
-      "../cimgs/indoor1.jpg",
-      "../cimgs/indoor2.png"
+      "../cimgs/cavallo.png"
     ],
-    "description": "A slim concrete console with softened edges, made for enduring interiors.",
+    "description": "A concrete console with softened edges, made for enduring interiors.",
     "materials": "GFRC concrete, steel support",
     "dimensions": "W 1400 × D 400 × H 820 mm",
     "finishIds": ["S-02"],
     "featured": true,
     "sizes": [
       {
-        "id": "small",
-        "name": "Small",
-        "dimensions": "W 1120 × D 320 × H 660 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
         "id": "medium",
         "name": "Medium",
-        "dimensions": "W 1400 × D 400 × H 820 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "W 1680 × D 480 × H 980 mm",
-        "weight": "To be confirmed",
-        "rate": null
+        "dimensions": "Ø 21\" × H 21\"",
+        "weight": "26 Kg",
+        "rate": 9800
       }
     ]
   },
   {
     "id": "canon-pendant",
-    "name": "Canon Pendant",
-    "category": "Indoor",
+    "name": "Canon ",
+    "category": "Outdoor/Indoor",
     "image": "../cimgs/canon.jpg",
     "images": [
-      "../cimgs/canon.jpg",
-      "../cimgs/indoor3.jpg",
-      "../cimgs/homedecor.jpg"
+      "../cimgs/canon.jpg"
     ],
     "description": "A precision-cast pendant that pools a warm, focused light over considered spaces.",
     "materials": "Concrete shade, brass fitting",
@@ -179,23 +187,9 @@
       {
         "id": "small",
         "name": "Small",
-        "dimensions": "Ø 190 × H 220 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "Ø 240 × H 280 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "Ø 290 × H 340 mm",
-        "weight": "To be confirmed",
-        "rate": null
+        "dimensions": "Made to project",
+        "weight": "Made to project",
+        "rate": 13000
       }
     ]
   },
@@ -205,36 +199,19 @@
     "category": "Indoor",
     "image": "../cimgs/pendant-lamp1.jpg",
     "images": [
-      "../cimgs/pendant-lamp1.jpg",
-      "../cimgs/indoor1.png",
-      "../cimgs/indoor2.png"
+      "../cimgs/pendant-lamp1.jpg"
     ],
     "description": "A sculptural pendant with a restrained silhouette and hand-finished surface.",
-    "materials": "Cast concrete, brass fitting",
-    "dimensions": "Ø 180 × H 360 mm",
+    "materials": "Cast concrete",
     "finishIds": ["S-02"],
     "featured": false,
     "sizes": [
       {
         "id": "small",
         "name": "Small",
-        "dimensions": "Ø 145 × H 290 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "Ø 180 × H 360 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "Ø 215 × H 430 mm",
-        "weight": "To be confirmed",
-        "rate": null
+        "dimensions": "Ø 7\" × H 5\"",
+        "weight": "1.5 Kg",
+        "rate": 1200
       }
     ]
   },
@@ -244,87 +221,30 @@
     "category": "Indoor",
     "image": "../cimgs/wall-lamp1.jpg",
     "images": [
-      "../cimgs/wall-lamp1.jpg",
-      "../cimgs/indoor3.jpg",
-      "../cimgs/homedecor.jpg"
+      "../cimgs/wall-lamp1.jpg"
     ],
     "description": "An atmospheric wall light pairing a durable concrete body with a diffuse glow.",
     "materials": "Cast concrete, LED fitting",
-    "dimensions": "W 300 × D 160 × H 420 mm",
     "finishIds": ["S-02", "S-05"],
     "featured": false,
     "sizes": [
       {
         "id": "small",
         "name": "Small",
-        "dimensions": "W 240 × D 130 × H 335 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "W 300 × D 160 × H 420 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "W 360 × D 190 × H 505 mm",
-        "weight": "To be confirmed",
-        "rate": null
+        "dimensions": "W 8\" × H 5\"",
+        "weight": "1.7 Kg",
+        "rate": 1700
       }
     ]
   },
-  {
-    "id": "maldives-cluster",
-    "name": "Maldives Cluster",
-    "category": "Landscape",
-    "image": "../cimgs/maldives-cluster1.jpg",
-    "images": [
-      "../cimgs/maldives-cluster1.jpg",
-      "../cimgs/landscaping.jpg",
-      "../cimgs/boat.jpg"
-    ],
-    "description": "A clustered lighting composition for hospitality and generous residential volumes.",
-    "materials": "Concrete shades, adjustable suspension",
-    "dimensions": "Made to project",
-    "finishIds": ["S-02"],
-    "featured": false,
-    "sizes": [
-      {
-        "id": "small",
-        "name": "Small",
-        "dimensions": "Approx. W 900 × H 1200 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "Approx. W 1400 × H 1800 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "Approx. W 2000 × H 2500 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      }
-    ]
-  },
+ 
   {
     "id": "courtyard-fountain",
     "name": "Courtyard Fountain",
     "category": "Landscape",
     "image": "../cimgs/fountain.jpg",
     "images": [
-      "../cimgs/fountain.jpg",
-      "../cimgs/landscape2.png",
-      "../cimgs/bespoke.jpg"
+      "../cimgs/fountain.jpg"
     ],
     "description": "A made-to-measure water feature developed around the pace and geometry of its site.",
     "materials": "GFRC concrete, concealed water system",
@@ -335,61 +255,8 @@
       {
         "id": "small",
         "name": "Small",
-        "dimensions": "W 900 × D 600 × H 450 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "W 1200 × D 800 × H 600 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "W 1800 × D 1000 × H 750 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      }
-    ]
-  },
-  {
-    "id": "hotel-entry",
-    "name": "Entry Plinths",
-    "category": "Landscape",
-    "image": "../cimgs/hotel-entry.jpg",
-    "images": [
-      "../cimgs/hotel-entry.jpg",
-      "../cimgs/about4.jpg",
-      "../cimgs/housename.jpg"
-    ],
-    "description": "Bespoke concrete objects that turn an arrival sequence into a material experience.",
-    "materials": "GFRC concrete",
-    "dimensions": "Made to project",
-    "finishIds": ["C-01"],
-    "featured": false,
-    "sizes": [
-      {
-        "id": "small",
-        "name": "Small",
-        "dimensions": "W 450 × D 450 × H 600 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "W 600 × D 600 × H 900 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "W 900 × D 900 × H 1200 mm",
-        "weight": "To be confirmed",
+        "dimensions": "Order Specific",
+        "weight": "Order Specific",
         "rate": null
       }
     ]
@@ -400,9 +267,7 @@
     "category": "Indoor",
     "image": "../cimgs/wallart1.jpg",
     "images": [
-      "../cimgs/wallart1.jpg",
-      "../cimgs/concreteballs.jpg",
-      "../cimgs/furniture.jpg"
+      "../cimgs/wallart1.jpg"
     ],
     "description": "A tactile, custom-cast relief that brings depth to an architectural interior.",
     "materials": "GFRC concrete",
@@ -413,21 +278,7 @@
       {
         "id": "small",
         "name": "Small",
-        "dimensions": "W 600 × H 900 × D 40 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "medium",
-        "name": "Medium",
-        "dimensions": "W 900 × H 1200 × D 50 mm",
-        "weight": "To be confirmed",
-        "rate": null
-      },
-      {
-        "id": "large",
-        "name": "Large",
-        "dimensions": "W 1200 × H 1800 × D 60 mm",
+        "dimensions": "2\" x 2\"",
         "weight": "To be confirmed",
         "rate": null
       }
