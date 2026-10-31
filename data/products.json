@@ -6,7 +6,6 @@
       "Landscape",
       "Indoor"
     ],
-    "image": "../product_images/AQ01/T01/AQ01-T01_5.png",
     "images": [
       "../product_images/AQ01/T01/AQ01-T01_5.png",
       "../product_images/AQ01/T01/AQ01-T01_2.png",
@@ -34,7 +33,6 @@
     "id": "CP01-T04",
     "name": "Strata Noir",
     "category": "Landscape",
-    "image": "../product_images/CP01/T04/CP01-T04_01.png",
     "images": [
       "../product_images/CP01/T04/CP01-T04_02.png",
       "../product_images/CP01/T04/CP01-T04_01.png",
@@ -151,7 +149,6 @@
     "id": "cavallo-console",
     "name": "Cavallo Console",
     "category": "Indoor",
-    "image": "../cimgs/cavallo.png",
     "images": [
       "../cimgs/cavallo.png"
     ],
@@ -174,7 +171,6 @@
     "id": "canon-pendant",
     "name": "Canon ",
     "category": "Outdoor/Indoor",
-    "image": "../cimgs/canon.jpg",
     "images": [
       "../cimgs/canon.jpg"
     ],
@@ -197,7 +193,6 @@
     "id": "pendant-lamp",
     "name": "Monolith Pendant",
     "category": "Indoor",
-    "image": "../cimgs/pendant-lamp1.jpg",
     "images": [
       "../cimgs/pendant-lamp1.jpg"
     ],
@@ -219,7 +214,6 @@
     "id": "wall-lamp",
     "name": "Arc Wall Lamp",
     "category": "Indoor",
-    "image": "../cimgs/wall-lamp1.jpg",
     "images": [
       "../cimgs/wall-lamp1.jpg"
     ],
@@ -242,7 +236,6 @@
     "id": "courtyard-fountain",
     "name": "Courtyard Fountain",
     "category": "Landscape",
-    "image": "../cimgs/fountain.jpg",
     "images": [
       "../cimgs/fountain.jpg"
     ],
@@ -265,7 +258,6 @@
     "id": "wall-art-panel",
     "name": "Relief Wall Panel",
     "category": "Indoor",
-    "image": "../cimgs/wallart1.jpg",
     "images": [
       "../cimgs/wallart1.jpg"
     ],
