@@ -1,18 +1,16 @@
 [
     {
     "id": "AQ01-T01",
-    "name": "AQ01-T01 Planter",
+    "name": "Terra Vessel",
     "category": [
-      "Landscape",
       "Indoor"
     ],
-    "image": "../product_images/AQ01/T01/AQ01-T01_5.png",
     "images": [
       "../product_images/AQ01/T01/AQ01-T01_5.png",
-      "../product_images/AQ01/T01/AQ01-T01_2.png",
-      "../product_images/AQ01/T01/AQ01-T01_3.png",
-      "../product_images/AQ01/T01/AQ01-T01_4.png",
-      "../product_images/AQ01/T01/AQ01-T01_1.png"
+      "../product_images/AQ01/T01/AQ01-T01_2.jpg",
+      "../product_images/AQ01/T01/AQ01-T01_3.jpg",
+      "../product_images/AQ01/T01/AQ01-T01_4.jpg",
+      "../product_images/AQ01/T01/AQ01-T01_1.jpg"
     ],
     "description": "A bold, rounded planter with a generous organic form and subtly flared rim. Its substantial silhouette and rugged surface give it a strong architectural presence, making it well suited to landscapes, courtyards, terraces and contemporary outdoor spaces.",
     "materials": "Cast concrete with galvanized iron mesh and polyurethane sealed finish",
@@ -34,7 +32,6 @@
     "id": "CP01-T04",
     "name": "Strata Noir",
     "category": "Landscape",
-    "image": "../product_images/CP01/T04/CP01-T04_01.png",
     "images": [
       "../product_images/CP01/T04/CP01-T04_02.png",
       "../product_images/CP01/T04/CP01-T04_01.png",
@@ -82,7 +79,7 @@
     "description": "A tall, sculptural planter featuring a gently tapered body, rounded base and distinctive flared neck. Its bold silhouette and dramatic two-tone finish make it a striking accent for contemporary landscapes, luxury villas and statement entrances.",
     "materials": "Cast concrete",
     "finishIds": ["T-06"],
-    "featured": false,
+    "featured": true,
     "sizes": [
       {
         "id": "large",
@@ -109,7 +106,7 @@
     "materials": "GFRC concrete",
     "dimensions": "Set of three, custom sizes",
     "finishIds": ["T-02"],
-    "featured": false,
+    "featured": true,
     "sizes": [
 
       {
@@ -150,8 +147,7 @@
   {
     "id": "cavallo-console",
     "name": "Cavallo Console",
-    "category": "Indoor",
-    "image": "../cimgs/cavallo.png",
+    "category": "Landscape",
     "images": [
       "../cimgs/cavallo.png"
     ],
@@ -173,8 +169,7 @@
   {
     "id": "canon-pendant",
     "name": "Canon ",
-    "category": "Outdoor/Indoor",
-    "image": "../cimgs/canon.jpg",
+    "category": "Landscape",
     "images": [
       "../cimgs/canon.jpg"
     ],
@@ -182,7 +177,7 @@
     "materials": "Concrete shade, brass fitting",
     "dimensions": "Ø 240 × H 280 mm",
     "finishIds": ["S-02", "S-03"],
-    "featured": true,
+    "featured": false,
     "sizes": [
       {
         "id": "small",
@@ -197,14 +192,13 @@
     "id": "pendant-lamp",
     "name": "Monolith Pendant",
     "category": "Indoor",
-    "image": "../cimgs/pendant-lamp1.jpg",
     "images": [
       "../cimgs/pendant-lamp1.jpg"
     ],
     "description": "A sculptural pendant with a restrained silhouette and hand-finished surface.",
     "materials": "Cast concrete",
     "finishIds": ["S-02"],
-    "featured": false,
+    "featured": true,
     "sizes": [
       {
         "id": "small",
@@ -219,14 +213,13 @@
     "id": "wall-lamp",
     "name": "Arc Wall Lamp",
     "category": "Indoor",
-    "image": "../cimgs/wall-lamp1.jpg",
     "images": [
       "../cimgs/wall-lamp1.jpg"
     ],
     "description": "An atmospheric wall light pairing a durable concrete body with a diffuse glow.",
     "materials": "Cast concrete, LED fitting",
     "finishIds": ["S-02", "S-05"],
-    "featured": false,
+    "featured": true,
     "sizes": [
       {
         "id": "small",
@@ -242,7 +235,6 @@
     "id": "courtyard-fountain",
     "name": "Courtyard Fountain",
     "category": "Landscape",
-    "image": "../cimgs/fountain.jpg",
     "images": [
       "../cimgs/fountain.jpg"
     ],
@@ -250,7 +242,7 @@
     "materials": "GFRC concrete, concealed water system",
     "dimensions": "Made to project",
     "finishIds": ["C-01"],
-    "featured": true,
+    "featured": false,
     "sizes": [
       {
         "id": "small",
@@ -265,7 +257,6 @@
     "id": "wall-art-panel",
     "name": "Relief Wall Panel",
     "category": "Indoor",
-    "image": "../cimgs/wallart1.jpg",
     "images": [
       "../cimgs/wallart1.jpg"
     ],
@@ -273,7 +264,7 @@
     "materials": "GFRC concrete",
     "dimensions": "Made to project",
     "finishIds": ["C-01"],
-    "featured": false,
+    "featured": true,
     "sizes": [
       {
         "id": "small",
